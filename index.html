@@ -638,17 +638,165 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
 .mtimer{display:grid;grid-template-columns:auto auto;gap:4px 10px;align-items:baseline;padding:8px 12px;border:1px solid rgba(127,227,236,.35);background:rgba(47,196,212,.08)}
 .mtimer span{font:400 9.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .mtimer b{font:600 15px/1 var(--f-mono);color:#BFF0F5;font-variant-numeric:tabular-nums;text-align:right}
+
+.mmode{display:inline-flex;margin-top:10px;border:1px solid rgba(255,255,255,.14)}
+.mmode button,.dstages button{appearance:none;border:0;background:rgba(255,255,255,.04);color:var(--muted);padding:8px 12px;font:500 10.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.mmode button+button,.dstages button+button{border-left:1px solid rgba(255,255,255,.12)}
+.mmode button[aria-pressed="true"],.dstages button[aria-pressed="true"]{background:rgba(47,196,212,.18);color:#BFF0F5}
+.dstages{display:flex;flex-wrap:wrap;border:1px solid rgba(255,255,255,.14);width:max-content;max-width:100%}
+.dstages i{font-style:normal;margin-left:6px;padding:1px 5px;border:1px solid rgba(127,227,236,.5);font-size:8.5px;color:#7FE3EC}
+.dtext{margin:0;max-width:62ch;font:400 13.5px/1.45 "Times New Roman",serif;color:var(--ink)}
+
+.mbot{grid-template-columns:minmax(0,1fr)}
+.dstages{width:auto}.dstages button{flex:1 1 auto}
+.mtimer b{white-space:nowrap}
+@media (max-width:560px){.mtop h3{font-size:22px}.mtimer{padding:6px 8px;gap:3px 8px}.mtimer b{font-size:12px}.mtimer span{font-size:8.5px}}
+.micro.dipmode .mtimer{display:none}
+
+/* ===== poling + sensing labs ===== */
+.dexopen+.dexopen{margin-top:8px}
+.dexopen .lens.pl,.dexopen .lens.sn{display:flex;align-items:center;justify-content:center;font:700 12px/1 "Times New Roman",serif;color:#08262A}
+.dexopen .lens.pl{background:radial-gradient(circle at 35% 30%,#e6f6ff,#6EA0F0 50%,#203a72 100%)}
+.dexopen .lens.sn{background:radial-gradient(circle at 35% 30%,#fff3cc,#E8C13C 50%,#6b5310 100%)}
+.lab{position:fixed;inset:0;z-index:79;display:flex;align-items:center;justify-content:center;padding:calc(10px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));background:rgba(14,15,17,.4);opacity:0;transition:opacity .35s}
+.lab.on{opacity:1}
+.labdev{width:min(1200px,100%);height:100%;max-height:900px;display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:linear-gradient(170deg,rgba(40,43,48,.92),rgba(18,20,23,.95));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.labbody{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);overflow:hidden}
+.labstage{position:relative;min-height:0}
+.labstage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.labside{overflow-y:auto;padding:14px 16px 20px;display:grid;align-content:start;gap:12px;border-left:1px solid rgba(255,255,255,.08)}
+@media (max-width:820px){.labbody{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(300px,48%) minmax(0,1fr)}.labside{border-left:0;border-top:1px solid rgba(255,255,255,.08)}}
+.labbtns{display:flex;gap:8px;flex-wrap:wrap}.labbtns .trbtn.ghost{margin-top:0}
+.labread{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+.labread div{display:grid;gap:4px;padding:8px 10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.labread span{font:400 9.5px/1.1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.labread b{font:600 12.5px/1.2 var(--f-mono)}
+.labwarn{display:grid;gap:6px}.labwarn p{margin:0;padding:7px 10px;font:400 12.5px/1.4 "Times New Roman",serif;border-left:3px solid var(--warn);background:rgba(224,166,58,.08)}
+.labwarn p[data-st="bad"]{border-left-color:var(--bad);background:rgba(229,83,63,.1)}.labwarn p[data-st="ok"]{border-left-color:var(--ok);background:rgba(76,179,122,.08)}
+.labctl{display:grid;gap:10px}
+.lc{display:grid;gap:6px;font:400 12px/1.2 "Times New Roman",serif}.lc span{display:flex;justify-content:space-between}.lc b{font:600 12px/1 var(--f-mono)}
+.lc input{width:100%;accent-color:var(--accent)}
+.lt{display:flex;gap:8px;align-items:flex-start;font:400 12.5px/1.35 "Times New Roman",serif;cursor:pointer}.lt input{accent-color:var(--accent);margin-top:2px}
+.labnote{margin:0;font:italic 400 12px/1.45 "Times New Roman",serif;color:var(--muted)}.labnote b{font-style:normal;color:var(--ink)}
+.zchips{position:absolute;left:10px;bottom:10px;display:flex;border:1px solid rgba(255,255,255,.14);background:rgba(20,22,25,.7)}
+.zchips button{appearance:none;border:0;background:none;color:var(--muted);padding:7px 10px;font:500 10px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.zchips button+button{border-left:1px solid rgba(255,255,255,.12)}.zchips button[aria-pressed="true"]{background:rgba(47,196,212,.2);color:#BFF0F5}
+.labseg{display:flex}.labseg button{flex:1}
+.senhint{position:absolute;left:50%;top:10px;transform:translateX(-50%);font:400 10.5px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+
+/* ===== sensing lab as a sci-fi test chamber ===== */
+#senlab{padding:0;background:#050607}
+#senlab .labdev{width:100%;height:100%;max-height:none;border:0;border-radius:0;background:#050607;position:relative}
+#senlab .dextop{position:absolute;left:0;right:0;top:0;z-index:3;background:linear-gradient(rgba(5,6,7,.85),rgba(5,6,7,0));border:0;padding-top:calc(12px + env(safe-area-inset-top,0px))}
+#senlab .trtabs{position:absolute;left:50%;top:calc(54px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:3;border:1px solid rgba(127,227,236,.3);background:rgba(10,30,38,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#senlab .trtabs button{color:#7FB9C0}#senlab .trtabs button[aria-selected="true"]{color:#E6FBFD;border-bottom-color:#7FE3EC;text-shadow:0 0 8px rgba(127,227,236,.8)}
+#senlab .labbody{position:absolute;inset:0;display:block;overflow:hidden}
+#senlab .labstage{position:absolute;inset:0}
+#senlab .senhint{top:calc(100px + env(safe-area-inset-top,0px));color:#7FB9C0}
+#senlab .labside{position:absolute;left:0;right:0;bottom:0;z-index:2;max-height:44%;overflow-y:auto;border:0;border-top:1px solid rgba(127,227,236,.5);
+  background:linear-gradient(rgba(6,28,36,.88),rgba(3,14,18,.95));box-shadow:0 -10px 40px rgba(47,196,212,.18),inset 0 1px 0 rgba(127,227,236,.25);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px 18px;align-content:start}
+#senlab .labread{grid-template-columns:repeat(2,minmax(0,1fr))}
+#senlab .labread div{border-color:rgba(127,227,236,.22);background:rgba(47,196,212,.06)}
+#senlab .labread span{color:#6FA9B0}
+#senlab .labread b{color:#BFF6FB;font-size:14px;text-shadow:0 0 8px rgba(47,196,212,.7);font-variant-numeric:tabular-nums}
+#senlab .lc{color:#BFE9EE}#senlab .lc b{color:#BFF6FB}
+#senlab .labseg{border-color:rgba(127,227,236,.3);background:rgba(47,196,212,.05)}#senlab .labseg button{color:#9CCAD0}
+#senlab .labseg button[aria-pressed="true"]{background:rgba(47,196,212,.3);color:#E6FBFD}
+#senlab .labnote{color:#8DBAC0;grid-column:1/-1}#senlab .labnote b{color:#E6FBFD}
+#senlab .trbtn{background:rgba(47,196,212,.75)}#senlab .trbtn.ghost{background:rgba(47,196,212,.08);border-color:rgba(127,227,236,.35);color:#BFF0F5}
+
+#senlab .labbtns,#senlab .labseg{align-self:start}
+#senlab .labbtns .trbtn{flex:1}
+
+/* 3D chamber: neutral black with pure cyan accents (no green cast) */
+#senlab,#senlab .labdev{background:#05070a}
+#senlab .dextop{background:linear-gradient(rgba(5,7,10,.9),rgba(5,7,10,0))}
+#senlab .trtabs{border-color:rgba(54,208,224,.35);background:rgba(8,16,26,.6)}
+#senlab .trtabs button{color:#86B8C8}#senlab .trtabs button[aria-selected="true"]{color:#EAFBFF;border-bottom-color:#36D0E0;text-shadow:0 0 8px rgba(54,208,224,.8)}
+#senlab .senhint{color:#86B8C8}
+#senlab .labside{border-top-color:rgba(54,208,224,.55);background:linear-gradient(rgba(8,16,26,.9),rgba(4,8,14,.96));box-shadow:0 -10px 40px rgba(54,208,224,.16),inset 0 1px 0 rgba(54,208,224,.25)}
+#senlab .labread div{border-color:rgba(54,208,224,.22);background:rgba(54,208,224,.05)}
+#senlab .labread span{color:#7FA9BC}#senlab .labread b{color:#CFF7FF;text-shadow:0 0 8px rgba(54,208,224,.7)}
+#senlab .lc{color:#C4E6F0}#senlab .lc b{color:#CFF7FF}#senlab .labnote{color:#8FB4C2}
+#senlab .labseg{border-color:rgba(54,208,224,.3);background:rgba(54,208,224,.04)}#senlab .labseg button{color:#9CC4D0}#senlab .labseg button[aria-pressed="true"]{background:rgba(54,208,224,.28);color:#EAFBFF}
+#senlab .trbtn{background:rgba(54,208,224,.78)}#senlab .trbtn.ghost{background:rgba(54,208,224,.07);border-color:rgba(54,208,224,.35);color:#CFF7FF}
+#senscope{grid-column:1/-1;width:100%;height:96px;border:1px solid rgba(54,208,224,.55);box-shadow:0 0 16px rgba(54,208,224,.25)}
+#sencv{cursor:grab}
+
+#senlab .labside{max-height:40%}
+@media (min-width:900px){#senlab .labside{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);max-height:36%}#senscope{grid-column:1/2;grid-row:1/span 3;height:100%;min-height:120px}}
+
+/* holographic console: see-through glass, light-in-air type */
+#senlab .labside{background:linear-gradient(rgba(8,16,28,.22),rgba(4,10,18,.42));-webkit-backdrop-filter:blur(5px) saturate(1.2);backdrop-filter:blur(5px) saturate(1.2);border-top:1px solid rgba(120,230,245,.45);box-shadow:0 -1px 24px rgba(54,208,224,.18)}
+#senlab .labread div{background:transparent;border:0;border-left:1px solid rgba(120,230,245,.35);padding:4px 10px}
+#senlab .labread span{color:rgba(150,225,240,.75);text-shadow:0 0 6px rgba(54,208,224,.6)}
+#senlab .labread b{color:#E9FDFF;font-size:15px;text-shadow:0 0 4px rgba(160,240,255,.9),0 0 14px rgba(54,208,224,.85),0 0 28px rgba(54,208,224,.45)}
+#senlab .lc,#senlab .labnote,#senlab .lt{color:rgba(205,245,252,.9);text-shadow:0 0 8px rgba(54,208,224,.55)}
+#senlab .lc b{color:#E9FDFF;text-shadow:0 0 10px rgba(54,208,224,.9)}
+#senlab .labseg{background:transparent;border-color:rgba(120,230,245,.35)}
+#senlab .labseg button{background:transparent;color:rgba(190,240,250,.85);text-shadow:0 0 6px rgba(54,208,224,.6)}
+#senlab .labseg button[aria-pressed="true"]{background:rgba(54,208,224,.18);color:#fff;text-shadow:0 0 10px rgba(120,230,245,1)}
+#senlab .labseg button i{font-style:normal;margin-left:4px;padding:0 4px;border:1px solid rgba(120,230,245,.5);font-size:8.5px}
+#senlab .trbtn{background:rgba(54,208,224,.22);border:1px solid rgba(120,230,245,.6);color:#fff;text-shadow:0 0 10px rgba(120,230,245,1);box-shadow:0 0 14px rgba(54,208,224,.3) inset}
+#senlab .trbtn.ghost{background:transparent}
+#senscope{background:transparent;border-color:rgba(120,230,245,.5)}
+#sennote2{margin:0;grid-column:1/-1;font:italic 400 12.5px/1.4 "Times New Roman",serif;color:rgba(205,245,252,.9);text-shadow:0 0 8px rgba(54,208,224,.55)}
+
+/* close buttons: little iridescent soap bubbles, same family as the E⁴ bubble */
+.dexx.xb{position:relative;flex:none;width:40px;height:40px;padding:0;border:0!important;border-radius:50%;overflow:visible;cursor:pointer;
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.8) 0 3.5%,transparent 10%),radial-gradient(circle,rgba(40,42,46,.18) 58%,rgba(255,255,255,.04) 70%,transparent 74%)!important;
+  box-shadow:0 0 12px rgba(47,196,212,.14),0 8px 14px -6px rgba(0,0,0,.45);font:600 15px/1 "Times New Roman",serif;animation:homeF 4s ease-in-out infinite}
+.dexx.xb sup{font-size:.6em;color:inherit}
+.dexx.xb.svgd{background:none!important;box-shadow:0 10px 14px -8px rgba(0,0,0,.45)}
+.dexx.xb .bsvg{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;overflow:visible;pointer-events:none;filter:drop-shadow(0 0 8px rgba(47,196,212,.16))}
+.dexx.xb span{position:relative;z-index:1;display:inline-block;padding:.08em .04em .16em;line-height:1.1;transform:scale(1.1,.92);
+  background:linear-gradient(100deg,#7ED6DF 0%,#A99BF0 22%,#E3A9B6 42%,#E6CC7A 62%,#93E2CC 80%,#7ED6DF 100%);background-size:240% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:iridMove 9s linear infinite}
+@media (prefers-reduced-motion:reduce){.dexx.xb,.dexx.xb span{animation:none}}
 </style>
 
 <div class="app">
+  <div class="lab" id="pollab" hidden role="dialog" aria-modal="true" aria-label="Corona poling lab">
+    <div class="labdev">
+      <div class="dextop"><span class="dextitle">Corona poling lab</span><span class="dexcount" id="polphase">ready</span><button type="button" class="dexx" data-close aria-label="Close">✕</button></div>
+      <div class="labbody">
+        <div class="labstage"><canvas id="polcv" aria-label="Cross-section of the corona triode poling set-up"></canvas>
+          <div class="zchips" id="polzoom"><button type="button" data-z="textile">Textile</button><button type="button" data-z="yarn" aria-pressed="true">Yarn</button><button type="button" data-z="fibre">Fibre</button><button type="button" data-z="dip">Dipoles ›</button></div></div>
+        <div class="labside">
+          <div class="labbtns"><button type="button" class="trbtn" id="polplay">▶ Run poling sequence</button></div>
+          <div class="labread" id="polread"></div>
+          <div class="labwarn" id="polwarn"></div>
+          <div class="labctl" id="polctl"></div>
+          <p class="labnote" id="polnote"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="lab" id="senlab" hidden role="dialog" aria-modal="true" aria-label="Sensing lab">
+    <div class="labdev">
+      <div class="dextop"><span class="dextitle">Sensing lab</span><span class="dexcount" id="senmode">d₃₁ mode</span><button type="button" class="dexx" data-close aria-label="Close">✕</button></div>
+      <nav class="trtabs" id="sentabs"><button type="button" data-m="31" aria-selected="true">d₃₁ · stretch along 1</button><button type="button" data-m="33" aria-selected="false">d₃₃ · press along 3</button></nav>
+      <div class="labbody">
+        <div class="labstage"><canvas id="sencv" aria-label="3D test chamber with the poled sample, electrodes and charge amplifier"></canvas><span class="senhint" id="senhint">Drag the sample sideways to stretch · drag elsewhere to turn</span></div>
+        <div class="labside">
+          <canvas id="senscope" aria-label="Charge amplifier output trace"></canvas><div class="labbtns"><button type="button" class="trbtn" id="sentap">Auto pulse</button><button type="button" class="trbtn ghost" id="senclear">Clear trace</button></div><div class="seg labseg" id="senform"><button type="button" data-f="yarn" aria-pressed="true">Yarn</button><button type="button" data-f="band" aria-pressed="false">Woven band</button></div><div class="seg labseg" id="senweave" hidden><button type="button" data-w="plain" aria-pressed="true">Plain</button><button type="button" data-w="twill" aria-pressed="false">Twill 2/2</button><button type="button" data-w="scale" aria-pressed="false">Fish-scale <i>soon</i></button></div><p id="sennote2"></p>
+          <div class="seg labseg" id="senmat"><button type="button" data-k="film" aria-pressed="true">Commercial poled film</button><button type="button" data-k="yarn" aria-pressed="false">Your yarn (from poling lab)</button></div>
+          <div class="labread" id="senread"></div>
+          <div class="labctl" id="senctl"></div>
+          <p class="labnote" id="sennote"></p>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="micro" id="micro" hidden role="dialog" aria-modal="true" aria-label="Inside the solution">
     <canvas id="mcv" aria-label="Schematic of PVDF chains, oxide particles and solvent molecules"></canvas>
-    <div class="mtop"><div><span class="mk">Microscale</span><h3 id="mtitle">Inside the solvent</h3><span class="msub" id="msub"></span></div>
+    <div class="mtop"><div><span class="mk">Microscale</span><h3 id="mtitle">Inside the solvent</h3><span class="msub" id="msub"></span><div class="mmode" id="mmode" role="tablist"><button type="button" data-m="part" aria-pressed="true">Particles</button><button type="button" data-m="dip" aria-pressed="false">PVDF dipoles</button></div></div>
       <div class="mright"><div class="mtimer" id="mtimer"><span>Sonication</span><b id="mtim">0.0 min</b><span>Temperature</span><b id="mtemp">50 °C</b></div><button type="button" class="dexx" id="mclose" aria-label="Back to the field">✕</button></div></div>
     <div class="mbot">
       <div class="mleg" id="mleg"></div>
       <div class="mread" id="mread"></div>
-      <div class="mbtns"><button type="button" class="trbtn" id="msonic">Sonicate +2 min</button><button type="button" class="trbtn ghost" id="mreset">Reset sonication</button><button type="button" class="trbtn ghost" id="mheat">Heat +10 °C</button></div>
+      <div class="dstages" id="dstages" hidden><button type="button" data-s="0">1 · In solution</button><button type="button" data-s="1">2 · After electrospinning</button><button type="button" data-s="2">3 · After poling <i>next</i></button></div><p class="dtext" id="dtext" hidden></p><div class="mbtns"><button type="button" class="trbtn" id="msonic">Sonicate +2 min</button><button type="button" class="trbtn ghost" id="mreset">Reset sonication</button><button type="button" class="trbtn ghost" id="mheat">Heat +10 °C</button></div>
       <p class="mnote">Schematic. Particle sizes and the 100 nm bar are to scale; solvent molecules are not. Drag to turn, pinch or scroll to zoom.</p>
     </div>
   </div>
@@ -722,6 +870,11 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
       <div class="card">
         <div class="cardh"><h2>Safety training</h2><span class="lbl">before you spin</span></div>
         <button type="button" class="dexopen trainopen" id="trainopen"><span class="lens hv">HV</span><span class="tx"><b>Open safety training</b><span>hazards · checklist · procedure · scenarios</span></span><span class="ar">›</span></button>
+      </div>
+      <div class="card">
+        <div class="cardh"><h2>Poling &amp; sensing</h2><span class="lbl">after spinning</span></div>
+        <button type="button" class="dexopen" id="polopen"><span class="lens pl">P</span><span class="tx"><b>Corona poling lab</b><span>needle · grid · heat · cool under field</span></span><span class="ar">›</span></button>
+        <button type="button" class="dexopen" id="senopen"><span class="lens sn">d</span><span class="tx"><b>Sensing lab</b><span>d₃₁ stretch · d₃₃ press · charge amplifier</span></span><span class="ar">›</span></button>
       </div>
       <div class="card">
         <div class="cardh"><h2>Scenarios</h2><span class="lbl">try a fault</span></div>
@@ -816,6 +969,24 @@ const sfx=(function(){let ctx=null,out=null,wet=null,on=true;
     fling(){if(!on||!ctx)return;const t=ctx.currentTime+.004,n=noise(.4),g=ctx.createGain(),bp=ctx.createBiquadFilter();bp.type="bandpass";bp.Q.value=1.1;   // airy card whoosh
       bp.frequency.setValueAtTime(3800,t);bp.frequency.exponentialRampToValueAtTime(700,t+.32);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.14,t+.05);g.gain.exponentialRampToValueAtTime(.0001,t+.36);
       n.connect(bp);bp.connect(g);g.connect(out);g.connect(wet);n.start(t);n.stop(t+.4);plip(t,2600,3400,.03,.03);},
+    /* continuous fabric sound driven by how fast the force changes: rustle and fibre creaks when stretched, a soft crunch when pressed */
+    fabric(level,kind,woven){if(!on||!ctx)return;const t=ctx.currentTime;
+      if(!this._fab){const len=2,b=ctx.createBuffer(1,ctx.sampleRate*len,ctx.sampleRate),d=b.getChannelData(0);let p=0;
+        for(let i=0;i<d.length;i++){const w=Math.random()*2-1;p=p*.86+w*.14;d[i]=(w*.55+p*.9)*(Math.random()<.02?2.2:1);}
+        const src=ctx.createBufferSource();src.buffer=b;src.loop=true;const bp=ctx.createBiquadFilter();bp.type="bandpass";bp.Q.value=.7;const lp=ctx.createBiquadFilter();lp.type="lowpass";
+        const g=ctx.createGain();g.gain.value=0;src.connect(bp);bp.connect(lp);lp.connect(g);g.connect(out);src.start();this._fab={src,bp,lp,g};}
+      const F=this._fab,lv=Math.min(1,level),stretch=kind==="stretch";
+      /* quiet dry-leaf rustle: a faint bed of air plus sparse tiny crackles */
+      F.bp.frequency.setTargetAtTime(stretch?(woven?4200:3600):(woven?1800:1400),t,.08);F.lp.frequency.setTargetAtTime(stretch?9000:4000,t,.08);
+      F.g.gain.setTargetAtTime(lv*(stretch?.035:.03),t,lv>F.g.gain.value?.04:.12);
+      if(lv>.05&&Math.random()<lv*(stretch?.5:.35)){const tt=t+.004+Math.random()*.03,n=noise(.02),g=ctx.createGain(),f=ctx.createBiquadFilter();f.type="bandpass";
+        f.frequency.value=stretch?2500+Math.random()*4500:1200+Math.random()*1800;f.Q.value=2.5;env(g,tt,.001,.012+lv*.02,.008+Math.random()*.012);n.connect(f);f.connect(g);g.connect(out);n.start(tt);}},
+    /* a soft wind gust for diving into the solution */
+    wind(dir){if(!on||!ctx)return;const t=ctx.currentTime+.01,d=1.5,n=noise(d+.1),bp=ctx.createBiquadFilter(),lp=ctx.createBiquadFilter(),g=ctx.createGain();
+      bp.type="bandpass";bp.Q.value=1.4;lp.type="lowpass";lp.frequency.value=3200;
+      const a=dir<0?1600:300,b=dir<0?250:1500;bp.frequency.setValueAtTime(a,t);bp.frequency.exponentialRampToValueAtTime(b,t+d*.55);bp.frequency.exponentialRampToValueAtTime(dir<0?180:700,t+d);
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.09,t+d*.35);g.gain.linearRampToValueAtTime(.05,t+d*.65);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+      n.connect(bp);bp.connect(lp);lp.connect(g);g.connect(out);g.connect(wet);n.start(t);n.stop(t+d+.1);},
     release(){if(!on||!ctx)return;const t=ctx.currentTime+.005;plip(t,1500,2400,.05,.05);},
     dial(){if(!on||!ctx)return;const t=ctx.currentTime+.005;
       for(let k=0;k<3;k++){const tt=t+k*.045,n=noise(.03),g=ctx.createGain(),hp=ctx.createBiquadFilter();hp.type="bandpass";hp.frequency.value=3200+k*400;hp.Q.value=4;
@@ -2335,7 +2506,8 @@ let tween=null,curStation="overview";
   const MENU=[
     {k:"field",label:"Enter the field",sub:"3D simulator",cls:"act",r:.19},
     {k:"lib",label:"Sample library",sub:"Cyan's yarns",cls:"act",r:.17},
-    {k:"soon",label:"Corona poling",sub:"coming soon",cls:"soon pol",r:.12},
+    {k:"pol",label:"Corona poling",sub:"heat · field · dipoles",cls:"act",r:.12},
+    {k:"sen",label:"Sensing",sub:"d₃₁ · d₃₃",cls:"act",r:.115},
     {k:"soon",label:"to be continued…",cls:"soon",r:.1},
     {k:"safety",label:"Safety training",sub:"before you spin",cls:"act",r:.135}];
   function spawn(){
@@ -2411,18 +2583,31 @@ let tween=null,curStation="overview";
     if(k==="soon"){sfx.bub&&sfx.bub();const bb=B.find(x=>x.el===el);if(bb)bb.e+=.18;el.classList.remove("wob");void el.offsetWidth;el.classList.add("wob");const tp=el.querySelector(".tip");tp.classList.add("on");setTimeout(()=>tp.classList.remove("on"),1300);return;}
     sfx.pop();const r=el.getBoundingClientRect(),cr=cv.getBoundingClientRect();sparks(r.left-cr.left+r.width/2,r.top-cr.top+r.height/2,r.width*.6);
     el.style.setProperty("--t",el.style.transform);el.classList.add("pop");
-    setTimeout(()=>{if(k==="safety"){openTrain("cover","hazards");setTimeout(close,120);}else if(k==="lib"){openDex("cover",0);setTimeout(close,120);}else{close();introFly();}},200);}
+    setTimeout(()=>{if(k==="pol"){window.openPol("cover");setTimeout(close,120);}else if(k==="sen"){window.openSen("cover");setTimeout(close,120);}else if(k==="safety"){openTrain("cover","hazards");setTimeout(close,120);}else if(k==="lib"){openDex("cover",0);setTimeout(close,120);}else{close();introFly();}},200);}
   function close(){cv.classList.add("gone");setTimeout(()=>{cancelAnimationFrame(raf);raf=0;},750);}
   function open(){B.forEach(b=>b.el.remove());B=[];RP=[];rc._dirty=true;cv.querySelectorAll(".spark").forEach(s=>s.remove());
     big.hidden=false;big.classList.remove("pop");cv.classList.remove("burst","gone");if(!raf)raf=requestAnimationFrame(step);}
-  coverUI={open,close};
+  /* back to the menu level: bubbles already burst, no big bubble */
+  function openMenu(){B.forEach(b=>b.el.remove());B=[];RP=[];rc._dirty=true;cv.querySelectorAll(".spark").forEach(s=>s.remove());
+    big.hidden=true;cv.classList.remove("gone");cv.classList.add("burst");spawn();if(!raf)raf=requestAnimationFrame(step);}
+  coverUI={open:openMenu,openCover:open,close};
   /* the E⁴ bubble in the field: same soap film, wobbles, pops back to the cover */
   const hb=document.getElementById("homeb");let hbE=.3,hbBusy=false;
   hb.addEventListener("pointerenter",()=>{hbE+=.05;});hb.addEventListener("pointerdown",()=>{hbE+=.12;});
   hb.addEventListener("click",()=>{if(hbBusy)return;hbBusy=true;sfx.unlock();sfx.pop();
-    hb.animate([{transform:"scale(1)",opacity:1},{transform:"scale(1.18)",opacity:1,offset:.45},{transform:"scale(1.45)",opacity:0}],{duration:240,easing:"ease-out"}).onfinish=()=>{hbBusy=false;open();};});
+    hb.animate([{transform:"scale(1)",opacity:1},{transform:"scale(1.18)",opacity:1,offset:.45},{transform:"scale(1.45)",opacity:0}],{duration:240,easing:"ease-out"}).onfinish=()=>{hbBusy=false;openMenu();};});
   (function hl(t){if(cv.classList.contains("gone")&&!document.hidden){hbE*=.96;blob(hb,t,5.1,.05+Math.min(.08,hbE));}requestAnimationFrame(hl);})(performance.now());
-  document.querySelector(".brand").addEventListener("click",open);
+  document.querySelector(".brand").addEventListener("click",openMenu);
+
+  /* every ✕ becomes a small wobbling soap bubble that pops before it closes */
+  const XB=[...document.querySelectorAll(".dexx")];
+  XB.forEach(x=>{x.classList.add("xb");x.innerHTML="<span>E<sup>4</sup></span>";x._e=.3;x._p=Math.random()*9;
+    x.addEventListener("pointerenter",()=>{x._e+=.05;});x.addEventListener("pointerdown",()=>{x._e+=.12;});
+    x.addEventListener("click",e=>{if(x._go){x._go=false;return;}e.stopImmediatePropagation();e.preventDefault();if(x._busy)return;x._busy=true;
+      sfx.unlock();sfx.pop();
+      x.animate([{transform:"scale(1)",opacity:1},{transform:"scale(1.2)",opacity:1,offset:.45},{transform:"scale(1.5)",opacity:0}],{duration:220,easing:"ease-out"}).onfinish=()=>{
+        x._busy=false;x._go=true;x.click();};},true);});
+  (function xl(t){if(!document.hidden)XB.forEach(x=>{if(x.offsetParent){x._e*=.96;blob(x,t,x._p,.05+Math.min(.08,x._e));}});requestAnimationFrame(xl);})(performance.now());
   addEventListener("keydown",e=>{if(cv.classList.contains("gone"))return;if(e.key==="Escape")close();else if((e.key==="Enter"||e.key===" ")&&!cv.classList.contains("burst")){e.preventDefault();burst();}});
   addEventListener("resize",()=>{for(const b of B){b.x=Math.min(b.x,W()-b.r);b.y=Math.min(b.y,H()-b.r);}});
   raf=requestAnimationFrame(step);
@@ -2538,7 +2723,7 @@ function draw(t){if(!S)return;const ts=t/1000,heat=clamp((P.temp-20)/60,0,1);
   const sc=proj(0,0,0)[3]*.5,bx=Math.max(16,W*.05),by=Math.min(H*.6,H-((document.querySelector(".mbot")||{}).offsetHeight||200)-18);
   g2.strokeStyle="rgba(233,230,221,.85)";g2.lineWidth=1.4;g2.beginPath();g2.moveTo(bx,by);g2.lineTo(bx+sc,by);g2.moveTo(bx,by-5);g2.lineTo(bx,by+5);g2.moveTo(bx+sc,by-5);g2.lineTo(bx+sc,by+5);g2.stroke();
   g2.fillStyle="rgba(233,230,221,.85)";g2.font="12px 'Times New Roman',serif";g2.textAlign="center";g2.fillText("100 nm",bx+sc/2,by-8);g2.textAlign="start";}
-function loop(t){if(!drag)rotY+=spin;draw(t);raf=requestAnimationFrame(loop);}
+function loop(t){if(!drag&&mode!=="dip")rotY+=spin;if(mode==="dip")drawDip(t);else draw(t);raf=requestAnimationFrame(loop);}
 cvs.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,ry:rotY,rx:rotX};try{cvs.setPointerCapture(e.pointerId);}catch(_){}});
 cvs.addEventListener("pointermove",e=>{if(!drag||pinch)return;rotY=drag.ry+(e.clientX-drag.x)*.008;rotX=clamp(drag.rx+(e.clientY-drag.y)*.006,-1.3,1.3);});
 const up=()=>{drag=null;};cvs.addEventListener("pointerup",up);cvs.addEventListener("pointercancel",up);
@@ -2546,11 +2731,293 @@ cvs.addEventListener("wheel",e=>{e.preventDefault();zoom=clamp(zoom*Math.exp(-e.
 cvs.addEventListener("touchstart",e=>{if(e.touches.length===2){const[a,b]=e.touches;pinch={d:Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY),z:zoom};}},{passive:true});
 cvs.addEventListener("touchmove",e=>{if(pinch&&e.touches.length===2){const[a,b]=e.touches;zoom=clamp(pinch.z*Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY)/pinch.d,.6,2.6);}},{passive:true});
 cvs.addEventListener("touchend",e=>{if(e.touches.length<2)pinch=null;},{passive:true});
-function openAt(k,sx,sy){kind=k;S=null;ov.style.setProperty("--ox",sx+"px");ov.style.setProperty("--oy",sy+"px");ov.hidden=false;size();zoom=.55;rotY=.7;rotX=-.32;build();
+function openAt(k,sx,sy){kind=k;S=null;D=null;mode="part";setTimeout(()=>{if(mode==="part")setMode("part");},0);ov.style.setProperty("--ox",sx+"px");ov.style.setProperty("--oy",sy+"px");ov.hidden=false;size();zoom=.55;rotY=.7;rotX=-.32;build();
   requestAnimationFrame(()=>ov.classList.add("on"));if(!raf)raf=requestAnimationFrame(loop);
   const z0=performance.now();(function zi(t){const k2=Math.min(1,(t-z0)/900);zoom=.55+.45*(1-Math.pow(1-k2,3));if(k2<1)requestAnimationFrame(zi);})(z0);}
-function close(){ov.classList.remove("on");sfx.release&&sfx.release();setTimeout(()=>{ov.hidden=true;cancelAnimationFrame(raf);raf=0;},560);fly("dope");}
+function close(){ov.classList.remove("on");sfx.wind&&sfx.wind(-1);setTimeout(()=>{ov.hidden=true;cancelAnimationFrame(raf);raf=0;},560);const back=ov.dataset.back;ov.dataset.back="";if(back==="pol"){window.openPol(window.__polFrom||"field");}else fly("dope");}
 document.getElementById("mclose").onclick=close;window.__openMicro=openAt;
+/* ===== PVDF dipole view: random coils in solution, stretched beta-phase chains after spinning, aligned dipoles after poling ===== */
+let mode="part",D=null,dst=0,dp=0;
+const DTXT=["In solution the PVDF chains are random coils, mostly in the non-polar α conformation (TGTG′). The C–F dipoles point every way and cancel out.",
+  "Electrospinning stretches the jet and the strong field pulls chains into the all-trans β phase. Chains line up along the fibre and each CF₂–CH₂ unit carries a dipole across it. Within one crystallite the dipoles agree, but neighbouring crystallites still point different ways, so the net polarisation stays small.",
+  "Corona poling applies a high field across the yarn. The β-phase dipoles flip to point the same way, giving a net polarisation P. That is what turns the yarn into a piezoelectric sensor (d₃₃, d₃₁). Preview of the next stage: Corona poling is still to come."];
+function buildDip(){seed=23;const N=26,SEG=34,ch=[];
+  for(let i=0;i<N;i++){let p=[(rnd()*2-1)*1.2,(rnd()*2-1)*1.2,(rnd()*2-1)*1.2],d=[rn(),rn(),rn()];const a=(i/N)*Math.PI*2*3.1,rr=.12+.48*Math.sqrt((i+.5)/N),gy=Math.cos(a)*rr,gz=Math.sin(a)*rr*.8;
+    const alpha=rnd()<.28,segs=[];let dom=rnd()<.5?1:-1;
+    for(let k=0;k<SEG;k++){d=[d[0]*.7+rn()*.5,d[1]*.7+rn()*.5,d[2]*.7+rn()*.5];const n=Math.hypot(...d)||1;p=[p[0]+d[0]/n*.07,p[1]+d[1]/n*.07,p[2]+d[2]/n*.07];
+      if(k%9===0&&rnd()<.6)dom=-dom;
+      let rv=[rn(),rn(),rn()];const rl=Math.hypot(...rv)||1;rv=rv.map(v=>v/rl);
+      const x=-1.7+3.4*k/(SEG-1);
+      segs.push({c:p.slice(),s:[x,gy+Math.sin(k*.9+i)*.012,gz],rv,dom,ph:rnd()*6});}
+    ch.push({segs,alpha});}
+  D={ch};}
+function dipVec(sg,alpha,st){/* returns dipole direction for stage blend st in [0,2] */
+  const r=sg.rv,b1=alpha?r:[0,sg.dom,0],b2=alpha?r:[0,1,0];
+  if(st<=1){const k=st;return [r[0]+(b1[0]-r[0])*k,r[1]+(b1[1]-r[1])*k,r[2]+(b1[2]-r[2])*k];}
+  const k=st-1;return [b1[0]+(b2[0]-b1[0])*k,b1[1]+(b2[1]-b1[1])*k,b1[2]+(b2[2]-b1[2])*k];}
+function drawDip(t){if(!D)buildDip();const ts=t/1000,dtm=Math.min(.1,(t-(D.lt||t))/1000);D.lt=t;dp+=(dst-dp)*Math.min(1,dtm*1.8);
+  const sm=x=>x*x*(3-2*x),kpos=sm(clamp(dp,0,1)),L=[];let net=0,cnt=0;
+  D.ch.forEach(C=>{let prev=null;C.segs.forEach((sg,k)=>{const j=.004*Math.sin(ts*2+sg.ph);
+    const x=sg.c[0]+(sg.s[0]-sg.c[0])*kpos+j,y=sg.c[1]+(sg.s[1]-sg.c[1])*kpos+j,z=sg.c[2]+(sg.s[2]-sg.c[2])*kpos;
+    const p=proj(x,y,z);if(prev)L.push([(p[2]+prev[2])/2,0,prev,p,C.alpha]);prev=p;
+    if(k%2===0){let v=dipVec(sg,C.alpha,clamp(dp,0,2));const vl=Math.hypot(...v)||1;v=v.map(q=>q/vl);net+=v[1];cnt++;
+      const q=proj(x+v[0]*.09,y-v[1]*.09,z+v[2]*.09);L.push([p[2]-.005,1,p,q,v[1]]);}});});
+  L.sort((a,b)=>b[0]-a[0]);g2.setTransform(dpr,0,0,dpr,0,0);g2.clearRect(0,0,W,H);
+  const pol=clamp(dp-1,0,1);
+  if(pol>0){/* electrodes */const y1=proj(0,-1.05,0)[1],y2=proj(0,1.05,0)[1];g2.globalAlpha=pol;
+    g2.fillStyle="rgba(229,83,63,.18)";g2.fillRect(W*.08,y1-10,W*.84,8);g2.fillStyle="rgba(47,120,212,.2)";g2.fillRect(W*.08,y2+2,W*.84,8);
+    g2.fillStyle="#E9E6DD";g2.font="14px 'Times New Roman',serif";g2.fillText("+",W*.06,y1-2);g2.fillText("−",W*.06,y2+10);g2.globalAlpha=1;}
+  if(kpos>.5){const a=proj(-1.75,-.66,0),b=proj(1.75,-.66,0),c=proj(-1.75,.66,0),d=proj(1.75,.66,0);g2.strokeStyle="rgba(233,230,221,"+(.15*kpos)+")";g2.setLineDash([4,6]);g2.lineWidth=1;
+    g2.beginPath();g2.moveTo(a[0],a[1]);g2.lineTo(b[0],b[1]);g2.moveTo(c[0],c[1]);g2.lineTo(d[0],d[1]);g2.stroke();g2.setLineDash([]);}
+  const sh=z=>.4+.6*clamp(1-(z+1.6)/3.2,0,1);
+  for(const e of L){const k=sh(e[0]);
+    if(e[1]===0){const a=e[2],b=e[3];g2.strokeStyle=e[4]?"rgba(150,150,150,"+(.35+.4*k)+")":"rgba("+Math.round(236*k)+","+Math.round(233*k)+","+Math.round(225*k)+","+(.45+.5*k)+")";g2.lineWidth=Math.max(.8,a[3]*.009);g2.lineCap="round";g2.beginPath();g2.moveTo(a[0],a[1]);g2.lineTo(b[0],b[1]);g2.stroke();}
+    else{const a=e[2],b=e[3],u=e[4],col=u>.3?"127,227,236":u<-.3?"229,154,168":"200,200,200";g2.strokeStyle="rgba("+col+","+(.45+.5*k)+")";g2.fillStyle=g2.strokeStyle;g2.lineWidth=Math.max(.9,a[3]*.006);
+      g2.beginPath();g2.moveTo(a[0],a[1]);g2.lineTo(b[0],b[1]);g2.stroke();const an=Math.atan2(b[1]-a[1],b[0]-a[0]),hl=Math.max(3,a[3]*.022);
+      g2.beginPath();g2.moveTo(b[0],b[1]);g2.lineTo(b[0]-hl*Math.cos(an-.5),b[1]-hl*Math.sin(an-.5));g2.lineTo(b[0]-hl*Math.cos(an+.5),b[1]-hl*Math.sin(an+.5));g2.closePath();g2.fill();}}
+  /* net polarisation meter */
+  const P=cnt?net/cnt:0,mx=W-max2(40,W*.08),my=H*.25;g2.fillStyle="rgba(233,230,221,.75)";g2.font="11px 'Times New Roman',serif";g2.textAlign="center";g2.fillText("net P",mx,my-58);
+  g2.strokeStyle="rgba(255,255,255,.15)";g2.lineWidth=1;g2.strokeRect(mx-9,my-50,18,100);const hP=P*48;g2.fillStyle=P>0?"rgba(127,227,236,.85)":"rgba(229,154,168,.85)";
+  if(hP>0)g2.fillRect(mx-8,my-hP,16,hP);else g2.fillRect(mx-8,my,16,-hP);g2.fillStyle="rgba(233,230,221,.85)";g2.fillText((P*100).toFixed(0)+"%",mx,my+68);g2.textAlign="start";}
+function max2(a,b){return a>b?a:b;}
+function setMode(m){mode=m;ov.classList.toggle("dipmode",m==="dip");document.querySelectorAll("#mmode button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.m===m)));
+  const dipOn=m==="dip";["dstages","dtext"].forEach(id=>document.getElementById(id).hidden=!dipOn);
+  [".mleg",".mread",".mbtns"].forEach(s=>{const e=document.querySelector(s);if(e)e.style.display=dipOn?"none":"";});
+  document.querySelector(".mnote").textContent=dipOn?"Schematic of chain conformation and dipole order. Arrows: C–F dipoles (cyan up, pink down, grey α phase). Not to scale.":"Schematic. Particle sizes and the 100 nm bar are to scale; solvent molecules are not. Drag to turn, pinch or scroll to zoom.";
+  if(dipOn){rotY=0;rotX=0;setStage(dst);}sfx.zap&&sfx.zap();}
+function setStage(s){dst=s;document.querySelectorAll("#dstages button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.s===s)));document.getElementById("dtext").textContent=DTXT[s];
+  document.getElementById("mtitle").textContent=["PVDF in solution","After electrospinning","After corona poling"][s];if(s===2&&sfx.alert)sfx.alert("ok");}
+document.querySelectorAll("#mmode button").forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+document.querySelectorAll("#dstages button").forEach(b=>b.onclick=()=>{setStage(+b.dataset.s);sfx.tick&&sfx.tick();});
+window.__openDipoles=(sx,sy,stage)=>{sfx.wind&&sfx.wind(1);openAt("dope",sx,sy);setMode("dip");dp=stage>0?stage-1:0;setStage(stage||0);};
+
+/* ===================== Corona poling lab ===================== */
+const POL={vn:-10,vg:-2,gng:15,gs:5,t:50,T:90,time:60,cool:1,anneal:1,a:0,aLive:0,surf:0,z:"yarn"};
+window.POL=POL;
+const BETA=.72; // beta fraction available to switch (schematic)
+function polModel(p){const dV=Math.abs(p.vn-p.vg),same=p.vg===0||Math.sign(p.vn)===Math.sign(p.vg);
+  const corona=Math.abs(p.vn)>=5&&dV>=5&&same,airE=dV/p.gng,spark=airE>3||Math.abs(p.vg)/p.gs>3,parasitic=Math.abs(p.vg)>5;
+  const Vs=corona?Math.abs(p.vg):0,E=Vs/p.t*1000,Ec=50*(1-.55*clamp((p.T-25)/75,0,1.2)),eff=p.vn>0?1:.85,tau=120*Math.exp(-(p.T-25)/25);
+  const sig=1/(1+Math.exp(-(E-Ec)/(.18*Ec))),aField=spark?0:BETA*sig*eff*(1-Math.exp(-p.time/tau));
+  const ret=p.T<=50?.9:(p.cool?.95:.45),a=aField*ret,d31=22*a/BETA,app=d31*(p.anneal?1:1.6);
+  const w=[];if(!same)w.push(["bad","Needle and grid have opposite polarity: no stable corona."]);
+  else if(!corona)w.push(["warn","Below corona onset. Keep |needle| ≥ 5 kV and needle–grid difference ≥ 5 kV."]);
+  if(airE>3)w.push(["bad","Air gap field "+airE.toFixed(1)+" kV/mm is above ~3 kV/mm: sparking and breakdown. Widen the needle–grid gap."]);
+  if(Math.abs(p.vg)/p.gs>3)w.push(["bad","Grid too close to the sample for its voltage: arcing to the sample."]);
+  if(parasitic)w.push(["warn","Grid above ~5 kV starts its own parasitic corona."]);
+  if(corona&&E<Ec)w.push(["warn","Field across the sample ("+E.toFixed(0)+" MV/m) is below the coercive field at "+p.T+" °C (~"+Ec.toFixed(0)+" MV/m). Raise the grid voltage, thin the sample or heat more."]);
+  if(p.T>120)w.push(["warn","Above ~120 °C PVDF starts to soften and the β phase can relax."]);
+  if(!p.cool&&p.T>50)w.push(["warn","Field switched off while hot: dipoles relax as it cools, so most of the alignment is lost."]);
+  if(!p.anneal)w.push(["warn","No short-circuit anneal: trapped surface charge inflates the apparent d₃₁."]);
+  if(p.vn>0)w.push(["ok","Positive corona: charges inject less readily, usually more efficient."]);
+  return {corona,airE,spark,parasitic,Vs,E,Ec,tau,a,aField,d31,app,w};}
+const PCTL=[["vn","Needle voltage",-20,20,.5,v=>(v>0?"+":"")+v.toFixed(1)+" kV"],["vg","Grid voltage",-6,6,.1,v=>(v>0?"+":"")+v.toFixed(1)+" kV"],
+  ["gng","Needle–grid gap",3,40,1,v=>v+" mm"],["gs","Grid–sample gap",1,15,.5,v=>v+" mm"],["t","Sample thickness",10,300,5,v=>v+" µm"],
+  ["T","Hot plate",25,130,1,v=>v+" °C"],["time","Poling time",5,1200,5,v=>v>=60?(v/60).toFixed(v%60?1:0)+" min":v+" s"]];
+function polBuildCtl(){const C=document.getElementById("polctl");C.innerHTML=PCTL.map(([k,l,mi,ma,st])=>'<label class="lc"><span>'+l+'<b id="pv-'+k+'"></b></span><input type="range" data-k="'+k+'" min="'+mi+'" max="'+ma+'" step="'+st+'" value="'+POL[k]+'"></label>').join("")+
+  '<label class="lt"><input type="checkbox" data-t="cool" checked><span>Cool to below 50 °C with the field on</span></label><label class="lt"><input type="checkbox" data-t="anneal" checked><span>Short-circuit anneal afterwards (60 °C, 12–24 h)</span></label>'+
+  '<button type="button" class="trbtn ghost" id="polreset">Your planned set-up</button>';
+  C.querySelectorAll("input[type=range]").forEach(x=>x.oninput=()=>{POL[x.dataset.k]=+x.value;polUpd();});
+  C.querySelectorAll("input[type=checkbox]").forEach(x=>x.onchange=()=>{POL[x.dataset.t]=x.checked?1:0;polUpd();sfx.tick&&sfx.tick();});
+  document.getElementById("polreset").onclick=()=>{Object.assign(POL,{vn:-10,vg:-2,gng:15,gs:5,t:50,T:90,time:60,cool:1,anneal:1});polBuildCtl();polUpd();};}
+function polUpd(){const m=polModel(POL);POL.a=m.a;PCTL.forEach(([k,,,,,f])=>{const e=document.getElementById("pv-"+k);if(e)e.textContent=f(POL[k]);});
+  document.getElementById("polread").innerHTML=[["Corona",m.corona?"on":"off"],["Surface potential",m.Vs.toFixed(1)+" kV"],["Field in sample",m.E.toFixed(0)+" MV/m"],["Coercive field at "+POL.T+" °C","~"+m.Ec.toFixed(0)+" MV/m"],
+    ["Switching time","~"+(m.tau<1?m.tau.toFixed(2):m.tau.toFixed(0))+" s"],["Dipoles aligned",(m.a*100).toFixed(0)+"%"],["d₃₁ if a dense film","~"+m.d31.toFixed(1)+" pC/N"],["Apparent d₃₁",m.app.toFixed(1)+" pC/N"+(POL.anneal?"":" (inflated)")]]
+    .map(([k,v])=>'<div><span>'+k+'</span><b>'+v+'</b></div>').join("");
+  document.getElementById("polwarn").innerHTML=m.w.map(([s,t])=>'<p data-st="'+s+'">'+t+'</p>').join("");}
+let polRaf=0,seq=null;
+const PH=[["Heat",1.6],["Field on",2.6],["Cool under field",2],["Field off",.8],["Short-circuit anneal",1.4]];
+function polPlay(){const m=polModel(POL);seq={t0:performance.now(),m};POL.aLive=0;POL.surf=0;sfx.zap&&sfx.zap();}
+function polDraw(t){const cv=document.getElementById("polcv"),g=cv.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1),W=cv.clientWidth,H=cv.clientHeight;
+  if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
+  const m=polModel(POL);let Tnow=POL.T,fieldOn=m.corona,phase="ready",aT=m.a;
+  if(seq){let el=(t-seq.t0)/1000,acc=0,i=0;for(;i<PH.length;i++){if(el<acc+PH[i][1])break;acc+=PH[i][1];}const k=i<PH.length?(el-acc)/PH[i][1]:1;
+    if(i>=PH.length){phase="done";Tnow=25;fieldOn=false;aT=m.a;}
+    else{phase=PH[i][0];if(i===0){Tnow=25+(POL.T-25)*k;fieldOn=false;aT=0;}else if(i===1){aT=m.aField*k;}else if(i===2){Tnow=POL.T+(40-POL.T)*k;fieldOn=POL.cool&&m.corona;aT=m.aField*(1-(1-(POL.cool?.95:.45))*k);}
+      else{Tnow=i===4?60:40;fieldOn=false;aT=m.a;}}
+    if(i===1)POL.surf=Math.min(1,POL.surf+.02);if(i===4&&POL.anneal)POL.surf*=.94;
+    if(i>=PH.length&&el>8.6)seq=null;}
+  else{Tnow=POL.T;aT=m.a;}
+  POL.aLive+=(aT-POL.aLive)*.08;document.getElementById("polphase").textContent=phase;
+  const cx=W/2,yN=H*.08,yG=H*.36,yS=H*.6,yP=H*.72,yH=H*.8;
+  // hot plate
+  const hot=clamp((Tnow-25)/100,0,1);g.fillStyle="rgba("+Math.round(60+180*hot)+","+Math.round(60+50*hot)+","+Math.round(60-20*hot)+",.85)";g.fillRect(W*.1,yH,W*.8,H*.07);
+  if(hot>0){const gr=g.createLinearGradient(0,yH,0,yH-H*.2);gr.addColorStop(0,"rgba(230,110,60,"+.35*hot+")");gr.addColorStop(1,"rgba(230,110,60,0)");g.fillStyle=gr;g.fillRect(W*.1,yH-H*.2,W*.8,H*.2);}
+  g.fillStyle="#E9E6DD";g.font="11px 'Times New Roman',serif";g.fillText("hot plate "+Tnow.toFixed(0)+" °C",W*.1,yH+H*.07+14);
+  // ground plate
+  g.fillStyle="#9AA0A6";g.fillRect(W*.14,yP,W*.72,6);g.fillText("304 SS ground plate",W*.14,yP+20);
+  // needle
+  g.fillStyle="#C9CED3";g.beginPath();g.moveTo(cx-6,yN-30);g.lineTo(cx+6,yN-30);g.lineTo(cx,yN+16);g.closePath();g.fill();g.fillText("needle "+(POL.vn>0?"+":"")+POL.vn+" kV",cx+12,yN);
+  // corona glow + ions
+  const pos=POL.vn>0,ic=pos?"229,120,100":"110,160,240";
+  if(fieldOn){const gl=g.createRadialGradient(cx,yN+16,0,cx,yN+16,30);gl.addColorStop(0,"rgba("+ic+",.9)");gl.addColorStop(1,"rgba("+ic+",0)");g.fillStyle=gl;g.beginPath();g.arc(cx,yN+16,30,0,7);g.fill();
+    for(let i=0;i<70;i++){const ph=((t/1000)*.8+i*.137)%1,spread=(i*97%100)/100-.5,x=cx+spread*W*.7*ph,y=yN+16+(yS-yN-16)*ph;g.fillStyle="rgba("+ic+","+(.85-.5*ph)+")";g.fillRect(x-1,y-1,2.2,2.2);}}
+  if(m.spark&&fieldOn&&(Math.floor(t/90)%3===0)){g.strokeStyle="rgba(200,230,255,.95)";g.lineWidth=2;g.beginPath();let x=cx,y=yN+16;g.moveTo(x,y);while(y<yG){x+=(Math.random()-.5)*26;y+=12;g.lineTo(x,y);}g.stroke();}
+  // grid
+  g.strokeStyle="rgba(200,206,211,.85)";g.setLineDash([3,4]);g.lineWidth=1.5;g.beginPath();g.moveTo(W*.12,yG);g.lineTo(W*.88,yG);g.stroke();g.setLineDash([]);g.fillStyle="#E9E6DD";g.fillText("grid "+(POL.vg>0?"+":"")+POL.vg.toFixed(1)+" kV (316L mesh)",W*.12,yG-6);
+  // distances
+  g.strokeStyle="rgba(127,227,236,.6)";g.lineWidth=1;g.beginPath();g.moveTo(W*.92,yN+16);g.lineTo(W*.92,yG);g.moveTo(W*.92,yG);g.lineTo(W*.92,yS);g.stroke();g.fillStyle="#7FE3EC";g.textAlign="right";
+  g.fillText(POL.gng+" mm",W*.9,(yN+yG)/2);g.fillText(POL.gs+" mm",W*.9,(yG+yS)/2);g.textAlign="start";
+  // sample at selected zoom
+  const sx0=W*.18,sx1=W*.82,sh=(yP-yS)-4,a=POL.aLive;g.save();
+  if(POL.z==="textile"){for(let r=0;r<5;r++)for(let c=0;c<14;c++){const x=sx0+(sx1-sx0)*c/14,y=yS+sh*r/5;g.fillStyle=(r+c)%2?"rgba(226,185,59,.75)":"rgba(226,185,59,.45)";g.fillRect(x,y,(sx1-sx0)/14-1,sh/5-1);}}
+  else if(POL.z==="yarn"){for(let s=0;s<6;s++){g.strokeStyle="rgba(226,185,59,.8)";g.lineWidth=2;g.beginPath();for(let x=sx0;x<=sx1;x+=4){const y=yS+sh/2+Math.sin((x-sx0)/14+s)*sh*.32;if(x===sx0)g.moveTo(x,y);else g.lineTo(x,y);}g.stroke();}}
+  else{g.fillStyle="rgba(226,185,59,.35)";g.fillRect(sx0,yS+sh*.15,sx1-sx0,sh*.7);g.strokeStyle="rgba(226,185,59,.9)";g.strokeRect(sx0,yS+sh*.15,sx1-sx0,sh*.7);}
+  // dipole arrows inside the sample
+  const n=POL.z==="fibre"?26:16;for(let i=0;i<n;i++){const x=sx0+(sx1-sx0)*(i+.5)/n,yc=yS+sh/2,rnd0=Math.sin(i*12.9898)*43758.5453%1,ang0=rnd0*Math.PI*2;
+    const aligned=((i*7)%n)/n<a,dir=pos?-1:1,ang=aligned?(dir<0?-Math.PI/2:Math.PI/2):ang0+Math.sin(t/700+i)*.2,L=POL.z==="fibre"?sh*.3:sh*.25;
+    const x2=x+Math.cos(ang)*L,y2=yc+Math.sin(ang)*L;g.strokeStyle=aligned?"#7FE3EC":"rgba(200,200,200,.55)";g.fillStyle=g.strokeStyle;g.lineWidth=1.4;g.beginPath();g.moveTo(x-Math.cos(ang)*L*.3,yc-Math.sin(ang)*L*.3);g.lineTo(x2,y2);g.stroke();
+    g.beginPath();g.arc(x2,y2,2,0,7);g.fill();}
+  // surface charge
+  if(POL.surf>.02){g.fillStyle="rgba("+ic+","+(.6*POL.surf)+")";for(let i=0;i<30;i++){g.fillRect(sx0+(sx1-sx0)*i/30,yS-3,3,3);}}
+  g.restore();g.fillStyle="#E9E6DD";g.fillText("sample · "+POL.z+" · "+POL.t+" µm",sx0,yS-8);
+  polRaf=requestAnimationFrame(polDraw);}
+function openPol(from){const d=document.getElementById("pollab");d.dataset.from=from||"field";d.hidden=false;requestAnimationFrame(()=>d.classList.add("on"));
+  if(!d._built){d._built=1;polBuildCtl();document.getElementById("polplay").onclick=polPlay;
+    document.getElementById("polnote").textContent="Corona triode: the needle sprays ions, the grid sets the surface potential, and the field across the sample switches β-phase dipoles once it beats the coercive field. Heat lowers the coercive field and speeds switching; cooling with the field on freezes the order. Values are illustrative, built from typical PVDF figures (coercive field ~50 MV/m, dense poled film d₃₁ ~22 pC/N), and will be replaced by your measurements.";
+    document.querySelectorAll("#polzoom button").forEach(b=>b.onclick=()=>{if(b.dataset.z==="dip"){const st=POL.a>.25?2:1,pl=document.getElementById("pollab");window.__polFrom=pl.dataset.from;pl.dataset.from="field";closeLab("pollab");setTimeout(()=>{window.__openDipoles(innerWidth/2,innerHeight/2,st);document.getElementById("micro").dataset.back="pol";},200);return;}POL.z=b.dataset.z;document.querySelectorAll("#polzoom button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));sfx.tick&&sfx.tick();});}
+  polUpd();if(!polRaf)polRaf=requestAnimationFrame(polDraw);}
+/* ===================== Sensing lab ===================== */
+const SEN={m:"31",mat:"film",F:0,Fv:0,drag:null,auto:0,Q:0,V:0,trace:[],Cf:10,L:45,w:2,t:100,elec:[]};
+function senA(){return SEN.mat==="film"?1:clamp(POL.a/BETA,0,1)*.35;}
+function senQ(F){const A=senA();return SEN.m==="31"?A*22e-12*F*(SEN.L*1e-3)/(SEN.t*1e-6):A*-30e-12*F;}
+function fmtQ(q){const a=Math.abs(q);return a>=1e-9?(q*1e9).toFixed(2)+" nC":(q*1e12).toFixed(1)+" pC";}
+function fmtV(v){const a=Math.abs(v);return a>=1?v.toFixed(2)+" V":(v*1e3).toFixed(a<.01?2:1)+" mV";}
+const SCTL=[["Cf","Feedback capacitor Cf",.1,100,.1,v=>v+" nF"],["L","Electrode length (gauge)",10,80,1,v=>v+" mm"],["t","Thickness",10,500,5,v=>v+" µm"]];
+function senBuild(){const C=document.getElementById("senctl");C.innerHTML=SCTL.map(([k,l,mi,ma,st])=>'<label class="lc"><span>'+l+'<b id="sv-'+k+'"></b></span><input type="range" data-k="'+k+'" min="'+mi+'" max="'+ma+'" step="'+st+'" value="'+SEN[k]+'"></label>').join("");
+  C.querySelectorAll("input").forEach(x=>x.oninput=()=>{SEN[x.dataset.k]=+x.value;senText();});}
+function senText(){SCTL.forEach(([k,,,,,f])=>{const e=document.getElementById("sv-"+k);if(e)e.textContent=f(SEN[k]);});
+  const d=SEN.m==="31",A=senA(),coef=d?(22*A).toFixed(1)+" pC/N":(-30*A).toFixed(1)+" pC/N",tau=1e9*SEN.Cf*1e-9;
+  document.getElementById("senmode").textContent=d?"d₃₁ mode":"d₃₃ mode";document.getElementById("senhint").textContent=d?"Drag the sample sideways to stretch along 1 · drag elsewhere to turn":"Press the sample and drag down to squeeze along 3 · drag elsewhere to turn";
+  document.getElementById("sennote").innerHTML=d?"<b>d₃₁</b>: force along 1 (the stretch or fibre axis), charge collected on the faces normal to 3 (the poling axis). Q = d₃₁ · F · L / t, so a long, thin sample gives a large charge from a small force. This is the mode of your Instron method.":
+    "<b>d₃₃</b>: force along 3, the same axis as poling, onto the same electrode faces. Q = d₃₃ · F, with no geometry gain, so the signal is much smaller. For PVDF d₃₃ is negative: squeezing gives charge of the opposite sign to stretching.";
+  document.getElementById("senread").innerHTML=[["Coefficient",(d?"d₃₁ ≈ ":"d₃₃ ≈ ")+coef],["Force",SEN.Fv.toFixed(2)+" N"],["Charge Q",fmtQ(SEN.Q)],["Amplifier out",fmtV(SEN.V)],["Time constant Rf·Cf",tau.toFixed(1)+" s (Rf 1 GΩ)"],["Material",SEN.mat==="film"?"dense poled film (typical)":"your yarn: "+(POL.a*100).toFixed(0)+"% aligned × 0.35 fill (assumed)"]]
+    .map(([k,v])=>'<div><span>'+k+'</span><b>'+v+'</b></div>').join("");}
+let senRaf=0,senLast=0,senAcc=0;
+/* woven band textures: warp and weft drawn as shaded floats with a matching bump map */
+const WEAVES={};
+function weaveTex(kind){if(WEAVES[kind])return WEAVES[kind];const N=kind==="twill"?8:8,cs=32,S=N*cs;
+  const mk=()=>{const c=document.createElement("canvas");c.width=c.height=S;return c;},cm=mk(),cb=mk(),gm=cm.getContext("2d"),gb=cb.getContext("2d");
+  gm.fillStyle="#3a2c08";gm.fillRect(0,0,S,S);gb.fillStyle="#000";gb.fillRect(0,0,S,S);
+  const up=(i,j)=>kind==="twill"?((i+j)%4)<2:(i+j)%2===0;   // true = warp over weft
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){const x=i*cs,y=j*cs,warp=up(i,j);
+    // the float on top: a rounded yarn shaded across its width
+    const gr=warp?gm.createLinearGradient(x+2,0,x+cs-2,0):gm.createLinearGradient(0,y+2,0,y+cs-2);
+    gr.addColorStop(0,warp?"#8a6814":"#7a5a10");gr.addColorStop(.45,warp?"#f6d870":"#e8c454");gr.addColorStop(1,warp?"#6e520e":"#5e450a");
+    gm.fillStyle=gr;const b=gb.createLinearGradient(warp?x+2:0,warp?0:y+2,warp?x+cs-2:0,warp?0:y+cs-2);b.addColorStop(0,"#222");b.addColorStop(.5,"#fff");b.addColorStop(1,"#222");gb.fillStyle=b;
+    if(warp){gm.fillRect(x+3,y,cs-6,cs);gb.fillRect(x+3,y,cs-6,cs);}else{gm.fillRect(x,y+3,cs,cs-6);gb.fillRect(x,y+3,cs,cs-6);}
+    // fibre striations along the float
+    gm.strokeStyle="rgba(255,240,190,.18)";gm.lineWidth=1;for(let k=0;k<5;k++){gm.beginPath();if(warp){const xx=x+6+k*(cs-12)/4;gm.moveTo(xx,y+2);gm.lineTo(xx+2,y+cs-2);}else{const yy=y+6+k*(cs-12)/4;gm.moveTo(x+2,yy);gm.lineTo(x+cs-2,yy+2);}gm.stroke();}
+    // shade where the float dives under the crossing yarn
+    gm.fillStyle="rgba(0,0,0,.35)";if(warp){gm.fillRect(x+3,y,cs-6,3);gm.fillRect(x+3,y+cs-3,cs-6,3);}else{gm.fillRect(x,y+3,3,cs-6);gm.fillRect(x+cs-3,y+3,3,cs-6);}}
+  const map=new THREE.CanvasTexture(cm),bump=new THREE.CanvasTexture(cb);[map,bump].forEach(t=>{t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(3,.9);t.anisotropy=4;});
+  return WEAVES[kind]={map,bump};}
+function setWeave(kind){if(!S3.band)return;const k=kind==="scale"?"plain":kind,T=weaveTex(k),m=S3.band.material;m.map=T.map;m.bumpMap=T.bump;m.needsUpdate=true;}
+/* ===== 3D test chamber for the sensing lab ===== */
+const S3={};
+function sen3dInit(){const cv=document.getElementById("sencv");const R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:false});R.setPixelRatio(Math.min(2,devicePixelRatio||1));R.shadowMap.enabled=true;
+  const sc=new THREE.Scene();sc.background=new THREE.Color(0x05070a);sc.fog=new THREE.Fog(0x05070a,16,55);
+  const cam=new THREE.PerspectiveCamera(32,1,.1,80);cam.position.set(6.8,4.2,10.5);
+  const oc=new THREE.OrbitControls(cam,cv);oc.target.set(0,2.2,0);oc.enableDamping=true;oc.minDistance=3.5;oc.maxDistance=40;oc.maxPolarAngle=Math.PI*.52;oc.enablePan=false;oc.autoRotate=true;oc.autoRotateSpeed=.6;
+  sc.add(new THREE.AmbientLight(0x8fa6c0,.35));
+  const sp=new THREE.SpotLight(0xf2f8ff,2.2,14,.42,.55,1.2);sp.position.set(0,6.2,0);sp.target.position.set(0,0,0);sp.castShadow=true;sp.shadow.mapSize.set(1024,1024);sc.add(sp,sp.target);
+  const rim=new THREE.PointLight(0x36d0e0,.6,8);rim.position.set(-2.5,1.4,2.2);sc.add(rim);
+  /* floor + pedestal */
+  const floor=new THREE.Mesh(new THREE.CircleGeometry(12,64),new THREE.MeshStandardMaterial({color:0x0b0e12,roughness:.85}));floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;sc.add(floor);
+  const grid=new THREE.PolarGridHelper(10,24,14,64,0x1d4a55,0x12262d);grid.position.y=.002;grid.material.transparent=true;grid.material.opacity=.45;sc.add(grid);
+  const ped=new THREE.Mesh(new THREE.CylinderGeometry(2.35,2.5,.18,64),new THREE.MeshStandardMaterial({color:0x1a1f26,metalness:.6,roughness:.35}));ped.position.y=.09;ped.receiveShadow=true;sc.add(ped);
+  /* glass test tube chamber */
+  const glass=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,4.4,64,1,true),new THREE.MeshStandardMaterial({color:0xbfefff,transparent:true,opacity:.07,roughness:.05,metalness:.2,side:THREE.DoubleSide,depthWrite:false}));glass.position.y=2.38;sc.add(glass);
+  const edge=new THREE.Mesh(new THREE.CylinderGeometry(2.205,2.205,4.4,64,1,true),new THREE.MeshBasicMaterial({color:0x36d0e0,wireframe:true,transparent:true,opacity:.05}));edge.position.y=2.38;sc.add(edge);
+  [0.2,4.58].forEach(y=>{const r=new THREE.Mesh(new THREE.TorusGeometry(2.2,.025,10,96),new THREE.MeshBasicMaterial({color:0x36d0e0}));r.rotation.x=Math.PI/2;r.position.y=y;sc.add(r);});
+  const cap=new THREE.Mesh(new THREE.CylinderGeometry(.5,.7,.35,32),new THREE.MeshStandardMaterial({color:0x1a1f26,metalness:.7,roughness:.3}));cap.position.y=4.75;sc.add(cap);
+  const lens=new THREE.Mesh(new THREE.CircleGeometry(.36,32),new THREE.MeshBasicMaterial({color:0xf2fbff}));lens.rotation.x=Math.PI/2;lens.position.y=4.57;sc.add(lens);
+  const beam=new THREE.Mesh(new THREE.CylinderGeometry(.36,1.9,4.4,48,1,true),new THREE.MeshBasicMaterial({color:0xe8f6ff,transparent:true,opacity:.055,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));beam.position.y=2.37;sc.add(beam);
+  const pool=new THREE.Mesh(new THREE.CircleGeometry(1.9,48),new THREE.MeshBasicMaterial({color:0xe8f6ff,transparent:true,opacity:.07,depthWrite:false,blending:THREE.AdditiveBlending}));pool.rotation.x=-Math.PI/2;pool.position.y=.19;sc.add(pool);
+  /* sample group */
+  const sg=new THREE.Group();sg.position.y=1.5;sc.add(sg);
+  const gold=new THREE.MeshStandardMaterial({color:0xe2b93b,roughness:.45,metalness:.25});
+  const yarn=new THREE.Group();for(let p=0;p<5;p++){const pts=[];for(let i=0;i<=120;i++){const x=-1.5+3*i/120,a=x*7+p*1.2566;pts.push(new THREE.Vector3(x,Math.sin(a)*.07,Math.cos(a)*.07));}
+    const m=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),160,.045,8,false),gold);m.castShadow=true;yarn.add(m);}
+  const tc=document.createElement("canvas");tc.width=tc.height=128;const tg=tc.getContext("2d");tg.fillStyle="#b88f22";tg.fillRect(0,0,128,128);
+  for(let i=0;i<8;i++)for(let j=0;j<8;j++){tg.fillStyle=(i+j)%2?"#f0cc55":"#c9a032";tg.fillRect(i*16+1,j*16+1,14,14);}
+  const wt=new THREE.CanvasTexture(tc);wt.wrapS=wt.wrapT=THREE.RepeatWrapping;wt.repeat.set(10,3);
+  const band=new THREE.Mesh(new THREE.BoxGeometry(3,.06,.9),new THREE.MeshStandardMaterial({map:wt,roughness:.55,bumpScale:.035}));band.castShadow=true;band.visible=false;
+  sg.add(yarn,band);
+  const silver=new THREE.MeshStandardMaterial({color:0xdfe6ea,metalness:.85,roughness:.22,emissive:0x1a2a33,transparent:true,opacity:1});
+  const eT=new THREE.Mesh(new THREE.BoxGeometry(2.4,.016,.46),silver),eB=new THREE.Mesh(new THREE.BoxGeometry(2.4,.016,.46),silver.clone());eT.position.y=.12;eB.position.y=-.12;sg.add(eT,eB);
+  const eGlow=new THREE.MeshBasicMaterial({color:0x7fe3ec});[eT,eB].forEach(e=>{const l=new THREE.Mesh(new THREE.BoxGeometry(2.41,.004,.461),eGlow);l.position.y=e===eT?.009:-.009;e.add(l);});
+  const dark=new THREE.MeshStandardMaterial({color:0x2b3138,metalness:.6,roughness:.4}),glow=new THREE.MeshBasicMaterial({color:0x36d0e0});
+  const grips=[-1,1].map(s=>{const gq=new THREE.Group(),b=new THREE.Mesh(new THREE.BoxGeometry(.32,.5,.6),dark),l=new THREE.Mesh(new THREE.BoxGeometry(.33,.02,.61),glow);l.position.y=.22;gq.add(b,l);gq.position.x=s*1.62;sg.add(gq);return gq;});
+  const anvil=new THREE.Group();anvil.add(new THREE.Mesh(new THREE.BoxGeometry(2.6,.18,1),new THREE.MeshStandardMaterial({color:0x2b3138,metalness:.6,roughness:.4})));const al=new THREE.Mesh(new THREE.BoxGeometry(2.61,.02,1.01),new THREE.MeshBasicMaterial({color:0x36d0e0}));al.position.y=.09;anvil.add(al);anvil.position.y=-.22;sg.add(anvil);
+  const platen=new THREE.Group();platen.add(new THREE.Mesh(new THREE.BoxGeometry(1.6,.16,1),dark));const pl=new THREE.Mesh(new THREE.BoxGeometry(1.61,.02,1.01),glow);pl.position.y=-.07;platen.add(pl);
+  const rod=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,2.4,16),dark);rod.position.y=1.28;platen.add(rod);platen.position.y=.9;sg.add(platen);
+  /* axis triad */
+  const ax=new THREE.Group();const arr=(d,c)=>new THREE.ArrowHelper(d,new THREE.Vector3(0,0,0),.5,c,.12,.07);ax.add(arr(new THREE.Vector3(0,1,0),0x7fe3ec),arr(new THREE.Vector3(1,0,0),0xe9e6dd));ax.position.set(-1.9,-.35,.5);sg.add(ax);
+  /* charge sprites */
+  const mk=(txt,col)=>{const c=document.createElement("canvas");c.width=c.height=64;const x=c.getContext("2d");x.fillStyle=col;x.font="bold 54px Times New Roman";x.textAlign="center";x.textBaseline="middle";x.fillText(txt,32,34);return new THREE.CanvasTexture(c);};
+  const texP=mk("+","#ff7a64"),texN=mk("−","#78b4ff"),charges=[];
+  for(let i=0;i<10;i++)[1,-1].forEach(s=>{const sp2=new THREE.Sprite(new THREE.SpriteMaterial({map:texP,transparent:true,depthWrite:false}));sp2.scale.set(.18,.18,1);sp2.position.set(-1.1+2.2*i/9,s*.3,0);sp2.userData.s=s;sg.add(sp2);charges.push(sp2);});
+  /* amplifier outside the tube and the wire to it */
+  const amp=new THREE.Mesh(new THREE.ConeGeometry(.28,.5,3),new THREE.MeshStandardMaterial({color:0x36d0e0,emissive:0x0e4a52,transparent:true,opacity:.85}));amp.rotation.z=-Math.PI/2;amp.position.set(3.4,1.5,0);sc.add(amp);
+  const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(1,1.39,0),new THREE.Vector3(1.2,.9,.2),new THREE.Vector3(2.2,.6,.3),new THREE.Vector3(3.1,1.1,0),new THREE.Vector3(3.2,1.5,0)]);
+  sc.add(new THREE.Mesh(new THREE.TubeGeometry(curve,64,.012,6,false),new THREE.MeshBasicMaterial({color:0x36d0e0,transparent:true,opacity:.7})));
+  const curve2=new THREE.CatmullRomCurve3([new THREE.Vector3(1.15,1.63,0),new THREE.Vector3(1.4,2.1,.1),new THREE.Vector3(2.4,2.3,.2),new THREE.Vector3(3.15,1.9,0),new THREE.Vector3(3.2,1.55,0)]);
+  sc.add(new THREE.Mesh(new THREE.TubeGeometry(curve2,64,.012,6,false),new THREE.MeshBasicMaterial({color:0xff9a86,transparent:true,opacity:.6})));
+  const eTex=(()=>{const c=document.createElement("canvas");c.width=c.height=32;const x=c.getContext("2d");const g2=x.createRadialGradient(16,16,0,16,16,16);g2.addColorStop(0,"rgba(200,235,255,1)");g2.addColorStop(1,"rgba(120,180,255,0)");x.fillStyle=g2;x.fillRect(0,0,32,32);return new THREE.CanvasTexture(c);})();
+  const elec=[];for(let i=0;i<40;i++){const e=new THREE.Sprite(new THREE.SpriteMaterial({map:eTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));e.scale.set(.12,.12,1);e.visible=false;sc.add(e);elec.push({e,s:0,on:false,dir:1});}
+  const dust=new THREE.Points(new THREE.BufferGeometry().setAttribute("position",new THREE.Float32BufferAttribute(Array.from({length:240},(_,i)=>i%3===1?.3+Math.random()*4:(Math.random()-.5)*2.4),3)),
+    new THREE.PointsMaterial({color:0xe8f6ff,size:.025,transparent:true,opacity:.5,depthWrite:false}));sc.add(dust);
+  Object.assign(S3,{R,sc,cam,oc,sg,yarn,band,eT,eB,anvil,grips,platen,charges,texP,texN,elec,curve,dust,ray:new THREE.Raycaster(),v2:new THREE.Vector2()});
+  cv.addEventListener("pointerdown",e=>{const b=cv.getBoundingClientRect();S3.v2.set((e.clientX-b.left)/b.width*2-1,-(e.clientY-b.top)/b.height*2+1);S3.ray.setFromCamera(S3.v2,cam);
+    if(S3.ray.intersectObject(sg,true).length){SEN.drag={x:e.clientX,y:e.clientY};SEN.auto=0;oc.enabled=false;oc.autoRotate=false;try{cv.setPointerCapture(e.pointerId);}catch(_){}e.stopImmediatePropagation();}},{capture:true});
+  cv.addEventListener("pointermove",e=>{if(!SEN.drag)return;const W=cv.clientWidth,H=cv.clientHeight;SEN.F=SEN.m==="31"?clamp(Math.abs(e.clientX-SEN.drag.x)/(W*.3)*5,0,5):clamp((e.clientY-SEN.drag.y)/(H*.25)*12,0,12);});
+  const up=()=>{if(SEN.drag){SEN.drag=null;SEN.F=0;oc.enabled=true;}};cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);}
+function senDraw(t){if(!S3.R)sen3dInit();const cv=document.getElementById("sencv"),W=cv.clientWidth,H=cv.clientHeight,dt=Math.min(.05,(t-(senLast||t))/1000);senLast=t;const ts=t/1000;
+  const sz=S3.R.getSize(new THREE.Vector2()),dock=(document.querySelector("#senlab .labside")||{}).offsetHeight||0;
+  if(sz.x!==W||sz.y!==H||S3.dock!==dock){S3.dock=dock;S3.R.setSize(W,H,false);S3.cam.aspect=W/H;S3.cam.setViewOffset(W,H,0,dock*.5-30,W,H);
+    if(!S3.fit){S3.fit=1;const k=clamp(1.05/(W/H),1,2.1);S3.cam.position.sub(S3.oc.target).multiplyScalar(k).add(S3.oc.target);}S3.cam.updateProjectionMatrix();}
+  let Ft=SEN.drag?SEN.F:0;if(SEN.auto){const ph=ts%1.6;Ft=ph<.5?Math.sin(ph/.5*Math.PI)*(SEN.m==="31"?2:6):0;}
+  const Fprev=SEN.Fv;SEN.Fv+=(Ft-SEN.Fv)*Math.min(1,dt*(SEN.drag?20:9));const Qn=senQ(SEN.Fv),dQ=Qn-SEN.Q;SEN.Q=Qn;
+  if(sfx.fabric&&dt>0){const rate=Math.abs(SEN.Fv-Fprev)/dt/(SEN.m==="31"?6:14);sfx.fabric(rate,SEN.m==="31"?"stretch":"press",SEN.form==="band");}
+  SEN.V+=dQ/(SEN.Cf*1e-9)-SEN.V*dt/SEN.Cf;senAcc+=dt;if(senAcc>.016){senAcc=0;SEN.trace.push(SEN.V);if(SEN.trace.length>400)SEN.trace.shift();senText();}
+  const d31=SEN.m==="31",F=SEN.Fv,yarnOn=SEN.form!=="band";S3.yarn.visible=yarnOn;S3.band.visible=!yarnOn;S3.eT.material.opacity=yarnOn?1:.22;
+  /* deformation: stretch along 1 thins 2 and 3 (Poisson ~0.35); press along 3 squashes and spreads */
+  const ex=d31?F*.035:F*.008,ey=d31?-F*.012:-F*.03;const sx=1+ex,syy=1+ey,sz2=1+(d31?-F*.012:F*.012);
+  [S3.yarn,S3.band].forEach(o=>o.scale.set(sx,syy,sz2));S3.eT.scale.set(sx,1,sz2);S3.eB.scale.set(sx,1,sz2);S3.eT.position.y=.12*syy;S3.eB.position.y=-.12*syy;S3.anvil.visible=!d31;S3.anvil.position.y=-.12*syy-.1;S3.eB.material.opacity=yarnOn?1:.22;
+  S3.grips.forEach((g,i)=>{g.visible=d31;g.position.x=(i?1:-1)*1.62*sx;});S3.platen.visible=!d31;S3.platen.position.y=.12*syy+.088+(d31?0:Math.max(0,.45-F*.6));
+  S3.sg.position.y=1.5+Math.sin(ts*1.1)*.03;
+  const qa=clamp(Math.abs(SEN.Q)/Math.max(1e-15,Math.abs(senQ(d31?3:8))),0,1),qs=Math.sign(SEN.Q)||1;
+  S3.charges.forEach((c,i)=>{const top=c.userData.s>0;c.material.map=(top?qs>0:qs<0)?S3.texP:S3.texN;c.material.opacity=qa;c.position.x=(-1.1+2.2*(Math.floor(i/2))/9)*sx;c.position.y=c.userData.s*(.3*syy+.02*Math.sin(ts*3+i));});
+  if(Math.abs(dQ)>1e-13){const n=Math.min(3,Math.ceil(Math.abs(dQ)/Math.max(1e-12,Math.abs(senQ(1))*.03)));for(let k=0;k<n;k++){const e=S3.elec.find(x=>!x.on);if(e){e.on=true;e.s=0;e.dir=Math.sign(dQ);}}}
+  S3.elec.forEach(e=>{if(!e.on){e.e.visible=false;return;}e.s+=dt*.9;if(e.s>=1){e.on=false;e.e.visible=false;return;}e.e.visible=true;e.e.position.copy(S3.curve.getPoint(e.dir>0?e.s:1-e.s));});
+  const dp=S3.dust.geometry.attributes.position.array;for(let i=1;i<dp.length;i+=3){dp[i]-=dt*.08;if(dp[i]<.3)dp[i]=4.3;}S3.dust.geometry.attributes.position.needsUpdate=true;
+  S3.oc.update();S3.R.render(S3.sc,S3.cam);
+  /* scope */
+  const sc2=document.getElementById("senscope"),g=sc2.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1),w=sc2.clientWidth,h=sc2.clientHeight;if(sc2.width!==Math.round(w*dpr)){sc2.width=Math.round(w*dpr);sc2.height=Math.round(h*dpr);}
+  g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,w,h);g.fillStyle="rgba(6,16,26,.25)";g.fillRect(0,0,w,h);g.strokeStyle="rgba(54,208,224,.12)";g.lineWidth=1;
+  for(let i=1;i<10;i++){g.beginPath();g.moveTo(w*i/10,0);g.lineTo(w*i/10,h);g.stroke();}for(let i=1;i<4;i++){g.beginPath();g.moveTo(0,h*i/4);g.lineTo(w,h*i/4);g.stroke();}
+  for(let y=0;y<h;y+=3){g.fillStyle="rgba(0,0,0,.06)";g.fillRect(0,y,w,1);}
+  const mx=Math.max(1e-4,...SEN.trace.map(Math.abs));g.strokeStyle="#A6F4FF";g.lineWidth=1.8;g.shadowColor="#36D0E0";g.shadowBlur=8;g.beginPath();SEN.trace.forEach((v,i)=>{const x=w*i/400,y=h/2-v/mx*h*.42;if(i)g.lineTo(x,y);else g.moveTo(x,y);});g.stroke();g.shadowBlur=0;
+  g.fillStyle="#CFF7FF";g.font="10px 'Times New Roman',serif";g.fillText("V out · full scale ±"+fmtV(mx),8,14);
+  senRaf=requestAnimationFrame(senDraw);}
+function openSen(from){const d=document.getElementById("senlab");d.dataset.from=from||"field";d.hidden=false;requestAnimationFrame(()=>d.classList.add("on"));
+  if(!d._built){d._built=1;senBuild();const cv=document.getElementById("sencv");
+    document.querySelectorAll("#senform button").forEach(b=>b.onclick=()=>{SEN.form=b.dataset.f;document.querySelectorAll("#senform button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));document.getElementById("senweave").hidden=SEN.form!=="band";if(SEN.form==="band")setWeave(SEN.weave||"plain");sfx.tick&&sfx.tick();});
+    document.querySelectorAll("#senweave button").forEach(b=>b.onclick=()=>{SEN.weave=b.dataset.w;document.querySelectorAll("#senweave button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));setWeave(SEN.weave);sfx.tick&&sfx.tick();
+      document.getElementById("sennote2").textContent=SEN.weave==="scale"?"Fish-scale weave: category reserved. Send the structure (repeat, float lengths, lift plan) and it will be drawn here. Showing plain for now.":SEN.weave==="twill"?"Twill 2/2: each warp floats over two wefts and steps one along each pick, giving the diagonal rib.":"Plain weave: warp and weft alternate over and under every crossing, the tightest interlacing.";});
+    document.querySelectorAll("#sentabs button").forEach(b=>b.onclick=()=>{SEN.m=b.dataset.m;document.querySelectorAll("#sentabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));SEN.trace=[];SEN.V=0;sfx.zap&&sfx.zap();senText();});
+    document.querySelectorAll("#senmat button").forEach(b=>b.onclick=()=>{SEN.mat=b.dataset.k;document.querySelectorAll("#senmat button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));senText();});
+    document.getElementById("sentap").onclick=()=>{SEN.auto=SEN.auto?0:1;document.getElementById("sentap").textContent=SEN.auto?"Stop pulses":"Auto pulse";};
+    document.getElementById("senclear").onclick=()=>{SEN.trace=[];SEN.V=0;};}
+  senText();if(!senRaf)senRaf=requestAnimationFrame(senDraw);}
+function closeLab(id){const d=document.getElementById(id);if(id==="senlab"&&sfx.fabric)sfx.fabric(0,"stretch");d.classList.remove("on");setTimeout(()=>{d.hidden=true;if(id==="pollab"){cancelAnimationFrame(polRaf);polRaf=0;}else{cancelAnimationFrame(senRaf);senRaf=0;}},350);
+  if(d.dataset.from==="cover"&&coverUI)coverUI.open();}
+document.querySelectorAll(".lab [data-close]").forEach(b=>b.onclick=()=>closeLab(b.closest(".lab").id));
+addEventListener("keydown",e=>{if(e.key!=="Escape")return;["pollab","senlab"].forEach(id=>{if(!document.getElementById(id).hidden)closeLab(id);});});
+document.getElementById("polopen").onclick=()=>openPol("field");document.getElementById("senopen").onclick=()=>openSen("field");
+window.openPol=openPol;window.openSen=openSen;
+
 addEventListener("keydown",e=>{if(!ov.hidden&&e.key==="Escape")close();});
 addEventListener("resize",()=>{if(!ov.hidden)size();});
 function retarget(){const keep={dv:S.dv,shake:S.shake};build();S.dv=keep.dv;S.shake=keep.shake;S.dvT=M.disp;}
@@ -2567,7 +3034,7 @@ canvas.addEventListener("pointerup",e=>{if(!td)return;const d=Math.hypot(e.clien
   const s0=performance.now(),base=obj.scale.x;(function boing(t){const u=(t-s0)/700;const sc=u>=1?1:1+.32*Math.exp(-4.2*u)*Math.sin(u*Math.PI*4.5);obj.scale.setScalar(base*sc);if(u<1)requestAnimationFrame(boing);else obj.scale.setScalar(base);})(s0);
   const pos=obj.position.clone(),dir=camera.position.clone().sub(pos).normalize();
   setTimeout(()=>{tween={p0:camera.position.clone(),t0:controls.target.clone(),p1:pos.clone().add(dir.multiplyScalar(obj===coreSphere?1.6:2.2)),t1:pos,s:0,d:.75};},260);
-  setTimeout(()=>openAt(k,e.clientX,e.clientY),900);});
+  setTimeout(()=>{sfx.wind&&sfx.wind(1);},300);setTimeout(()=>openAt(k,e.clientX,e.clientY),900);});
 })();
 controls.addEventListener("start",()=>{tween=null;clearTimeout(introT);});
 /* entering the field: start with a bird's-eye view straight down through the ceiling, then descend to the overview */
