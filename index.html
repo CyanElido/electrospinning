@@ -13,20 +13,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Electrospinning">
-<style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}button,input{font-family:inherit}
-/* phone: swipe the grip to push the bars off screen */
-.grip{display:none}
-@media (max-width:1023px){
-  .vp{transition:height .35s cubic-bezier(.3,.7,.2,1)}
-  .topbar,.stations{transition:transform .35s cubic-bezier(.3,.7,.2,1),opacity .35s}
-  .stations{bottom:26px}
-  .grip{display:flex;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:120px;height:24px;align-items:center;justify-content:center;z-index:4;touch-action:none;cursor:grab;appearance:none;border:0;background:none;padding:0}
-  .grip i{display:block;width:42px;height:5px;border-radius:3px;background:var(--muted);opacity:.75}
-  .app.present .grip{bottom:calc(4px + env(safe-area-inset-bottom,0px));height:30px}
-  .app.present .topbar{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 4px));opacity:0}
-  .app.present .stations{transform:translate(-50%,calc(100% + 40px));opacity:0;pointer-events:none}
-}
-</style>
+<style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}button,input{font-family:inherit}</style>
 </head>
 <body>
 <style>
@@ -199,6 +186,29 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
 @media (max-width:460px){.tele div:nth-child(2){display:none}}
 @media (max-width:560px){.titlebox{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* phone: swipe the grip to push the bars off screen */
+.grip{display:none}
+@media (max-width:1023px){
+  .vp{transition:height .35s cubic-bezier(.3,.7,.2,1)}
+  .topbar,.stations{transition:transform .35s cubic-bezier(.3,.7,.2,1),opacity .35s}
+  .stations{bottom:30px}
+  .grip{display:flex;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:200px;height:28px;align-items:center;justify-content:center;z-index:4;touch-action:none;cursor:grab;appearance:none;border:0;background:none;padding:0}
+  .grip i{display:block;width:42px;height:5px;border-radius:3px;background:var(--muted);opacity:.75}
+  .app.present .grip{bottom:calc(4px + env(safe-area-inset-bottom,0px));height:44px}
+  .app.present .topbar{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 4px));opacity:0}
+  .app.present .stations{transform:translate(-50%,calc(100% + 40px));opacity:0;pointer-events:none}
+}
+
+.edge{display:none}
+@media (max-width:1023px){
+  .panels{transition:transform .22s ease-out}
+  .panels.swipeout{transform:translateX(-105%)!important;transition:transform .23s cubic-bezier(.5,0,.9,.6)}
+  .panels.swipein{animation:pin .38s cubic-bezier(.2,.7,.2,1)}
+  @keyframes pin{from{transform:translateX(-60%);opacity:0}to{transform:none;opacity:1}}
+  .app.present .edge{display:flex;position:fixed;left:0;top:0;bottom:0;width:30px;padding-left:env(safe-area-inset-left,0px);align-items:center;z-index:6;touch-action:none;appearance:none;border:0;background:none;cursor:pointer}
+  .edge i{display:block;width:5px;height:46px;border-radius:3px;margin-left:5px;background:var(--muted);opacity:.7}
+}
 </style>
 
 <div class="app">
@@ -233,6 +243,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
       <span class="pullhint" id="pullhint">Pull a tip down<br>to switch</span>
     </div>
     <div class="stations" id="stations" role="group" aria-label="Fly to station"></div>
+    <button type="button" class="edge" id="edge" aria-label="Swipe right to bring the panels back"><i></i></button>
     <button type="button" class="grip" id="grip" aria-label="Swipe down to hide the bars, swipe up to bring them back"><i></i></button>
     <div class="hint">Drag to orbit · drag a needle sideways to tilt it · swipe a needle gauge for kV · look up and pull a stalactite down to switch mode · drag across the yarn to tease it</div>
   </div>
@@ -1511,6 +1522,20 @@ const end=()=>{if(y0!==null&&!moved)setPresent(!isOn());y0=null;};
 g.addEventListener("pointerup",end);g.addEventListener("pointercancel",()=>{y0=null;});
 let t=0;const rs=()=>{resize();if(++t<24)requestAnimationFrame(rs);};
 new MutationObserver(()=>{t=0;rs();}).observe(document.querySelector(".app"),{attributes:true,attributeFilter:["class"]});})();
+(function(){const pn=document.querySelector(".panels"),app=document.querySelector(".app");if(!pn)return;let s=null;
+const on=()=>app.classList.contains("present");
+pn.addEventListener("touchstart",e=>{s=(innerWidth<1024&&e.touches.length===1&&!e.target.closest("input,select,textarea"))?{x:e.touches[0].clientX,y:e.touches[0].clientY}:null;},{passive:true});
+pn.addEventListener("touchmove",e=>{if(!s)return;const dx=e.touches[0].clientX-s.x,dy=e.touches[0].clientY-s.y;
+  if(Math.abs(dy)>14&&Math.abs(dy)>Math.abs(dx)){s=null;return;}
+  if(dx<0)pn.style.transform="translateX("+Math.max(dx,-innerWidth)*.6+"px)";
+  if(dx<-80&&Math.abs(dx)>1.6*Math.abs(dy)&&!on()){s=null;pn.classList.add("swipeout");pn.style.transform="";setTimeout(()=>{setPresent(true);pn.classList.remove("swipeout");},230);}},{passive:true});
+const rel=()=>{s=null;if(!pn.classList.contains("swipeout"))pn.style.transform="";};
+pn.addEventListener("touchend",rel,{passive:true});pn.addEventListener("touchcancel",rel,{passive:true});
+const ed=document.getElementById("edge");let ex=null;
+ed.addEventListener("pointerdown",e=>{ex=e.clientX;try{ed.setPointerCapture(e.pointerId);}catch(_){}e.stopPropagation();});
+ed.addEventListener("pointermove",e=>{if(ex===null)return;if(e.clientX-ex>40&&on()){ex=null;setPresent(false);pn.classList.add("swipein");setTimeout(()=>pn.classList.remove("swipein"),400);}});
+ed.addEventListener("pointerup",e=>{if(ex!==null&&Math.abs(e.clientX-ex)<8&&on()){setPresent(false);pn.classList.add("swipein");setTimeout(()=>pn.classList.remove("swipein"),400);}ex=null;});
+ed.addEventListener("pointercancel",()=>{ex=null;});})();
 addEventListener("keydown",e=>{if((e.key==="p"||e.key==="P")&&!e.target.closest("input,button,select"))setPresent(!document.querySelector(".app").classList.contains("present"));});
 let tween=null,curStation="overview";
 function fly(k){

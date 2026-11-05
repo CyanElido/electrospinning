@@ -1,5 +1,5 @@
 // Offline cache for the ES simulator. Bump VERSION after changing any file so devices pick up the update.
-const VERSION="es-v20";
+const VERSION="es-v23";
 const FILES=["./","index.html","manifest.webmanifest","three.min.js","OrbitControls.js","icon-192.png","icon-512.png","apple-touch-icon.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
