@@ -520,9 +520,108 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
 .dcard .cin{text-shadow:0 1px 3px rgba(0,0,0,.65)}
 
 .dcard .art canvas,.art canvas{filter:none}
+
+/* ===== safety training ===== */
+.dexopen .lens.hv{display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--f-mono);color:#2a0d08;background:radial-gradient(circle at 35% 30%,#ffd4cc,#E5533F 50%,#7a1d12 100%);box-shadow:0 0 0 3px var(--panel),0 0 0 4px var(--line),0 0 14px rgba(229,83,63,.5)}
+.train{position:fixed;inset:0;z-index:76;display:flex;align-items:center;justify-content:center;padding:calc(12px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));background:rgba(14,15,17,.35);opacity:0;transition:opacity .35s}
+.train.on{opacity:1}
+.trdev{position:relative;width:min(900px,100%);height:min(860px,100%);display:flex;flex-direction:column;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(170deg,rgba(44,47,52,.78),rgba(20,22,25,.84));-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.trtabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,.08)}
+.trtabs button{appearance:none;border:0;background:none;color:var(--muted);padding:11px 14px;font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent}
+.trtabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.trbody{flex:1;min-height:0;overflow-y:auto;padding:16px 18px 24px;display:block}
+.trnote{margin:0 0 12px;padding:10px 12px;border-left:2px solid #E0A63A;background:rgba(224,166,58,.08);font:400 12.5px/1.45 "Times New Roman",serif;color:var(--ink)}
+.trnote.small{font-size:11.5px;border-left-color:var(--line);background:none;color:var(--muted)}
+.hzgrid{display:grid;gap:8px}
+@media (min-width:760px){.hzgrid{grid-template-columns:1fr 1fr}}
+.hz{border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.18);border-left:3px solid var(--ok)}
+.hz[data-l="bad"]{border-left-color:var(--bad)}.hz[data-l="warn"]{border-left-color:var(--warn)}
+.hz summary{list-style:none;display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer}
+.hz summary::-webkit-details-marker{display:none}
+.hz .hk{flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--f-mono);background:rgba(255,255,255,.07);color:var(--ink)}
+.hz[data-l="bad"] .hk{background:rgba(229,83,63,.22);color:#ffb3a8}.hz[data-l="warn"] .hk{background:rgba(224,166,58,.2);color:#f3cf8c}
+.hz summary b{font:600 14px/1.2 "Times New Roman",serif}.hz summary i{margin-left:auto;font-style:normal;color:var(--muted);transition:transform .25s}
+.hz[open] summary i{transform:rotate(90deg)}
+.hz p{margin:0 12px 8px;font:400 13px/1.45 "Times New Roman",serif;color:var(--ink)}
+.hz ul{margin:0 12px 12px;padding-left:18px;display:grid;gap:4px;font:400 12.5px/1.4 "Times New Roman",serif;color:var(--muted)}
+.cklist{display:grid;gap:6px}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:9px 10px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);cursor:pointer;font:400 13px/1.35 "Times New Roman",serif}
+.ck input{flex:none;width:18px;height:18px;margin:0;accent-color:var(--accent)}
+.ck:has(input:checked){border-color:rgba(47,196,212,.35);background:rgba(47,196,212,.07)}
+.hvlock{margin:14px 0 10px;display:flex;gap:12px;align-items:center;padding:12px 14px;border:1px solid rgba(229,83,63,.5);background:rgba(229,83,63,.1);font:400 12px/1.3 var(--f-mono);color:var(--muted)}
+.hvlock .lk{font:700 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#ff9e90}
+.hvlock[data-on="true"]{border-color:rgba(76,179,122,.6);background:rgba(76,179,122,.12)}.hvlock[data-on="true"] .lk{color:#8fe0b1}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.steps li{display:flex;gap:12px;padding:10px 12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16)}
+.steps .sn{flex:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(47,196,212,.15);color:var(--accent);font:600 11px/1 var(--f-mono)}
+.steps b{font:600 14px/1.2 "Times New Roman",serif}.steps p{margin:4px 0;font:400 13px/1.4 "Times New Roman",serif}.steps em{font:italic 400 12px/1.3 "Times New Roman",serif;color:var(--muted)}
+.quiz{display:grid;gap:12px}
+.qz{padding:12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16)}
+.qq{margin:0 0 10px;display:flex;gap:10px;font:500 14px/1.4 "Times New Roman",serif}
+.qq span{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);font:600 10px/1 var(--f-mono)}
+.qo{display:grid;gap:6px}
+.qb{appearance:none;text-align:left;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--ink);padding:9px 11px;font:400 13px/1.35 "Times New Roman",serif;cursor:pointer}
+.qb[data-ok]{border-color:rgba(76,179,122,.7);background:rgba(76,179,122,.16)}
+.qb[data-bad]{border-color:rgba(229,83,63,.6);background:rgba(229,83,63,.12);text-decoration:line-through;color:var(--muted)}
+.qw{margin:8px 0 0;font:italic 400 12.5px/1.4 "Times New Roman",serif;color:var(--muted);min-height:1em}
+.rec{display:grid;gap:6px;margin-bottom:12px}
+.rr{display:flex;justify-content:space-between;padding:10px 12px;border:1px solid rgba(255,255,255,.08);background:rgba(0,0,0,.16);font:400 13px/1 var(--f-mono)}
+.rr b{font-variant-numeric:tabular-nums}
+.nm{display:grid;gap:6px;font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.nm input{appearance:none;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.25);color:var(--ink);padding:10px 12px;font:400 15px/1 "Times New Roman",serif;text-transform:none;letter-spacing:0}
+.recbtns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.trbtn{appearance:none;border:0;background:rgba(47,196,212,.85);color:var(--on-accent);padding:11px 16px;font:600 12px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.trbtn[disabled]{opacity:.35;cursor:not-allowed}
+.trbtn.ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid rgba(255,255,255,.14);margin-top:12px}
+.recbtns .trbtn.ghost{margin-top:0}
+.recs{display:grid;gap:6px;margin-top:8px}.recs div{display:grid;gap:3px;padding:8px 10px;border-left:2px solid var(--ok);background:rgba(76,179,122,.07)}
+.recs b{font:600 13px/1 "Times New Roman",serif}.recs span{font:400 11px/1.2 var(--f-mono);color:var(--muted)}
+.trflash{position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0;--c:229,83,63;box-shadow:inset 0 0 0 3px rgba(var(--c),.8),inset 0 0 80px rgba(var(--c),.45)}
+.trflash[data-st="ok"]{--c:76,179,122}
+.trflash.on{animation:trfl .9s ease}
+.trflash[data-st="bad"].on{animation:trfl .45s ease 2}
+@keyframes trfl{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.trflash.on{animation-duration:.01s}}
+
+/* depth layer behind the bubbles */
+.cvbg{position:absolute;inset:-12%;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(rgba(150,215,225,.16) 1px,transparent 1.4px);background-size:34px 34px;
+  -webkit-mask:radial-gradient(ellipse at 50% 55%,#000 30%,transparent 72%);mask:radial-gradient(ellipse at 50% 55%,#000 30%,transparent 72%)}
+.cover{cursor:grab}.cover:active{cursor:grabbing}
+
+.cvbg{display:none}
+.bub .bsh{position:absolute;left:8%;right:8%;top:62%;height:40%;z-index:-1;pointer-events:none;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.55),rgba(0,0,0,.22) 45%,transparent 70%);filter:blur(6px);transform-origin:50% 50%}
+
+/* field home bubble: same iridescent film and type as the cover */
+.homeb{background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.8) 0 3.5%,transparent 10%),radial-gradient(circle,rgba(40,42,46,.18) 58%,rgba(255,255,255,.04) 70%,transparent 74%);
+  box-shadow:0 0 12px rgba(47,196,212,.14),0 8px 14px -6px rgba(0,0,0,.45)}
+.homeb::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from var(--h,200deg),#2FC4D4,#9682FF,#E59AA8,#E8C13C,#78E6C8,#2FC4D4);
+  -webkit-mask:radial-gradient(circle,transparent 0 66%,#000 70%,#000 73%,transparent 76%);mask:radial-gradient(circle,transparent 0 66%,#000 70%,#000 73%,transparent 76%);
+  opacity:.8;animation:hue 9s linear infinite}
+.homeb span{position:relative;display:inline-block;padding:.08em .04em .16em;line-height:1.1;transform:scale(1.1,.92);
+  background:linear-gradient(100deg,#7ED6DF 0%,#A99BF0 22%,#E3A9B6 42%,#E6CC7A 62%,#93E2CC 80%,#7ED6DF 100%);background-size:240% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:iridMove 9s linear infinite}
+.homeb sup{color:inherit}
+@media (prefers-reduced-motion:reduce){.homeb::before,.homeb span{animation:none}}
+
+.homeb.svgd{background:none;box-shadow:0 10px 14px -8px rgba(0,0,0,.5)}
+.homeb.svgd::before{display:none}
+.homeb .bsvg{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;overflow:visible;pointer-events:none;filter:drop-shadow(0 0 8px rgba(47,196,212,.16))}
+.homeb span{z-index:1}
 </style>
 
 <div class="app">
+  <div class="train" id="train" hidden role="dialog" aria-modal="true" aria-label="Safety training">
+    <div class="trdev">
+      <div class="dextop"><span class="dextitle">Safety training</span><span class="dexcount" id="trprog"></span><button type="button" class="dexx" id="trclose" aria-label="Close the training">✕</button></div>
+      <nav class="trtabs" id="trtabs" role="tablist"></nav>
+      <div class="trbody" id="trbody"></div>
+      <div class="trflash" id="trflash" aria-hidden="true"></div>
+    </div>
+  </div>
   <div class="dex" id="dex" hidden role="dialog" aria-modal="true" aria-label="Sample library">
     <div class="dexdev">
       <div class="dextop"><span class="lensb" aria-hidden="true"></span><span class="led r"></span><span class="led y"></span><span class="led g"></span>
@@ -581,6 +680,10 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
       <div class="card">
         <div class="cardh"><h2>Sample library</h2><span class="lbl">Cyan's yarns</span></div>
         <button type="button" class="dexopen" id="dexopen"><span class="lens"></span><span class="tx"><b>Open the sample library</b><span>9 yarns · flip page by page</span></span><span class="ar">›</span></button>
+      </div>
+      <div class="card">
+        <div class="cardh"><h2>Safety training</h2><span class="lbl">before you spin</span></div>
+        <button type="button" class="dexopen trainopen" id="trainopen"><span class="lens hv">HV</span><span class="tx"><b>Open safety training</b><span>hazards · checklist · procedure · scenarios</span></span><span class="ar">›</span></button>
       </div>
       <div class="card">
         <div class="cardh"><h2>Scenarios</h2><span class="lbl">try a fault</span></div>
@@ -1122,6 +1225,92 @@ function loadSample(S){Object.assign(P,S.set);wound=0;woundM=0;syncInputs();reco
   document.getElementById("dexclose").onclick=()=>closeDex(dexFrom==="cover");
   document.getElementById("dexload").onclick=()=>{sfx.pop&&sfx.pop();loadSample(DEX[dexI]);closeDex(false);if(coverUI)coverUI.close();};
   document.getElementById("dexopen").onclick=()=>openDex("field");
+/* ===== Safety training: hazards, pre-spin checklist, procedure, scenarios, record ===== */
+const TR={
+ note:"This training supplements, and never replaces, your institution's safety induction, risk assessment (COSHH or equivalent), the safety data sheets, and your supervisor's sign-off on this rig.",
+ hazards:[
+  {k:"HV",t:"High voltage",lvl:"bad",risk:"The needles sit at several kilovolts (up to ±20 kV on this rig). Contact or arcing can shock you, and the needle, syringe and collector can keep a charge after the supply is switched off.",
+   ctl:["Never reach into the spinning zone while HV is on.","Turn HV to zero, switch it off, then touch the needle and collector with the grounding rod before you adjust anything.","Keep one hand away from the rig when you work near it.","Keep the bench dry; remove metal jewellery and watches.","Keep others outside the HV zone or behind the enclosure."]},
+  {k:"Fl",t:"Flammable solvent",lvl:"bad",risk:"Acetone is highly flammable and its vapour ignites easily. A spark or corona discharge at the needle can light acetone vapour.",
+   ctl:["Spin with extraction or in a fume hood so vapour does not build up.","Keep only the volume you need on the bench; cap bottles straight away.","Keep heat sources and other ignition sources away.","Know where the fire extinguisher and the emergency stop are.","If you smell strong solvent or see sparking, switch HV off first."]},
+  {k:"Sk",t:"DMSO and skin",lvl:"warn",risk:"DMSO passes through skin easily and can carry whatever is dissolved in it into your body.",
+   ctl:["Use gloves rated for DMSO on the safety data sheet; some common glove types only give short protection.","If a glove is splashed, take it off at once, wash your hands and put on a new pair.","Wear a lab coat and safety glasses."]},
+  {k:"Np",t:"Nanopowders and CNT",lvl:"bad",risk:"Fine oxide powders (Bi₂O₃, CeO₂, Er₂O₃) and especially carbon nanotubes are an inhalation hazard.",
+   ctl:["Weigh powders in a fume hood or a ventilated balance enclosure.","Never blow or dry-sweep powder; wipe with a damp cloth.","Use respiratory protection if your risk assessment asks for it.","Bag and label nanomaterial waste separately."]},
+  {k:"Us",t:"Probe ultrasonicator",lvl:"warn",risk:"The probe is loud, the tip vibrates hard, and the solution heats up, which drives off acetone.",
+   ctl:["Wear ear protection or close the sound enclosure.","Keep the probe tip immersed; never run it dry or touch it while running.","Use short cycles and a cold bath; keep the vial loosely covered."]},
+  {k:"Sh",t:"Needles and pressure",lvl:"warn",risk:"Needles are sharps. A clogged needle under the syringe pump can build pressure until a fitting or tube lets go and sprays solution.",
+   ctl:["Use blunt-tip needles and put used ones in the sharps bin.","If flow stops, stop the pump first, then HV off and discharge, then clear it.","Wear safety glasses whenever the pump is running."]},
+  {k:"Mv",t:"Moving parts",lvl:"warn",risk:"The funnel spins at 200 to 600 rpm and the winder keeps turning. Hair, sleeves and gloves can be caught.",
+   ctl:["Tie back long hair and roll up loose sleeves.","Stop the motors before you touch the yarn or the bobbin."]},
+  {k:"Wa",t:"Waste and clean-up",lvl:"ok",risk:"Solvent and nanomaterial waste must not go down the sink or into general waste.",
+   ctl:["Use the labelled solvent waste container.","Collect fibre and powder waste as nanomaterial waste.","Wipe the bench down after every session."]}],
+ check:["I have read and signed the risk assessment for this rig","My supervisor has inducted me on this rig","Extraction or the fume hood is on","I know where the fire extinguisher and emergency stop are","The grounding rod is within reach","The HV supply is at zero and switched off","The bench is dry and solvent bottles are capped","The needle, syringe and tubing are secured","The funnel and winder are clear; hair tied, no loose sleeves","Lab coat, safety glasses and the right gloves are on","Nobody else is inside the HV zone"],
+ steps:[
+  ["Weigh","Weigh PVDF and any oxide or CNT powder inside the fume hood or a ventilated enclosure.","Fine powders are an inhalation hazard."],
+  ["Mix the solvent","Prepare DMSO and acetone (4 mL : 12 mL) in the hood and cap the vial.","Acetone vapour is flammable; DMSO goes through skin."],
+  ["Sonicate","Probe-sonicate for 5 to 10 minutes with ear protection, in short cycles with cooling.","Noise, a hot probe, and acetone loss as the solution warms."],
+  ["Load the syringe","Draw up the solution, push out air bubbles, and fit a blunt needle.","Bubbles make the jet stutter; sharps."],
+  ["Mount and set","Secure the syringe in the pump, set the tip-to-funnel distance and the needle tilt. HV stays off.","Every adjustment happens with HV off."],
+  ["Start the motors","Start the funnel and the winding bobbin and check nothing can catch.","Moving parts."],
+  ["Start the pump","Start the flow and wait for a droplet at the tip.","A dry tip will not form a cone."],
+  ["Step back","Close the enclosure and make sure nobody is in the HV zone.","Stray contact with the rig."],
+  ["Ramp HV","Raise the voltage gradually and watch the Taylor cone form.","A sudden jump can cause sparking or a multi-jet."],
+  ["Observe","Watch from outside the zone. To change anything: HV to zero, off, discharge, then adjust.","Stored charge stays on the needle."],
+  ["Shut down","HV to zero and off, discharge, stop the pump, stop the motors, then take the yarn off.","Discharge before you touch anything."],
+  ["Clean up","Solvent and nanomaterial waste in the right containers; wipe the bench; record the run.","Clean bench, clean data."]],
+ quiz:[
+  {q:"The jet starts dripping and you want to adjust the needle angle. What do you do first?",o:[["Reach in quickly with insulated tweezers while it is still running",0,"Never reach into the spinning zone while HV is on, with any tool."],["Turn HV to zero, switch off, discharge with the grounding rod, then adjust",1,"Correct. Off, discharge, then adjust."],["Raise the voltage first, then adjust while it spins",0,"More voltage may fix dripping, but you still never adjust the needle with HV on."]]},
+  {q:"You smell strong acetone and see a small spark at the needle.",o:[["Keep spinning and lower the flow rate",0,"Sparking near acetone vapour is a fire risk. Stop first."],["Switch HV off, keep extraction running, and find out why vapour built up",1,"Correct. Remove the ignition source and keep the vapour moving away."],["Open the enclosure to let the smell out while HV stays on",0,"Opening the enclosure with HV on puts you next to the needle."]]},
+  {q:"Some DMSO solution splashes onto your glove.",o:[["Wipe it with a tissue and carry on",0,"DMSO can carry dissolved material through the glove and your skin."],["Take the glove off at once, wash your hands, put on a new pair",1,"Correct."],["Carry on and change gloves at the end of the session",0,"Change them straight away."]]},
+  {q:"You need to weigh CNT powder.",o:[["On the open bench, quickly",0,"CNT is an inhalation hazard."],["In the fume hood or a ventilated enclosure, then wipe with a damp cloth",1,"Correct."],["On the open bench, then blow the balance clean",0,"Blowing powder spreads it into the air you breathe."]]},
+  {q:"The flow has stopped, the pump keeps pushing, and the tubing is bulging.",o:[["Pull the needle off to free the clog",0,"The line is under pressure and the needle may still be charged."],["Stop the pump, HV off and discharge, then release pressure with glasses on",1,"Correct. Pressure first, charge second, then clear."],["Turn up the flow rate to push the clog through",0,"That raises the pressure and the chance of a burst fitting."]]},
+  {q:"The yarn snags on the winding bobbin while it is running.",o:[["Free it by hand while it turns",0,"Moving parts can catch fingers and gloves."],["Stop the motors (and HV) before you touch it",1,"Correct."],["Speed up the winder to pull it free",0,"That can snap the yarn and pull your hand in."]]},
+  {q:"You are about to probe-sonicate the solution.",o:[["No ear protection; it is only ten minutes",0,"Probe sonicators are loud enough to need hearing protection."],["Ear protection, probe tip immersed, short cycles with cooling",1,"Correct."],["Run it continuously so it finishes faster",0,"Continuous running heats the solution and drives off acetone."]]},
+  {q:"A colleague walks up to look closely at the Taylor cone while HV is on.",o:[["Let them lean in, it is fascinating",0,"Nobody belongs inside the HV zone while it is live."],["Ask them to stay outside the HV zone or watch through the enclosure",1,"Correct."],["Hand them the grounding rod and let them lean in",0,"The rod is for discharging after switch-off, not a shield."]]},
+  {q:"You want to leave the rig running over lunch.",o:[["Fine, if the enclosure is closed",0,"Never leave HV and flammable solvent running unattended."],["Shut down and discharge before you leave",1,"Correct."],["Fine, if a friend checks in now and then",0,"The person running the rig stays with it."]]}]};
+let trFrom="field",trTab="hazards",trQ={},trBuilt=false;
+const trLS=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}};
+function trChecked(){return trLS("es-train-check")||[];}
+function trScore(){let a=0,c=0;TR.quiz.forEach((_,i)=>{if(trQ[i]){a++;if(trQ[i].first)c++;}});return {a,c};}
+function trProg(){const ck=trChecked().length,s=trScore();document.getElementById("trprog").textContent="checklist "+ck+"/"+TR.check.length+" · scenarios "+s.c+"/"+TR.quiz.length;}
+function trFlash(ok){const f=document.getElementById("trflash");f.dataset.st=ok?"ok":"bad";f.classList.remove("on");void f.offsetWidth;f.classList.add("on");sfx.alert&&sfx.alert(ok?"ok":"bad");}
+function trRender(){const B=document.getElementById("trbody");let h="";
+  document.querySelectorAll("#trtabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.t===trTab)));
+  if(trTab==="hazards"){h='<p class="trnote">'+TR.note+'</p><div class="hzgrid">'+TR.hazards.map(z=>'<details class="hz" data-l="'+z.lvl+'"><summary><span class="hk">'+z.k+'</span><b>'+z.t+'</b><i>›</i></summary><p>'+z.risk+'</p><ul>'+z.ctl.map(c=>'<li>'+c+'</li>').join("")+'</ul></details>').join("")+'</div>';}
+  else if(trTab==="check"){const ck=trChecked(),all=ck.length===TR.check.length;
+    h='<p class="trnote">Tick every line before HV goes on. The lock opens only when all are ticked.</p><div class="cklist">'+TR.check.map((c,i)=>'<label class="ck"><input type="checkbox" data-i="'+i+'"'+(ck.includes(i)?" checked":"")+'><span>'+c+'</span></label>').join("")+'</div>'+
+      '<div class="hvlock" data-on="'+all+'"><span class="lk">'+(all?"HV unlocked":"HV locked")+'</span><span>'+(all?"All checks done. Ramp the voltage gradually.":(TR.check.length-ck.length)+" checks left")+'</span></div><button type="button" class="trbtn ghost" id="ckreset">Reset checklist</button>';}
+  else if(trTab==="steps"){h='<ol class="steps">'+TR.steps.map((s,i)=>'<li><span class="sn">'+(i+1)+'</span><div><b>'+s[0]+'</b><p>'+s[1]+'</p><em>Why: '+s[2]+'</em></div></li>').join("")+'</ol>';}
+  else if(trTab==="quiz"){h='<div class="quiz">'+TR.quiz.map((Q,i)=>{const st=trQ[i];return '<div class="qz" data-i="'+i+'"><p class="qq"><span>'+(i+1)+'</span>'+Q.q+'</p><div class="qo">'+Q.o.map((o,j)=>'<button type="button" class="qb" data-j="'+j+'"'+(st&&st.done&&o[1]?' data-ok="1"':'')+(st&&st.picked&&st.picked.includes(j)&&!o[1]?' data-bad="1"':'')+'>'+o[0]+'</button>').join("")+'</div><p class="qw">'+(st&&st.msg?st.msg:"")+'</p></div>';}).join("")+'</div><button type="button" class="trbtn ghost" id="qreset">Retake scenarios</button>';}
+  else if(trTab==="record"){const ck=trChecked().length,s=trScore(),recs=trLS("es-train-recs")||[],done=ck===TR.check.length&&s.a===TR.quiz.length;
+    h='<p class="trnote">'+TR.note+'</p><div class="rec"><div class="rr"><span>Checklist</span><b>'+ck+' / '+TR.check.length+'</b></div><div class="rr"><span>Scenarios right first time</span><b>'+s.c+' / '+TR.quiz.length+'</b></div><div class="rr"><span>Scenarios answered</span><b>'+s.a+' / '+TR.quiz.length+'</b></div></div>'+
+      '<label class="nm">Name<input id="trname" type="text" autocomplete="name" placeholder="Your name"></label><div class="recbtns"><button type="button" class="trbtn" id="trsave"'+(done?"":" disabled")+'>Save record</button><button type="button" class="trbtn ghost" id="trcopy">Copy summary</button></div>'+
+      '<p class="trnote small">'+(done?"Saved records stay on this device. Copy the summary to send it to your supervisor.":"Finish the checklist and every scenario to save a record.")+'</p>'+
+      (recs.length?'<div class="recs">'+recs.slice().reverse().map(r=>'<div><b>'+r.name+'</b><span>'+r.date+' · checklist '+r.ck+' · scenarios '+r.sc+'</span></div>').join("")+'</div>':"");}
+  B.innerHTML=h;B.scrollTop=0;trProg();
+  B.querySelectorAll(".ck input").forEach(x=>x.onchange=()=>{let ck=trChecked();const i=+x.dataset.i;ck=x.checked?[...new Set([...ck,i])]:ck.filter(v=>v!==i);trLS("es-train-check",ck);sfx.tick&&sfx.tick();
+    const before=document.querySelector(".hvlock").dataset.on==="true";trRender();if(!before&&ck.length===TR.check.length)trFlash(true);});
+  const cr=document.getElementById("ckreset");if(cr)cr.onclick=()=>{trLS("es-train-check",[]);trRender();};
+  B.querySelectorAll(".qz").forEach(z=>{const i=+z.dataset.i;z.querySelectorAll(".qb").forEach(b=>b.onclick=()=>{const st=trQ[i]||(trQ[i]={picked:[],first:null,done:false});if(st.done)return;
+    const j=+b.dataset.j,o=TR.quiz[i].o[j];st.picked.push(j);if(st.first===null)st.first=!!o[1];st.msg=o[2];if(o[1])st.done=true;trFlash(!!o[1]);
+    const sc=B.scrollTop;trRender();B.scrollTop=sc;});});
+  const qr=document.getElementById("qreset");if(qr)qr.onclick=()=>{trQ={};trRender();};
+  const sv=document.getElementById("trsave"),nm=document.getElementById("trname");
+  if(nm){try{nm.value=localStorage.getItem("es-train-name")||"";}catch(e){}nm.oninput=()=>{try{localStorage.setItem("es-train-name",nm.value);}catch(e){}};}
+  const summary=()=>{const s=trScore();return "Electrospinning safety training (E⁴Spinning)\nName: "+((nm&&nm.value)||"–")+"\nDate: "+new Date().toLocaleString()+"\nPre-spin checklist: "+trChecked().length+"/"+TR.check.length+"\nScenarios right first time: "+s.c+"/"+TR.quiz.length+"\n"+TR.note;};
+  if(sv)sv.onclick=()=>{const s=trScore(),recs=trLS("es-train-recs")||[];recs.push({name:(nm&&nm.value)||"Unnamed",date:new Date().toLocaleDateString(),ck:trChecked().length+"/"+TR.check.length,sc:s.c+"/"+TR.quiz.length});trLS("es-train-recs",recs);trFlash(true);trRender();};
+  const cp=document.getElementById("trcopy");if(cp)cp.onclick=()=>{const t=summary();const done=()=>{cp.textContent="Copied";setTimeout(()=>cp.textContent="Copy summary",1500);};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,()=>{prompt&&0;});else done();};}
+function openTrain(from,tab){trFrom=from||"field";if(!trBuilt){trBuilt=true;const T=document.getElementById("trtabs");
+    [["hazards","Hazards"],["check","Checklist"],["steps","Procedure"],["quiz","Scenarios"],["record","Record"]].forEach(([k,l])=>{const b=document.createElement("button");b.type="button";b.role="tab";b.dataset.t=k;b.textContent=l;b.onclick=()=>{trTab=k;sfx.zap&&sfx.zap();trRender();};T.appendChild(b);});
+    document.getElementById("trclose").onclick=()=>closeTrain(trFrom==="cover");}
+  if(tab)trTab=tab;const d=document.getElementById("train");d.hidden=false;requestAnimationFrame(()=>d.classList.add("on"));trRender();}
+function closeTrain(toCover){const d=document.getElementById("train");d.classList.remove("on");setTimeout(()=>{d.hidden=true;},350);if(toCover&&coverUI)coverUI.open();}
+document.getElementById("trainopen").onclick=()=>openTrain("field");
+addEventListener("keydown",e=>{const d=document.getElementById("train");if(!d.hidden&&e.key==="Escape")closeTrain(trFrom==="cover");});
+window.openTrain=openTrain;
+
 
   addEventListener("keydown",e=>{if(d.hidden)return;if(e.key==="ArrowRight")dexGo(dexI+1);else if(e.key==="ArrowLeft")dexGo(dexI-1);else if(e.key==="Escape")closeDex(dexFrom==="cover");});})();
 const presetsEl=document.getElementById("presets");
@@ -2067,12 +2256,14 @@ let tween=null,curStation="overview";
 (function(){
   const cv=document.getElementById("cover"),big=document.getElementById("bigbub");if(!cv)return;
   const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let B=[],raf=0,bigS={x:0,y:0,t:0};
+  let B=[],raf=0,bigS={x:0,y:0,t:0};const cam={x:0,y:0},camT={x:0,y:0};let drag=null;
   const W=()=>cv.clientWidth,H=()=>cv.clientHeight;
   function bigSize(){return Math.min(W()*.78,H()*.5,420);}
   function placeBig(t){const d=bigSize();big.style.width=big.style.height=d+"px";
-    const x=(W()-d)/2+Math.sin(t/1700)*8,y=(H()-d)/2-H()*.03+Math.sin(t/1300)*12;
-    const tr="translate("+x+"px,"+y+"px)";big.style.setProperty("--t",tr);bigE*=.96;blob(big,t,3.7,.045+Math.min(.07,bigE));const sq=1+Math.sin(t/430)*.018+Math.sin(t/170)*bigE*.25;
+    const x=(W()-d)/2+Math.sin(t/1700)*8+cam.x*.9,y=(H()-d)/2-H()*.03+Math.sin(t/1300)*12+cam.y*.9;
+    const tr="translate("+x+"px,"+y+"px)";big.style.setProperty("--t",tr);if(!big._sh){big._sh=document.createElement("i");big._sh.className="bsh";big.insertBefore(big._sh,big.firstChild);}
+    big._sh.style.transform="translate("+(6-cam.x*.2)+"px,"+(34-cam.y*.2)+"px) scale(1.06,.36)";big._sh.style.opacity=".6";
+    bigE*=.96;blob(big,t,3.7,.045+Math.min(.07,bigE));const sq=1+Math.sin(t/430)*.018+Math.sin(t/170)*bigE*.25;
     if(!big.classList.contains("pop"))big.style.transform=tr+" rotate("+Math.sin(t/2100)*3+"deg) scale("+sq+","+(2-sq)+")";}
   let bigE=0;big.addEventListener("pointerenter",()=>{bigE+=.06;});big.addEventListener("pointerdown",()=>{bigE+=.12;});
   /* irregular soap-film outline: eight radii that breathe at different rates */
@@ -2100,19 +2291,20 @@ let tween=null,curStation="overview";
   const MENU=[
     {k:"field",label:"Enter the field",sub:"3D simulator",cls:"act",r:.19},
     {k:"lib",label:"Sample library",sub:"Cyan's yarns",cls:"act",r:.17},
-    {k:"soon",label:"Corona poling",sub:"to be continued…",cls:"soon pol",r:.13},
-    {k:"soon",label:"to be continued…",cls:"soon",r:.105}];
+    {k:"soon",label:"Corona poling",sub:"coming soon",cls:"soon pol",r:.12},
+    {k:"soon",label:"to be continued…",cls:"soon",r:.1},
+    {k:"safety",label:"Safety training",sub:"before you spin",cls:"act",r:.135}];
   function spawn(){
     const s=Math.min(W(),H()*.75),cx=W()/2,cy=H()/2;B=[];
     MENU.forEach((m,i)=>{const r=Math.max(44,s*m.r);const a=-Math.PI/2+i*(Math.PI*2/MENU.length)+.4;
       const el=document.createElement("button");el.type="button";el.className="bub "+m.cls;el.style.width=el.style.height=(2*r)+"px";
       el.innerHTML='<span class="in"><b>'+m.label+'</b>'+(m.sub?'<span>'+m.sub+'</span>':'')+'</span>'+(m.k==="soon"?'<span class="tip">coming soon</span>':'');
       el.addEventListener("click",e=>{e.stopPropagation();choose(m.k,el);});cv.appendChild(el);
-      B.push({el,r,x:cx,y:cy,vx:Math.cos(a)*(5+i),vy:Math.sin(a)*(5+i),k:m.k,p:Math.random()*9,e:.25});});
+      B.push({el,r,x:cx,y:cy,vx:Math.cos(a)*(5+i),vy:Math.sin(a)*(5+i),k:m.k,p:Math.random()*9,e:.25,z:.7+(i%3)*.18});});
     for(let i=0;i<9;i++){const a=Math.random()*Math.PI*2,sp=3+Math.random()*6;addDec(cx,cy,6+Math.random()*20,Math.cos(a)*sp,Math.sin(a)*sp);}}
   /* small empty bubbles: tap empty space to blow some, tap one to pop it and ripple the floor */
   function addDec(x,y,r,vx,vy){if(B.filter(b=>b.dec).length>46)return;const el=document.createElement("div");el.className="bub dec";el.style.width=el.style.height=(2*r)+"px";cv.appendChild(el);
-    const b={el,r,x,y,vx,vy,dec:true,p:Math.random()*9,e:.3};B.push(b);
+    const b={el,r,x,y,vx,vy,dec:true,p:Math.random()*9,e:.3,z:.25+Math.random()*1.4};B.push(b);el.style.opacity=String(.55+.45*Math.min(1,b.z));
     el.addEventListener("pointerdown",e=>{e.stopPropagation();popDec(b);});}
   function popDec(b){const i=B.indexOf(b);if(i<0)return;B.splice(i,1);b.el.remove();sfx.unlock();sfx.bub&&sfx.bub();
     sparksAt(b.x,b.y,b.r*1.8,8);ripple(b.x,b.y,.6+b.r/30);}
@@ -2131,10 +2323,17 @@ let tween=null,curStation="overview";
         rx.strokeStyle=g1;rx.lineWidth=lw;rx.beginPath();rx.arc(r.x,r.y,rr,0,Math.PI*2);rx.stroke();
         const g2=rx.createLinearGradient(r.x-rr,r.y-rr,r.x+rr,r.y+rr);g2.addColorStop(0,"rgba(0,0,0,"+a*1.2+")");g2.addColorStop(.5,"rgba(20,25,30,"+a*.3+")");g2.addColorStop(1,"rgba(205,242,248,"+a*.8+")");
         rx.strokeStyle=g2;rx.lineWidth=lw*.9;rx.beginPath();rx.arc(r.x,r.y,rr+lw*1.1,0,Math.PI*2);rx.stroke();}}}
-  cv.addEventListener("pointerdown",e=>{if(e.target!==cv&&e.target!==rc&&!e.target.classList.contains("sub"))return;sfx.unlock();
+  /* press and drag the empty space: the whole bubble space shifts a little in depth; a plain tap still blows bubbles */
+  const bgl=document.createElement("div");bgl.className="cvbg";cv.insertBefore(bgl,cv.firstChild);
+  cv.addEventListener("pointerdown",e=>{if(e.target!==cv&&e.target!==rc&&e.target!==bgl&&!e.target.classList.contains("sub"))return;sfx.unlock();
+    drag={x:e.clientX,y:e.clientY,moved:false,id:e.pointerId};try{cv.setPointerCapture(e.pointerId);}catch(_){}});
+  cv.addEventListener("pointermove",e=>{if(!drag||e.pointerId!==drag.id)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.hypot(dx,dy)>8)drag.moved=true;
+    if(drag.moved){const k=v=>170*Math.tanh(v/240);camT.x=k(dx);camT.y=k(dy);}});
+  const dragEnd=e=>{if(!drag)return;const d=drag;drag=null;camT.x=0;camT.y=0;if(d.moved||e.type==="pointercancel")return;
     const r0=cv.getBoundingClientRect(),x=e.clientX-r0.left,y=e.clientY-r0.top,n=2+(Math.random()*3|0);
     for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=1+Math.random()*3;addDec(x+Math.cos(a)*6,y+Math.sin(a)*6,6+Math.random()*16,Math.cos(a)*sp,Math.sin(a)*sp-1);}
-    sfx.bub&&sfx.bub();});
+    sfx.bub&&sfx.bub();};
+  cv.addEventListener("pointerup",dragEnd);cv.addEventListener("pointercancel",dragEnd);
   function sparks(cx,cy,R){for(let i=0;i<18;i++){const s=document.createElement("i");s.className="spark";cv.appendChild(s);
     const a=i/18*Math.PI*2+Math.random()*.3,d=R*(.9+Math.random()*.5);s.style.left=cx+"px";s.style.top=cy+"px";
     s.animate([{transform:"translate(-50%,-50%) translate(0,0) scale(1)",opacity:1},{transform:"translate(-50%,-50%) translate("+Math.cos(a)*d+"px,"+Math.sin(a)*d+"px) scale(.2)",opacity:0}],{duration:520+Math.random()*260,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>s.remove();}}
@@ -2143,6 +2342,8 @@ let tween=null,curStation="overview";
     big.classList.add("pop");setTimeout(()=>{big.hidden=true;},230);cv.classList.add("burst");spawn();}
   big.addEventListener("click",burst);
   function step(t){
+    cam.x+=(camT.x-cam.x)*(drag?.18:.06);cam.y+=(camT.y-cam.y)*(drag?.18:.06);
+    rc.style.transform="translate("+(cam.x*.25)+"px,"+(cam.y*.25)+"px)";
     drawRip(t);if(!big.hidden)placeBig(t);
     const w=W(),h=H();
     for(const b of B){
@@ -2158,17 +2359,25 @@ let tween=null,curStation="overview";
         a.vx-=dx/dd*.05;a.vy-=dy/dd*.05;c.vx+=dx/dd*.05;c.vy+=dy/dd*.05;a.e=(a.e||0)+.012;c.e=(c.e||0)+.012;}}
     for(const b of B){b.e=(b.e||0)*.965;const A=(b.dec?.03:.04)+Math.min(.05,b.e);blob(b.el,t,b.p||b.r,A);
       const sp=Math.min(1,Math.hypot(b.vx,b.vy)/6),st=1+sp*.09+Math.sin(t/(170+b.r)+(b.p||0))*A*.35,an=Math.atan2(b.vy,b.vx);
-      b.el.style.transform="translate("+(b.x-b.r)+"px,"+(b.y-b.r)+"px) rotate("+an+"rad) scale("+st+","+(1/st)+") rotate("+(-an)+"rad)";}
+      const z=b.z||1;if(!b.sh){b.sh=document.createElement("i");b.sh.className="bsh";b.el.insertBefore(b.sh,b.el.firstChild);}
+      b.sh.style.transform="translate("+(5*z-cam.x*.22*z)+"px,"+(16+14*z-cam.y*.22*z)+"px) scale("+(1+.08*z)+","+(.32+.05*z)+")";b.sh.style.opacity=String(Math.min(.75,.3+.32*z));
+      b.el.style.transform="translate("+(b.x-b.r+cam.x*z)+"px,"+(b.y-b.r+cam.y*z)+"px) rotate("+an+"rad) scale("+st+","+(1/st)+") rotate("+(-an)+"rad)";}
     raf=requestAnimationFrame(step);}
   function choose(k,el){
     if(k==="soon"){sfx.bub&&sfx.bub();const bb=B.find(x=>x.el===el);if(bb)bb.e+=.18;el.classList.remove("wob");void el.offsetWidth;el.classList.add("wob");const tp=el.querySelector(".tip");tp.classList.add("on");setTimeout(()=>tp.classList.remove("on"),1300);return;}
     sfx.pop();const r=el.getBoundingClientRect(),cr=cv.getBoundingClientRect();sparks(r.left-cr.left+r.width/2,r.top-cr.top+r.height/2,r.width*.6);
     el.style.setProperty("--t",el.style.transform);el.classList.add("pop");
-    setTimeout(()=>{if(k==="lib"){openDex("cover",0);setTimeout(close,120);}else{close();introFly();}},200);}
+    setTimeout(()=>{if(k==="safety"){openTrain("cover","hazards");setTimeout(close,120);}else if(k==="lib"){openDex("cover",0);setTimeout(close,120);}else{close();introFly();}},200);}
   function close(){cv.classList.add("gone");setTimeout(()=>{cancelAnimationFrame(raf);raf=0;},750);}
   function open(){B.forEach(b=>b.el.remove());B=[];RP=[];rc._dirty=true;cv.querySelectorAll(".spark").forEach(s=>s.remove());
     big.hidden=false;big.classList.remove("pop");cv.classList.remove("burst","gone");if(!raf)raf=requestAnimationFrame(step);}
-  coverUI={open,close};document.getElementById("homeb").addEventListener("click",open);
+  coverUI={open,close};
+  /* the E⁴ bubble in the field: same soap film, wobbles, pops back to the cover */
+  const hb=document.getElementById("homeb");let hbE=.3,hbBusy=false;
+  hb.addEventListener("pointerenter",()=>{hbE+=.05;});hb.addEventListener("pointerdown",()=>{hbE+=.12;});
+  hb.addEventListener("click",()=>{if(hbBusy)return;hbBusy=true;sfx.unlock();sfx.pop();
+    hb.animate([{transform:"scale(1)",opacity:1},{transform:"scale(1.18)",opacity:1,offset:.45},{transform:"scale(1.45)",opacity:0}],{duration:240,easing:"ease-out"}).onfinish=()=>{hbBusy=false;open();};});
+  (function hl(t){if(cv.classList.contains("gone")&&!document.hidden){hbE*=.96;blob(hb,t,5.1,.05+Math.min(.08,hbE));}requestAnimationFrame(hl);})(performance.now());
   document.querySelector(".brand").addEventListener("click",open);
   addEventListener("keydown",e=>{if(cv.classList.contains("gone"))return;if(e.key==="Escape")close();else if((e.key==="Enter"||e.key===" ")&&!cv.classList.contains("burst")){e.preventDefault();burst();}});
   addEventListener("resize",()=>{for(const b of B){b.x=Math.min(b.x,W()-b.r);b.y=Math.min(b.y,H()-b.r);}});
