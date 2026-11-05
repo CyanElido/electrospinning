@@ -1689,7 +1689,7 @@ function recompute(changed){
   M=model(P);
   READS.forEach(([k,,f])=>readVals[k].textContent=f(M));
   const cs=[["cone",CONE[M.cone]],["morph",MORPH[M.morph]],["yarn",YARN[M.yarn]]];
-  cs.forEach(([k,[t,st]])=>{const e=document.getElementById("chip-"+k);e.dataset.st=st;e.querySelector(".v").textContent=t;});
+  cs.forEach(([k,[t,st]])=>{const e=document.getElementById("chip-"+k);e.dataset.st=st;e.querySelector(".v").textContent=(k==="yarn"&&M.coax&&M.yarn==="good")?"Good CX ✓":t;});
   const worst=cs.some(c=>c[1][1]==="bad")?"bad":cs.some(c=>c[1][1]==="warn")?"warn":"ok";
   document.getElementById("t-stat").dataset.st=worst;const sb=document.getElementById("stat-b");if(sb)sb.dataset.st=worst;const dg=document.getElementById("danger");if(dg)dg.dataset.st=HVT.trip?"bad":worst;if(fieldEls.cnt)fieldEls.cnt.f.style.display=M.coax?"":"none";
   document.getElementById("t-stat-t").textContent={ok:"Stable",warn:"Check",bad:"Fault"}[worst];
@@ -2078,7 +2078,7 @@ const SPL=[];for(let i=0;i<NSTR;i++){const a=Math.random()*Math.PI*2;SPL.push({y
 const yp={on:false,x:0,str:0,held:false};
 /* ---- CX success signs: whiskers flaring before the twist point, hairy yarn ---- */
 const NWH=150,NHR=320,WH=[],HR=[];
-for(let i=0;i<NWH;i++)WH.push({s:.72+Math.random()*.26,a:i/NWH*Math.PI*2+Math.random()*.05,l:.05+Math.random()*.14,c:(Math.random()-.5)*.6,p:Math.random()*6});
+for(let i=0;i<NWH;i++)WH.push({s:.72+Math.random()*.26,a:i/NWH*Math.PI*2+Math.random()*.05,l:.1+Math.random()*.24,c:(Math.random()-.5)*.2,p:Math.random()*6});
 for(let i=0;i<NHR;i++)HR.push({s:.02+Math.random()*.97,a:Math.random()*Math.PI*2,l:.012+Math.random()*.045,k:(Math.random()-.3)*.8,c:(Math.random()-.5)*.9,p:Math.random()*6});
 function segLines(n,op){const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute(new Float32Array(n*6),3));
   const l=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0xD8D46A,transparent:true,opacity:op,depthWrite:false}));l.frustumCulled=false;l.visible=false;scene.add(l);return l;}
@@ -2465,9 +2465,11 @@ function animate(dt){
   /* CX running well: whiskers flare evenly before the twist point and turn with it; the yarn is a little hairy */
   const cxOn=yarnOn&&M.coax&&M.yarn==="good";cxW.visible=cxH.visible=cxOn;
   if(cxOn){if(fieldActive())showTip("cx");const wc=new THREE.Color(M.O.col).lerp(new THREE.Color(0xffffff),.3);cxW.material.color.copy(wc);cxH.material.color.copy(wc);
+    /* whiskers stand normal to the fibre-cone surface, like fish bones */
+    const cax=FUN.apex-FUN.x1,cln=Math.hypot(cax,FUN.r1),cnx=FUN.r1/cln*Math.sign(cax||1),cnr=Math.abs(cax)/cln;
     const a=cxW.geometry.attributes.position.array;let q=0;
     for(let i=0;i<NWH;i++){const W0=WH[i],s=W0.s,r=FUN.r1*(1-s),ang=W0.a+rot,x=FUN.x1+(FUN.apex-FUN.x1)*s,L=W0.l*(1+.25*Math.sin(t*7+W0.p)),ang2=ang+W0.c;
-      a[q++]=x;a[q++]=AX.y+Math.sin(ang)*r;a[q++]=Math.cos(ang)*r;a[q++]=x-L*.35;a[q++]=AX.y+Math.sin(ang2)*(r+L);a[q++]=Math.cos(ang2)*(r+L);}
+      a[q++]=x;a[q++]=AX.y+Math.sin(ang)*r;a[q++]=Math.cos(ang)*r;a[q++]=x+L*cnx;a[q++]=AX.y+Math.sin(ang2)*(r+L*cnr);a[q++]=Math.cos(ang2)*(r+L*cnr);}
     cxW.geometry.attributes.position.needsUpdate=true;
     const h=cxH.geometry.attributes.position.array;q=0;
     for(let i=0;i<NHR;i++){const H0=HR[i],x=YX0+(YX1-YX0)*H0.s;
