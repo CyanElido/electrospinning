@@ -13,7 +13,20 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Electrospinning">
-<style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}button,input{font-family:inherit}</style>
+<style>html,body{margin:0}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}button,input{font-family:inherit}
+/* phone: swipe the grip to push the bars off screen */
+.grip{display:none}
+@media (max-width:1023px){
+  .vp{transition:height .35s cubic-bezier(.3,.7,.2,1)}
+  .topbar,.stations{transition:transform .35s cubic-bezier(.3,.7,.2,1),opacity .35s}
+  .stations{bottom:26px}
+  .grip{display:flex;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:120px;height:24px;align-items:center;justify-content:center;z-index:4;touch-action:none;cursor:grab;appearance:none;border:0;background:none;padding:0}
+  .grip i{display:block;width:42px;height:5px;border-radius:3px;background:var(--muted);opacity:.75}
+  .app.present .grip{bottom:calc(4px + env(safe-area-inset-bottom,0px));height:30px}
+  .app.present .topbar{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 4px));opacity:0}
+  .app.present .stations{transform:translate(-50%,calc(100% + 40px));opacity:0;pointer-events:none}
+}
+</style>
 </head>
 <body>
 <style>
@@ -183,7 +196,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
   .tagx span{display:none}
 }
 @media (min-width:720px) and (max-width:1023px){.panels{grid-template-columns:1fr 1fr;align-items:start}}
-@media (max-width:420px){.tele div:nth-child(2){display:none}}
+@media (max-width:460px){.tele div:nth-child(2){display:none}}
 @media (max-width:560px){.titlebox{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -220,6 +233,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
       <span class="pullhint" id="pullhint">Pull a tip down<br>to switch</span>
     </div>
     <div class="stations" id="stations" role="group" aria-label="Fly to station"></div>
+    <button type="button" class="grip" id="grip" aria-label="Swipe down to hide the bars, swipe up to bring them back"><i></i></button>
     <div class="hint">Drag to orbit · drag a needle sideways to tilt it · swipe a needle gauge for kV · look up and pull a stalactite down to switch mode · drag across the yarn to tease it</div>
   </div>
 
@@ -1488,6 +1502,15 @@ sndBtn.onclick=()=>{sfx.toggle();paintSound();};paintSound();
 const presBtn=document.getElementById("present");
 function setPresent(on){document.querySelector(".app").classList.toggle("present",on);presBtn.setAttribute("aria-pressed",String(on));document.getElementById("present-t").textContent=on?"Panels":"Present";resize();fly(curStation);}
 presBtn.onclick=()=>setPresent(!document.querySelector(".app").classList.contains("present"));
+(function(){const g=document.getElementById("grip");if(!g)return;let y0=null,moved=false;
+const isOn=()=>document.querySelector(".app").classList.contains("present");
+g.addEventListener("pointerdown",e=>{y0=e.clientY;moved=false;try{g.setPointerCapture(e.pointerId);}catch(_){}e.stopPropagation();});
+g.addEventListener("pointermove",e=>{if(y0===null)return;const dy=e.clientY-y0;if(Math.abs(dy)>8)moved=true;
+  if(dy>34&&!isOn()){setPresent(true);y0=null;}else if(dy<-34&&isOn()){setPresent(false);y0=null;}});
+const end=()=>{if(y0!==null&&!moved)setPresent(!isOn());y0=null;};
+g.addEventListener("pointerup",end);g.addEventListener("pointercancel",()=>{y0=null;});
+let t=0;const rs=()=>{resize();if(++t<24)requestAnimationFrame(rs);};
+new MutationObserver(()=>{t=0;rs();}).observe(document.querySelector(".app"),{attributes:true,attributeFilter:["class"]});})();
 addEventListener("keydown",e=>{if((e.key==="p"||e.key==="P")&&!e.target.closest("input,button,select"))setPresent(!document.querySelector(".app").classList.contains("present"));});
 let tween=null,curStation="overview";
 function fly(k){
