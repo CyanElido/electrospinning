@@ -1065,6 +1065,23 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
 .dsteps button.fbub svg{z-index:-1}
 .dsteps:has(.fbub){justify-content:space-around;bottom:22px}
 .dsteps button.fbub{width:min(31%,160px)}
+
+/* tips and fault cards: a big irregular floating bubble (red for warnings and faults) holding small bubble buttons */
+.bigbub{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;overflow:visible!important;isolation:isolate;animation:bigF 6.5s ease-in-out infinite}
+.bigbub>svg.bbg{position:absolute;left:-30px;top:-30px;width:calc(100% + 60px);height:calc(100% + 60px);overflow:visible;pointer-events:none;z-index:-1}
+@keyframes bigF{0%,100%{translate:0 0}35%{translate:2px -5px}70%{translate:-2px 3px}}
+.tipc.bigbub{padding:18px 16px 18px 24px;top:calc(26px + env(safe-area-inset-top,0px))}
+.hvc.bigbub{padding:26px 26px 22px;position:relative}
+.tipc.bigbub[data-tone="red"] .tipk{color:#FF8A76;text-shadow:0 0 10px rgba(255,90,70,.8)}
+.tipc.bigbub[data-tone="red"] .tipt{color:#FFE6E0;text-shadow:0 0 10px rgba(255,90,70,.3)}
+#tipv.fbub,#hvreset.fbub{justify-self:start}
+@media (prefers-reduced-motion:reduce){.bigbub{animation:none}}
+
+/* sonication / temperature readout: dark glass whose tint follows the solution temperature */
+.mtimer{border:1px solid rgba(255,255,255,.09)!important;border-radius:14px;background-color:rgba(214,160,80,.16);background-image:linear-gradient(135deg,rgba(255,255,255,.06),rgba(0,0,0,.42));
+  -webkit-backdrop-filter:blur(10px) saturate(1.1);backdrop-filter:blur(10px) saturate(1.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 18px rgba(214,160,80,.14);transition:background-color .9s ease,box-shadow .9s ease}
+.mtimer span{color:rgba(225,228,230,.62)}
+.mtimer b{color:#F1F2EF}
 </style>
 
 <div class="app">
@@ -2271,7 +2288,7 @@ addEventListener("pointerdown",e=>{if(e.target!==canvas||e.button>0||JAM.on)retu
   e.stopImmediatePropagation();bobbinJam();},{capture:true});
 const FAULTS={hv:["HV short · supply tripped","Too much CNT in the core. It built up on the inner needle and bridged it to high voltage. The supply cut out, and everything stopped: field, jets, funnel and winder.","Reset · core CNT back to 0.005 g"],
   jam:["Bobbin jam · winder stalled","A finger on a running bobbin. The yarn snagged, wrapped round the finger and stalled the motor. In the lab: stop the motors first, then free the yarn. Never reach into moving parts.","Reset · free the bobbin"]};
-function faultShow(k){const F=FAULTS[k];document.getElementById("hvk").textContent=F[0];document.getElementById("hvp").textContent=F[1];const b=document.getElementById("hvreset");b.textContent=F[2];b.dataset.k=k;
+function faultShow(k){const F=FAULTS[k];document.getElementById("hvk").textContent=F[0];document.getElementById("hvp").textContent=F[1];const b=document.getElementById("hvreset");(b.querySelector(".g")||b).textContent=F[2];b.dataset.k=k;
   const dg=document.getElementById("danger");dg.classList.add("trip");dg.dataset.st="bad";const h=document.getElementById("hvtrip");h.hidden=false;requestAnimationFrame(()=>h.classList.add("on"));}
 function jamReset(){JAM.on=false;const h=document.getElementById("hvtrip");h.classList.remove("on");setTimeout(()=>{h.hidden=true;},320);document.getElementById("danger").classList.remove("trip");sfx.release&&sfx.release();recompute(null);}
 
@@ -2520,7 +2537,7 @@ var TIPS={
 var VIDEOS={jet:{title:"A real jet, filmed in the lab",src:""}};
 var tipSeen=new Set(),tipQ=[],tipT=0,tipCur=null;
 function showTip(k){if(!TIPS||!TIPS[k]||tipSeen.has(k))return;tipSeen.add(k);if(tipCur){tipQ.push(k);return;}tipShow(k);}
-function tipShow(k){const T=TIPS[k],el=document.getElementById("tipc");tipCur=k;document.getElementById("tipk").textContent=T.k;document.getElementById("tipt").textContent=T.t;
+function tipShow(k){const T=TIPS[k],el=document.getElementById("tipc");tipCur=k;el.dataset.tone=/^(Warning|Fault|Danger)/i.test(T.k)?"red":"cyan";document.getElementById("tipk").textContent=T.k;document.getElementById("tipt").textContent=T.t;
   document.getElementById("tipb").hidden=!T.v;el.dataset.v=T.v||"";el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));sfx.tick&&sfx.tick();clearTimeout(tipT);tipT=setTimeout(tipHide,T.v?16000:12000);}
 function tipHide(){const el=document.getElementById("tipc");clearTimeout(tipT);el.classList.remove("on");setTimeout(()=>{el.hidden=true;tipCur=null;if(tipQ.length)tipShow(tipQ.shift());},380);}
 function openVideo(k){const V=VIDEOS[k]||{title:"Lab video",src:""},o=document.getElementById("vid"),f=document.getElementById("vidf"),src=V.src||"";document.getElementById("vidt").textContent=V.title;
@@ -2532,7 +2549,7 @@ document.getElementById("tipx").addEventListener("click",tipHide);
 document.getElementById("tipv").addEventListener("click",()=>{const v=document.getElementById("tipc").dataset.v;tipHide();openVideo(v);});
 document.getElementById("vidx").addEventListener("click",()=>{const o=document.getElementById("vid");o.classList.remove("on");setTimeout(()=>{o.hidden=true;document.getElementById("vidf").innerHTML="";},300);});
 document.getElementById("hvreset").addEventListener("click",e=>{if(e.currentTarget.dataset.k==="jam")jamReset();else hvReset();});
-window.__es={P,HVT,set:(k,v)=>set(k,v),M:()=>M,fly:k=>fly(k),lib:()=>LIBRARY,get PUMPS(){return PUMPS;},get JAM(){return JAM;},get drumG(){return drumG;},cam:()=>camera,cv:canvas,T:THREE};
+window.__es={P,HVT,set:(k,v)=>set(k,v),M:()=>M,fly:k=>fly(k),lib:()=>LIBRARY,get PUMPS(){return PUMPS;},get JAM(){return JAM;},get drumG(){return drumG;},tip:k=>{tipSeen.delete(k);showTip(k);},fault:k=>faultShow(k),cam:()=>camera,cv:canvas,T:THREE};
 
 /* touch screens only: the first time a draggable screen opens, a soft hand shows the gesture once */
 (function(){let force=/[?&#]hints\b/.test(location.search+location.hash);const coarse=matchMedia("(pointer: coarse)").matches;
@@ -3279,6 +3296,33 @@ let tween=null,curStation="overview";
     (function loop(t){if(!document.hidden&&t-lt>=30){lt=t;LIVE.forEach(B=>draw(B,t));}requestAnimationFrame(loop);})(performance.now());
     document.querySelectorAll("#polzoom button,#polplay,#sentabs button,#sentap,#senclear,#senform button,#senweave button,#senmat button,#dipplay,#dipnext,#dipsteps button").forEach(b=>__bub(b));const z=document.getElementById("polzoom");if(z)z.classList.add("bubs");
     ["sentabs","senform","senweave","senmat"].forEach(k=>{const e=document.getElementById(k);if(e)e.classList.add("fbubs");});const sb=document.getElementById("sentap");if(sb&&sb.parentNode)sb.parentNode.classList.add("fbubs");})();
+
+  /* big irregular bubble behind a card; tone "red" for warnings and faults, "cyan" otherwise */
+  (function(){const NSV="http://www.w3.org/2000/svg",LIVE=new Set();let n=0,lt=0;
+    const TONE={red:{f0:"rgba(26,5,6,.82)",f1:"rgba(70,12,10,.74)",f2:"rgba(150,30,22,.55)",rim:["#FF5A46","#FF9A78","#E8486A","#FFB36B","#FF5A46"],glow:"drop-shadow(0 0 10px rgba(255,80,60,.55)) drop-shadow(0 0 26px rgba(240,60,40,.3))"},
+      cyan:{f0:"rgba(6,12,18,.8)",f1:"rgba(10,30,40,.72)",f2:"rgba(40,120,140,.45)",rim:["#2FC4D4","#9682FF","#E59AA8","#E8C13C","#78E6C8"],glow:"drop-shadow(0 0 10px rgba(54,208,224,.4)) drop-shadow(0 0 24px rgba(54,208,224,.18))"}};
+    window.__bigBub=function(el,tone){if(!el)return;if(el.__big){el.dataset.tone=tone||el.dataset.tone;return;}el.__big=1;el.classList.add("bigbub");el.dataset.tone=tone||"cyan";const id="gb"+(++n);
+      const sv=document.createElementNS(NSV,"svg");sv.setAttribute("class","bbg");sv.setAttribute("aria-hidden","true");
+      sv.innerHTML='<defs><radialGradient id="'+id+'f" cx=".5" cy=".5" r=".55"><stop offset="0"/><stop offset=".72"/><stop offset="1"/></radialGradient><linearGradient id="'+id+'r" x1="0" y1="0" x2="1" y2="1"><stop offset="0"/><stop offset=".25"/><stop offset=".5"/><stop offset=".75"/><stop offset="1"/></linearGradient></defs>'+
+        '<path fill="url(#'+id+'f)"/><path fill="none" stroke="url(#'+id+'r)" stroke-width="1.8" opacity=".9"/><path fill="none" stroke="#fff" stroke-width=".6" opacity=".3"/>';
+      el.insertBefore(sv,el.firstChild);const B={el,sv,ps:[...sv.querySelectorAll("path")],fs:[...sv.querySelectorAll("radialGradient stop")],rs:[...sv.querySelectorAll("linearGradient stop")],gr:sv.querySelector("linearGradient"),tone:null,
+        ph:[Math.random()*6,Math.random()*6,Math.random()*6,Math.random()*6]};LIVE.add(B);};
+    function paint(B){const T=TONE[B.el.dataset.tone]||TONE.cyan;if(B.tone===B.el.dataset.tone)return;B.tone=B.el.dataset.tone;
+      [T.f0,T.f1,T.f2].forEach((c,i)=>{const m=/rgba\((\d+),(\d+),(\d+),([\d.]+)\)/.exec(c);B.fs[i].setAttribute("stop-color","rgb("+m[1]+","+m[2]+","+m[3]+")");B.fs[i].setAttribute("stop-opacity",m[4]);});
+      T.rim.forEach((c,i)=>B.rs[i].setAttribute("stop-color",c));B.sv.style.filter=T.glow;}
+    function draw(B,t){const el=B.el;if(!el.isConnected){LIVE.delete(B);return;}if(!el.offsetParent&&getComputedStyle(el).position!=="fixed")return;if(el.hidden)return;paint(B);
+      const P=30,W=el.offsetWidth+2*P,H=el.offsetHeight+2*P;if(W<2*P+20)return;B.sv.setAttribute("viewBox","0 0 "+W+" "+H);
+      const w=W-2*P,h=H-2*P,rc=Math.min(h/2,Math.max(26,Math.min(w,h)*.42)),L1=w-2*rc,L2=h-2*rc,per=2*L1+2*L2+2*Math.PI*rc,N=110,s=t/1000;let d="";
+      const C=[[P+w-rc,P+rc,-Math.PI/2],[P+w-rc,P+h-rc,0],[P+rc,P+h-rc,Math.PI/2],[P+rc,P+rc,Math.PI]];
+      for(let i=0;i<N;i++){let u=i/N*per,x,y,nx,ny;const seg=[L1,Math.PI*rc/2,L2,Math.PI*rc/2,L1,Math.PI*rc/2,L2,Math.PI*rc/2];let k=0;while(k<7&&u>seg[k]){u-=seg[k];k++;}
+        if(k===0){x=P+rc+u;y=P;nx=0;ny=-1;}else if(k===2){x=P+w;y=P+rc+u;nx=1;ny=0;}else if(k===4){x=P+w-rc-u;y=P+h;nx=0;ny=1;}else if(k===6){x=P;y=P+h-rc-u;nx=-1;ny=0;}
+        else{const c=C[(k-1)/2],a=c[2]+u/rc;x=c[0]+Math.cos(a)*rc;y=c[1]+Math.sin(a)*rc;nx=Math.cos(a);ny=Math.sin(a);}
+        const q=i/N*Math.PI*2,wv=4.2*(Math.sin(2*q+B.ph[3]+s*.35)*.5+Math.sin(3*q+B.ph[0]+s*.6)*.5+Math.sin(5*q+B.ph[1]-s*.9)*.3+Math.sin(9*q+B.ph[2]+s*1.4)*.12);
+        d+=(i?"L":"M")+(x+nx*wv).toFixed(1)+" "+(y+ny*wv).toFixed(1);}
+      d+="Z";B.ps.forEach(p=>p.setAttribute("d",d));B.gr.setAttribute("gradientTransform","rotate("+((s*18)%360).toFixed(1)+" .5 .5)");}
+    (function loop(t){if(!document.hidden&&t-lt>=33){lt=t;LIVE.forEach(B=>draw(B,t));}requestAnimationFrame(loop);})(performance.now());
+    __bigBub(document.getElementById("tipc"),"cyan");__bigBub(document.querySelector("#hvtrip .hvc"),"red");
+    ["tipv","hvreset","msonic","mreset","mheat"].forEach(k=>window.__bub&&__bub(document.getElementById(k)));})();
   /* panel lenses become small wobbling soap bubbles with iridescent letters */
   const LB=[...document.querySelectorAll(".dexopen .lens")];
   LB.forEach((l,i)=>{const t=l.textContent.trim()||"Y";l.classList.add("bb");l.innerHTML='<span class="g">'+t+'</span>';l._e=.25;l._p=i*2.3+1;
@@ -3376,7 +3420,7 @@ function legend(){const L=document.getElementById("mleg"),it=[["#ECE9E1","PVDF �
   document.getElementById("mread").innerHTML=[["c/cₑ",M.ber.toFixed(2)+" · "+ent],["Viscosity",fmtEta(M.eta)],["Dissolved",(M.diss*100).toFixed(0)+"%"]]
     .concat(S.parts.length?[["PVDF network",M.ber>=1.9?"settling slowed to near zero (kinetically stable)":M.ber>=.6?"weak, clusters sink slowly":"none, clusters settle · lone 20 nm particles stay up"]]:[]).concat(S.parts.length?[["Sonication",P.stir.toFixed(1)+" min"],["Dispersion",(M.disp*100).toFixed(0)+"% · clusters "+M.agg.toFixed(1)+" µm"]]:[]).concat([["Temperature",P.temp+" °C"]])
     .map(([k,v])=>'<div><span>'+k+'</span><b>'+v+'</b></div>').join("");
-  document.getElementById("mtitle").textContent=S.core?"Inside the core":"Inside the solvent";document.getElementById("mtim").textContent=P.stir.toFixed(1)+" min";document.getElementById("mtemp").textContent=P.temp+" °C";document.getElementById("msonic").textContent="Sonicate +2 min · now "+P.stir.toFixed(0)+" min";
+  document.getElementById("mtitle").textContent=S.core?"Inside the core":"Inside the solvent";document.getElementById("mtim").textContent=P.stir.toFixed(1)+" min";document.getElementById("mtemp").textContent=P.temp+" °C";{const k=Math.max(0,Math.min(1,(P.temp-20)/60)),A=[[96,132,168],[214,160,80],[236,96,62]],a=k<.5?A[0]:A[1],b=k<.5?A[1]:A[2],u=k<.5?k*2:(k-.5)*2,c=a.map((v,i)=>Math.round(v+(b[i]-v)*u)).join(","),mt=document.getElementById("mtimer");if(mt){mt.style.backgroundColor="rgba("+c+",.17)";mt.style.boxShadow="inset 0 1px 0 rgba(255,255,255,.08),0 0 18px rgba("+c+",.16)";}}(document.getElementById("msonic").querySelector(".g")||document.getElementById("msonic")).textContent="Sonicate +2 min · now "+P.stir.toFixed(0)+" min";
   document.getElementById("msub").textContent=S.core?"PVDF / CNT core solution":(libOn?libOn+" · ":"")+"PVDF "+P.pvdf.toFixed(1)+" wt%"+(P.load&&S.parts.length?" · "+OX[P.ox].label+" "+P.load+" wt%":"");}
 function proj(x,y,z){const cy=Math.cos(rotY),sy=Math.sin(rotY),cx=Math.cos(rotX),sx=Math.sin(rotX);let X=x*cy+z*sy,Z=-x*sy+z*cy;const Y=y*cx-Z*sx;Z=y*sx+Z*cx;
   const f=5.5/(5.5+Z)*zoom,s=Math.min(W,H)*.21;return [W/2+X*f*s,H*.46+Y*f*s,Z,f*s];}
