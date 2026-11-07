@@ -2284,8 +2284,14 @@ const pumpEnd=()=>{if(pumpDrag){pumpDrag=null;clearTimeout(pumpRep);controls.ena
 const JAM={on:false,t0:0};
 function bobbinJam(){if(JAM.on||(typeof HVT!=="undefined"&&HVT.trip))return;JAM.on=true;JAM.t0=performance.now();
   sfx.jam&&sfx.jam();setTimeout(()=>sfx.alert&&sfx.alert("bad"),520);window.__hapt&&__hapt("trip");faultShow("jam");}
-addEventListener("pointerdown",e=>{if(e.target!==canvas||e.button>0||JAM.on)return;pumpRay(e);const h=ray.intersectObjects(drumG.children,true);if(!h.length)return;
-  e.stopImmediatePropagation();bobbinJam();},{capture:true});
+/* a jam needs a deliberate press and hold on the bobbin itself. Taps and drags on the winder lever, the dial and the yarn keep working */
+let jamHold=null;
+addEventListener("pointerdown",e=>{if(e.target!==canvas||e.button>0||JAM.on)return;
+  if(ctrlHit(e,levHit)||ctrlHit(e,dialHit)||(typeof yarnHit==="function"&&yarnHit(e)))return;
+  pumpRay(e);const h=ray.intersectObjects(drumG.children,true);if(!h.length)return;
+  clearTimeout(jamHold&&jamHold.t);jamHold={x:e.clientX,y:e.clientY,t:setTimeout(()=>{jamHold=null;bobbinJam();},550)};},{capture:true});
+addEventListener("pointermove",e=>{if(jamHold&&Math.hypot(e.clientX-jamHold.x,e.clientY-jamHold.y)>10){clearTimeout(jamHold.t);jamHold=null;}},{capture:true});
+const jamCancel=()=>{if(jamHold){clearTimeout(jamHold.t);jamHold=null;}};addEventListener("pointerup",jamCancel);addEventListener("pointercancel",jamCancel);
 const FAULTS={hv:["HV short · supply tripped","Too much CNT in the core. It built up on the inner needle and bridged it to high voltage. The supply cut out, and everything stopped: field, jets, funnel and winder.","Reset · core CNT back to 0.005 g"],
   jam:["Bobbin jam · winder stalled","A finger on a running bobbin. The yarn snagged, wrapped round the finger and stalled the motor. In the lab: stop the motors first, then free the yarn. Never reach into moving parts.","Reset · free the bobbin"]};
 function faultShow(k){const F=FAULTS[k];document.getElementById("hvk").textContent=F[0];document.getElementById("hvp").textContent=F[1];const b=document.getElementById("hvreset");(b.querySelector(".g")||b).textContent=F[2];b.dataset.k=k;
@@ -2549,7 +2555,7 @@ document.getElementById("tipx").addEventListener("click",tipHide);
 document.getElementById("tipv").addEventListener("click",()=>{const v=document.getElementById("tipc").dataset.v;tipHide();openVideo(v);});
 document.getElementById("vidx").addEventListener("click",()=>{const o=document.getElementById("vid");o.classList.remove("on");setTimeout(()=>{o.hidden=true;document.getElementById("vidf").innerHTML="";},300);});
 document.getElementById("hvreset").addEventListener("click",e=>{if(e.currentTarget.dataset.k==="jam")jamReset();else hvReset();});
-window.__es={P,HVT,set:(k,v)=>set(k,v),M:()=>M,fly:k=>fly(k),lib:()=>LIBRARY,get PUMPS(){return PUMPS;},get JAM(){return JAM;},get drumG(){return drumG;},tip:k=>{tipSeen.delete(k);showTip(k);},fault:k=>faultShow(k),cam:()=>camera,cv:canvas,T:THREE};
+window.__es={P,HVT,set:(k,v)=>set(k,v),M:()=>M,fly:k=>fly(k),lib:()=>LIBRARY,get PUMPS(){return PUMPS;},get JAM(){return JAM;},get drumG(){return drumG;},get levHit(){return levHit;},tip:k=>{tipSeen.delete(k);showTip(k);},fault:k=>faultShow(k),cam:()=>camera,cv:canvas,T:THREE};
 
 /* touch screens only: the first time a draggable screen opens, a soft hand shows the gesture once */
 (function(){let force=/[?&#]hints\b/.test(location.search+location.hash);const coarse=matchMedia("(pointer: coarse)").matches;
