@@ -2320,14 +2320,14 @@ const pumpEnd=()=>{if(pumpDrag){pumpDrag=null;clearTimeout(pumpRep);controls.ena
 const JAM={on:false,t0:0};
 function bobbinJam(){if(JAM.on||(typeof HVT!=="undefined"&&HVT.trip))return;JAM.on=true;JAM.t0=performance.now();
   sfx.jam&&sfx.jam();setTimeout(()=>sfx.alert&&sfx.alert("bad"),520);window.__hapt&&__hapt("trip");faultShow("jam");}
-/* a jam needs a deliberate press and hold on the bobbin itself. Taps and drags on the winder lever, the dial and the yarn keep working */
+/* a tap on the running bobbin jams it. Only the lever and the dial keep their own taps; a drag that starts on the bobbin still turns the view or pulls the yarn */
 let jamHold=null;
-addEventListener("pointerdown",e=>{if(e.target!==canvas||e.button>0||JAM.on)return;
-  if(ctrlHit(e,levHit)||ctrlHit(e,dialHit)||(typeof yarnHit==="function"&&yarnHit(e)))return;
-  pumpRay(e);const h=ray.intersectObjects(drumG.children,true);if(!h.length)return;
-  clearTimeout(jamHold&&jamHold.t);jamHold={x:e.clientX,y:e.clientY,t:setTimeout(()=>{jamHold=null;bobbinJam();},550)};},{capture:true});
-addEventListener("pointermove",e=>{if(jamHold&&Math.hypot(e.clientX-jamHold.x,e.clientY-jamHold.y)>10){clearTimeout(jamHold.t);jamHold=null;}},{capture:true});
-const jamCancel=()=>{if(jamHold){clearTimeout(jamHold.t);jamHold=null;}};addEventListener("pointerup",jamCancel);addEventListener("pointercancel",jamCancel);
+addEventListener("pointerdown",e=>{jamHold=null;if(e.target!==canvas||e.button>0||JAM.on)return;
+  if(ctrlHit(e,levHit)||ctrlHit(e,dialHit))return;
+  pumpRay(e);const h=ray.intersectObjects(drumG.children,true);if(!h.length)return;jamHold={x:e.clientX,y:e.clientY,t:performance.now()};},{capture:true});
+addEventListener("pointermove",e=>{if(jamHold&&Math.hypot(e.clientX-jamHold.x,e.clientY-jamHold.y)>8)jamHold=null;},{capture:true});
+addEventListener("pointerup",()=>{if(!jamHold)return;const j=jamHold;jamHold=null;if(performance.now()-j.t<1200)bobbinJam();},{capture:true});
+addEventListener("pointercancel",()=>{jamHold=null;});
 const FAULTS={hv:["HV short · supply tripped","Too much CNT in the core. It built up on the inner needle and bridged it to high voltage. The supply cut out, and everything stopped: field, jets, funnel and winder.","Reset · core CNT back to 0.005 g"],
   jam:["Bobbin jam · winder stalled","A finger on a running bobbin. The yarn snagged, wrapped round the finger and stalled the motor. In the lab: stop the motors first, then free the yarn. Never reach into moving parts.","Reset · free the bobbin"]};
 function faultShow(k){const F=FAULTS[k];document.getElementById("hvk").textContent=F[0];document.getElementById("hvp").textContent=F[1];const b=document.getElementById("hvreset");(b.querySelector(".g")||b).textContent=F[2];b.dataset.k=k;
