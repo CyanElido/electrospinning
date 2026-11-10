@@ -2576,7 +2576,7 @@ var TIPS={
   inflate:{k:"Tip · estimated value",t:"The 1.6× inflation without an anneal is an estimate. Trapped surface charge does make unannealed samples read high, but the size depends on the sample. Your before and after anneal measurements will set it."},
   jet:{k:"Slowed down for the eye",t:"A real jet travels at metres per second and whips too fast to follow. The jet here is slowed so you can see its path.",v:"jet"}};
 /* paste a Vimeo link (https://vimeo.com/123456789 or an unlisted .../123456789/abcdef) or an .mp4 file name in the repo */
-var VIDEOS={jet:{title:"Single needle, filmed in the lab",src:"single.mp4"},cx:{title:"A good CX run, filmed in the lab",src:"cx.mp4"}};
+var VIDEOS={jet:{title:"Single needle · non-conductive solution. The dual needle pair works the same way.",src:"single.mp4"},cx:{title:"A good CX run, filmed in the lab",src:"cx.mp4"}};
 var tipSeen=new Set(),tipQ=[],tipT=0,tipCur=null;
 function showTip(k){if(!TIPS||!TIPS[k]||tipSeen.has(k))return;tipSeen.add(k);if(tipCur){tipQ.push(k);return;}tipShow(k);}
 function tipShow(k){const T=TIPS[k],el=document.getElementById("tipc");tipCur=k;el.dataset.tone=/^(Warning|Fault|Danger)/i.test(T.k)?"red":"cyan";document.getElementById("tipk").textContent=T.k;document.getElementById("tipt").textContent=T.t;
@@ -2591,7 +2591,7 @@ document.getElementById("tipx").addEventListener("click",tipHide);
 document.getElementById("tipv").addEventListener("click",()=>{const v=document.getElementById("tipc").dataset.v;tipHide();openVideo(v);});
 document.getElementById("vidx").addEventListener("click",()=>{const o=document.getElementById("vid");o.classList.remove("on");setTimeout(()=>{o.hidden=true;document.getElementById("vidf").innerHTML="";},300);});
 document.getElementById("hvreset").addEventListener("click",e=>{if(e.currentTarget.dataset.k==="jam")jamReset();else hvReset();});
-window.__es={P,HVT,set:(k,v)=>set(k,v),M:()=>M,fly:k=>fly(k),lib:()=>LIBRARY,get PUMPS(){return PUMPS;},get JAM(){return JAM;},get drumG(){return drumG;},get levHit(){return levHit;},tip:k=>{tipSeen.delete(k);showTip(k);},fault:k=>faultShow(k),cam:()=>camera,cv:canvas,T:THREE};
+window.__es={P,HVT,set:(k,v)=>set(k,v),M:()=>M,fly:k=>fly(k),lib:()=>LIBRARY,get PUMPS(){return PUMPS;},get JAM(){return JAM;},get drumG(){return drumG;},get levHit(){return levHit;},tip:k=>{tipSeen.delete(k);showTip(k);},fault:k=>faultShow(k),jump:k=>{const S=STATIONS[k];tween=null;camera.position.set(...S.pos());controls.target.set(...S.tgt());controls.update();if(window.__ringTo)__ringTo(k);},cam:()=>camera,cv:canvas,T:THREE};
 
 /* touch screens only: the first time a draggable screen opens, a soft hand shows the gesture once */
 (function(){let force=/[?&#]hints\b/.test(location.search+location.hash);const coarse=matchMedia("(pointer: coarse)").matches;
