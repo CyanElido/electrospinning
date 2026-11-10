@@ -2246,13 +2246,13 @@ function kvApply(v){if(v!==P.V){set("V",v);sfx.tick();}}
     const hs=RC.intersectObjects(scene.children,true);
     for(const h of hs){const o=h.object;if(!o.isMesh||!o.visible||!o.geometry||(o.material&&o.material.visible===false))continue;
       if(!o.geometry.boundingSphere)o.geometry.computeBoundingSphere();const ws=o.geometry.boundingSphere.radius*Math.max(o.scale.x,o.scale.y,o.scale.z);if(ws>9)continue;   // floor, room and walls don't count
-      if(!BOUNCE.has(o)){if(o.scale.x!==1||o.scale.y!==1||o.scale.z!==1)return true;BOUNCE.set(o,performance.now());}else BOUNCE.set(o,performance.now());return true;}
+      window.__lastPoke=o;if(!BOUNCE.has(o)){if(o.scale.x!==1||o.scale.y!==1||o.scale.z!==1)return true;BOUNCE.set(o,performance.now());}else BOUNCE.set(o,performance.now());return true;}
     return false;}
   (function loop(){const now=performance.now();BOUNCE.forEach((t0,o)=>{const k=(now-t0)/1000;if(k>.7){o.scale.set(1,1,1);BOUNCE.delete(o);return;}o.scale.setScalar(1+.09*Math.exp(-k*6.5)*Math.sin(k*28));});requestAnimationFrame(loop);})();
   addEventListener("pointerdown",e=>{if(e.target!==canvas||e.button>0)return;dn={x:e.clientX,y:e.clientY,t:performance.now()};burst(e.clientX,e.clientY,false,true);},{capture:true});
   addEventListener("pointermove",e=>{if(dn&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)>6)dn=null;},{capture:true});
   addEventListener("pointerup",e=>{if(!dn)return;const d=dn;dn=null;if(performance.now()-d.t>1000)return;const hit=poke(e);burst(e.clientX,e.clientY,hit,false);
-    if(hit){sfx.pop&&sfx.pop();window.__hapt&&__hapt("tap");}else sfx.tick&&sfx.tick();},{capture:true});
+    if(hit){sfx.pop&&sfx.pop();window.__hapt&&__hapt("tap");const o=window.__lastPoke;if(o&&(cones.includes(o)||coreCones.includes(o)||sjets.includes(o)))setTimeout(()=>window.__coneVid&&__coneVid(),250);}else sfx.tick&&sfx.tick();},{capture:true});
   addEventListener("pointercancel",()=>{dn=null;});})();
 addEventListener("pointerdown",e=>{if(e.target!==canvas)return;const G=kvHit(e);if(!G)return;kvDrag={G};controls.enabled=false;canvas.classList.add("pinch");kvApply(kvFromPointer(G,e));e.stopImmediatePropagation();},{capture:true});
 addEventListener("pointermove",e=>{if(kvDrag){kvApply(kvFromPointer(kvDrag.G,e));e.stopImmediatePropagation();return;}
@@ -2574,10 +2574,15 @@ var TIPS={
   tribo:{k:"Tip · pressing tests",t:"Pressing can add triboelectric charge each time the platen touches and lifts. Warm hands or lamps add pyroelectric charge. Use fixed contact, a shielded box and a steady temperature, and check that the signal flips sign when the sample is turned over."},
   yarnelec:{k:"Tip · round yarn",t:"A round yarn has no flat faces. The electrodes here are drawn as flat plates for clarity. Real electrodes are wrapped or coated, and the poling field around a round yarn is not uniform."},
   inflate:{k:"Tip · estimated value",t:"The 1.6× inflation without an anneal is an estimate. Trapped surface charge does make unannealed samples read high, but the size depends on the sample. Your before and after anneal measurements will set it."},
+  conevid:{k:"Lab video · the cone",t:"",v:"jet"},
   jet:{k:"Slowed down for the eye",t:"A real jet travels at metres per second and whips too fast to follow. The jet here is slowed so you can see its path.",v:"jet"}};
 /* paste a Vimeo link (https://vimeo.com/123456789 or an unlisted .../123456789/abcdef) or an .mp4 file name in the repo */
-var VIDEOS={jet:{title:"Single needle · non-conductive solution. The dual needle pair works the same way.",src:"single.mp4"},cx:{title:"A good CX run, filmed in the lab",src:"cx.mp4"}};
+var VIDEOS={jet:{title:"Single needle · non-conductive solution. The dual needle pair works the same way.",src:"single_fibre.mp4"},cxfibre:{title:"Core–sheath needle · the coaxial cone and fibre, filmed in the lab",src:"cx_fibre.mp4"},cx:{title:"A good CX run, filmed in the lab",src:"cx.mp4"}};
 var tipSeen=new Set(),tipQ=[],tipT=0,tipCur=null;
+/* tapping the Taylor cone (or arriving at its station) offers the real footage: single needle, or the core–sheath cone in coaxial modes */
+window.__coneVid=function(){if(!TIPS||!TIPS.conevid)return;const cx=typeof M!=="undefined"&&M&&M.coax;TIPS.conevid.v=cx?"cxfibre":"jet";
+  TIPS.conevid.t=cx?"This is a real core–sheath cone from my rig, with the fibre web at the funnel. Want to watch it?":"This is a real single-needle cone from my rig, with the fibre web at the funnel. Want to watch it?";
+  if(tipCur==="conevid")return;tipSeen.delete("conevid");showTip("conevid");};
 function showTip(k){if(!TIPS||!TIPS[k]||tipSeen.has(k))return;tipSeen.add(k);if(tipCur){tipQ.push(k);return;}tipShow(k);}
 function tipShow(k){const T=TIPS[k],el=document.getElementById("tipc");tipCur=k;el.dataset.tone=/^(Warning|Fault|Danger)/i.test(T.k)?"red":"cyan";document.getElementById("tipk").textContent=T.k;document.getElementById("tipt").textContent=T.t;
   document.getElementById("tipb").hidden=!T.v;el.dataset.v=T.v||"";el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));sfx.tick&&sfx.tick();clearTimeout(tipT);tipT=setTimeout(tipHide,T.v?16000:12000);}
@@ -3418,7 +3423,7 @@ function jumpToFault(){
 (function(){const sb=document.getElementById("stat-b");if(!sb)return;sb.addEventListener("click",jumpToFault);
   sb.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();jumpToFault();}});})();
 function fly(k){
-  curStation=k;if(k==="jet")setTimeout(()=>showTip("jet"),900);stEl.querySelectorAll("button:not(.lp)").forEach(b=>b.setAttribute("aria-pressed",b.id==="st-"+k));if(window.__ringTo)window.__ringTo(k);
+  curStation=k;if(k==="jet")setTimeout(()=>showTip("jet"),900);if(k==="cone")setTimeout(()=>window.__coneVid&&__coneVid(),900);stEl.querySelectorAll("button:not(.lp)").forEach(b=>b.setAttribute("aria-pressed",b.id==="st-"+k));if(window.__ringTo)window.__ringTo(k);
   const S=STATIONS[k];const p1=new THREE.Vector3(...S.pos()),t1=new THREE.Vector3(...S.tgt());
   if(reduce){camera.position.copy(p1);controls.target.copy(t1);controls.update();return;}
   tween={p0:camera.position.clone(),t0:controls.target.clone(),p1,t1,s:0};
