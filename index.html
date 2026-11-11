@@ -1791,7 +1791,7 @@ function dexLoop(t){const top=document.querySelector("#dexscr .dcard.top:not(.in
     drawYarn(pg,S.art||OX[S.set.ox].css,S.set.mode==="cs1"||S.set.mode==="cs2",t/1100,bu,S.mix);}dexRaf=requestAnimationFrame(dexLoop);}
 function dexDots(){document.getElementById("dexdots").innerHTML=DEX.map((S,i)=>'<button type="button" aria-label="'+S.name+'" aria-current="'+(i===dexI)+'" style="--sw:'+OX[S.set.ox].css+'"></button>').join("");
   document.querySelectorAll("#dexdots button").forEach((b,i)=>b.onclick=()=>dexGo(i));document.getElementById("dexcount").textContent=(dexI+1)+" / "+DEX.length;if(window.__fanSync)__fanSync();}
-window.__dexAPI={get DEX(){return DEX;},get OX(){return OX;},get i(){return dexI;},go:i=>dexGo(i)};
+window.__dexAPI={get DEX(){return DEX;},get OX(){return OX;},get i(){return dexI;},go:(i,s)=>dexGo(i,s)};
 /* ===== tarot-style deck: drag the top card and fling it any way; the next card rises ===== */
 function renderDeck(anim){const scr=document.getElementById("dexscr");scr.innerHTML="";
   for(let k=2;k>=0;k--){const j=(dexI+k)%DEX.length,c=dexPage(j);c.classList.add(k===0?"top":"back","b"+k);scr.appendChild(c);const S=DEX[j];drawYarn(c.querySelector("canvas"),S.art||OX[S.set.ox].css,S.set.mode==="cs1"||S.set.mode==="cs2",0,0,S.mix);}
@@ -4064,21 +4064,29 @@ requestAnimationFrame(frame);
 <style>
 /* sample library and safety training: blur the field and its side panels behind, so only the cards read */
 .dex,.train{background:rgba(10,12,15,.5)!important;-webkit-backdrop-filter:blur(16px) saturate(1.1)!important;backdrop-filter:blur(16px) saturate(1.1)!important}
-/* tablet and computer: the whole library as one tight fanned row under the card, like a spread deck. Tap any card to bring it up */
+/* tablet and computer: the whole library as a fanned row along the bottom edge, like a spread deck.
+   Sweep a finger across it and each card peeks up; tap or pull one up and it flips over into the big card */
 .dexfan{display:none}
 @media (min-width:760px) and (min-height:560px){
   .dexbar .dexdots{display:none!important}
-  .dexfan{display:block;position:relative;order:1;flex:none;width:100%;height:104px;margin:0 auto 22px;pointer-events:none}
+  .dexbar{padding-bottom:0!important;overflow:visible}
+  .dexbar .dexload{order:1;margin-bottom:6px!important}
+  .dexfan{display:block;position:relative;order:2;flex:none;width:calc(100% + 40px);margin:0 -20px -2px;height:132px;touch-action:none;pointer-events:auto;overflow:visible}
   .dexdev .dexscr .dcard{height:640px!important;scale:var(--ds,1)}
-  .dexbar .dexload{order:2}
-  .fcard{position:absolute;left:50%;bottom:0;width:62px;height:88px;margin-left:-31px;border-radius:8px;pointer-events:auto;cursor:pointer;appearance:none;padding:0;
-    border:1px solid rgba(255,255,255,.18);background:linear-gradient(165deg,#30333a,#1a1c20);box-shadow:-3px 4px 10px rgba(0,0,0,.45);
-    transform-origin:50% var(--R);transform:rotate(var(--a)) translateY(0);transition:transform .3s cubic-bezier(.3,1.4,.5,1),border-color .2s,box-shadow .2s}
-  .fcard i{position:absolute;left:8px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
-  .fcard b{position:absolute;left:5px;top:20px;writing-mode:vertical-rl;font:600 9.5px/1 var(--f-mono);letter-spacing:.06em;color:#E9E6DD;white-space:nowrap}
-  .fcard:hover{transform:rotate(var(--a)) translateY(-12px);border-color:rgba(127,227,236,.6)}
-  .fcard[aria-current="true"]{transform:rotate(var(--a)) translateY(-18px);border-color:#7FE3EC;box-shadow:0 0 0 1px #7FE3EC,0 0 16px rgba(127,227,236,.5),-3px 4px 10px rgba(0,0,0,.45)}
+  .fcard{position:absolute;left:50%;bottom:-34px;width:var(--fw);height:calc(var(--fw) * 1.45);margin-left:calc(var(--fw) / -2);border-radius:10px;pointer-events:auto;cursor:pointer;appearance:none;padding:0;
+    border:1px solid rgba(255,255,255,.2);background:linear-gradient(165deg,#33363d,#1a1c20);box-shadow:-4px 6px 14px rgba(0,0,0,.5);
+    transform-origin:50% var(--R);transform:rotate(var(--a)) translateY(var(--ty,0px));transition:transform .28s cubic-bezier(.3,1.5,.5,1),border-color .2s,box-shadow .2s}
+  .fcard i{position:absolute;left:10px;top:10px;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+  .fcard b{position:absolute;left:7px;top:26px;writing-mode:vertical-rl;font:600 11px/1 var(--f-mono);letter-spacing:.06em;color:#E9E6DD;white-space:nowrap}
+  .fcard.peek{--ty:-30px;transition-duration:.16s}
+  .fcard:hover{--ty:-18px}
+  .fcard[aria-current="true"]{--ty:-24px;border-color:#7FE3EC;box-shadow:0 0 0 1px #7FE3EC,0 0 18px rgba(127,227,236,.55),-4px 6px 14px rgba(0,0,0,.5)}
+  .fcard.gone{opacity:0;transition:opacity .15s}
 }
+.fdraw{position:fixed;z-index:200;pointer-events:none;border-radius:12px;border:1px solid rgba(127,227,236,.7);background:linear-gradient(165deg,#33363d,#1a1c20);
+  box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 24px rgba(127,227,236,.35);transform-style:preserve-3d;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;
+  font:700 22px/1 'Times New Roman',serif;color:#F2EEE4}
+.fdraw i{position:absolute;left:12px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
 /* references: my papers, in a big soap bubble */
 .refs{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:max(20px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
   background:rgba(6,8,10,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
@@ -4144,20 +4152,45 @@ requestAnimationFrame(frame);
 </script>
 <script>
 (function(){
-  const bar=document.querySelector("#dex .dexbar");if(!bar)return;const fan=document.createElement("div");fan.className="dexfan";fan.setAttribute("aria-label","All samples");bar.insertBefore(fan,bar.firstChild);
-  let built=0;
-  function build(){const A=window.__dexAPI;if(!A)return;const D=A.DEX,n=D.length;fan.innerHTML="";
-    const R=2200,step=29/R*180/Math.PI;           /* about 30 px between cards along a gentle arc */
-    D.forEach((S,i)=>{const b=document.createElement("button");b.type="button";b.className="fcard";b.setAttribute("aria-label",S.name);
-      const a=(i-(n-1)/2)*step;b.style.setProperty("--a",a.toFixed(3)+"deg");b.style.setProperty("--R",R+"px");
+  const bar=document.querySelector("#dex .dexbar");if(!bar)return;const fan=document.createElement("div");fan.className="dexfan";fan.setAttribute("aria-label","All samples");bar.appendChild(fan);
+  let built=0,cards=[];
+  function build(){const A=window.__dexAPI;if(!A)return;const D=A.DEX,n=D.length;fan.innerHTML="";cards=[];
+    const W=fan.clientWidth||innerWidth,fw=Math.round(Math.min(96,Math.max(70,W/13))),gap=Math.min(fw*.55,(W-fw-30)/(n-1)),R=Math.max(3600,W*W/90),step=gap/R*180/Math.PI;
+    fan.style.setProperty("--fw",fw+"px");
+    D.forEach((S,i)=>{const b=document.createElement("button");b.type="button";b.className="fcard";b.setAttribute("aria-label",S.name);b.dataset.i=i;
+      b.style.setProperty("--a",((i-(n-1)/2)*step).toFixed(3)+"deg");b.style.setProperty("--R",R+"px");
       b.style.setProperty("--c",S.art||(A.OX[S.set.ox]&&A.OX[S.set.ox].css)||"#E6CC7A");b.style.zIndex=String(i);
-      b.innerHTML="<i></i><b>"+S.name+"</b>";b.addEventListener("click",()=>{try{window.__sfx&&__sfx.unlock();__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}if(window.__hapt)__hapt("tap");A.go(i);});fan.appendChild(b);});
-    built=1;sync();}
-  function sync(){const A=window.__dexAPI;if(!A)return;if(!built)return build();fan.querySelectorAll(".fcard").forEach((b,i)=>b.setAttribute("aria-current",String(i===A.i)));}
-  /* the card keeps its full height and scales down to fit above the row */
+      b.innerHTML="<i></i><b>"+S.name+"</b>";fan.appendChild(b);cards.push(b);});
+    built=W;sync();}
+  function sync(){const A=window.__dexAPI;if(!A)return;if(!built)return build();cards.forEach((b,i)=>{b.setAttribute("aria-current",String(i===A.i));b.classList.remove("gone");});}
+  /* riffle: every card the finger or mouse crosses pops up for a moment */
+  let lastK=-1;
+  function cardAt(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest(".fcard"):null;}
+  function peek(c){if(!c)return;const k=+c.dataset.i;if(k===lastK)return;lastK=k;c.classList.add("peek");clearTimeout(c._pt);c._pt=setTimeout(()=>c.classList.remove("peek"),240);
+    try{const S=window.__sfx;S&&S.tick&&S.tick();}catch(e){}}
+  /* draw: tap a card, or pull it up out of the row, and it flips over and grows into the big card */
+  function draw(c){const A=window.__dexAPI;if(!A||!c)return;const i=+c.dataset.i;if(i===A.i){c.classList.add("peek");setTimeout(()=>c.classList.remove("peek"),240);return;}
+    const r=c.getBoundingClientRect(),top=document.querySelector("#dexscr .dcard.top"),t=top?top.getBoundingClientRect():{left:innerWidth/2-180,top:innerHeight/2-280,width:360,height:560};
+    const f=document.createElement("div");f.className="fdraw";f.style.setProperty("--c",getComputedStyle(c).getPropertyValue("--c"));
+    f.style.left=r.left+"px";f.style.top=r.top+"px";f.style.width=r.width+"px";f.style.height=r.height+"px";f.innerHTML="<i></i>";document.body.appendChild(f);c.classList.add("gone");
+    try{const S=window.__sfx;S&&S.unlock();S&&S.fling&&S.fling();}catch(e){}if(window.__hapt)__hapt("tap");
+    const dx=t.left+t.width/2-(r.left+r.width/2),dy=t.top+t.height/2-(r.top+r.height/2),sx=t.width/r.width,sy=t.height/r.height;
+    const an=f.animate([{transform:"translate(0,0) rotateY(0deg) scale(1,1)"},{transform:"translate("+dx*.45+"px,"+(dy*.45-60)+"px) rotateY(90deg) scale("+(1+(sx-1)*.45)+","+(1+(sy-1)*.45)+")",offset:.45},
+      {transform:"translate("+dx+"px,"+dy+"px) rotateY(180deg) scale("+sx+","+sy+")"}],{duration:620,easing:"cubic-bezier(.3,.7,.3,1)",fill:"forwards"});
+    setTimeout(()=>{A.go(i,true);},300);
+    an.onfinish=()=>{f.animate([{opacity:1},{opacity:0}],{duration:200,fill:"forwards"}).onfinish=()=>f.remove();};}
+  let dn=null;
+  fan.addEventListener("pointerdown",e=>{dn={x:e.clientX,y:e.clientY,c:cardAt(e.clientX,e.clientY),moved:false};lastK=-1;peek(dn.c);try{fan.setPointerCapture(e.pointerId);}catch(_){}});
+  fan.addEventListener("pointermove",e=>{const c=cardAt(e.clientX,e.clientY);if(e.pointerType==="mouse"&&!dn){peek(c);return;}if(!dn)return;
+    if(Math.abs(e.clientX-dn.x)>10)dn.moved=true;peek(c);
+    if(dn.y-e.clientY>40&&c){const k=c;dn=null;draw(k);}});
+  const up=e=>{if(!dn)return;const d=dn;dn=null;if(!d.moved&&Math.abs(e.clientY-d.y)<12)draw(d.c);};
+  fan.addEventListener("pointerup",up);fan.addEventListener("pointercancel",()=>{dn=null;});
+  fan.addEventListener("pointerleave",()=>{if(!dn)lastK=-1;});
+  /* the big card keeps its full height and scales down to fit above the row */
   function fit(){const scr=document.getElementById("dexscr");if(!scr||!scr.clientHeight)return;const on=getComputedStyle(fan).display!=="none";
     scr.style.setProperty("--ds",on?Math.min(1,(scr.clientHeight-14)/640).toFixed(3):"1");}
-  const s0=sync;window.__fanSync=()=>{s0();fit();};addEventListener("resize",fit);
+  window.__fanSync=()=>{sync();fit();};addEventListener("resize",()=>{if(built&&Math.abs(fan.clientWidth-built)>40)build();fit();});
 })();
 </script>
 <style>
