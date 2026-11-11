@@ -4101,10 +4101,10 @@ requestAnimationFrame(frame);
     ov.addEventListener("click",e=>{const pl=e.target.closest(".rpdf");if(pl){e.preventDefault();reader(pl.dataset.pid);return;}if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
   function open(id){const want=(typeof id==="string"&&id)||null;if(!ov||want!==one){one=want;build();}ov.hidden=false;requestAnimationFrame(()=>ov.classList.add("on"));}
   function close(){ov.classList.remove("on");setTimeout(()=>{ov.hidden=true;},320);try{window.__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}}
-  const PAGES={md:11,iccm:6};let rv=null;
+  const PAGES={md:11,iccm:6};const PAGEFILE={md2:"IMG_3007.jpeg"};   // page 2 went up under the phone's photo namelet rv=null;
   function reader(id){const P=PAPERS.find(p=>p.id===id);if(!P)return;if(rv)rv.remove();
     rv=document.createElement("div");rv.className="pdfv";rv.setAttribute("role","dialog");rv.setAttribute("aria-label","Paper");
-    let pg="";for(let i=1;i<=PAGES[id];i++)pg+='<img loading="'+(i<3?"eager":"lazy")+'" src="'+id+'-'+String(i).padStart(2,"0")+'.jpeg" alt="Page '+i+'">';
+    let pg="";for(let i=1;i<=PAGES[id];i++)pg+='<img loading="'+(i<3?"eager":"lazy")+'" src="'+(PAGEFILE[id+i]||(id+'-'+String(i).padStart(2,"0")+'.jpeg'))+'" alt="Page '+i+'">';
     rv.innerHTML='<div class="ph"><b>'+(id==="md"?"Materials &amp; Design · 2026":"ICCM-24 · 2025")+'</b><a href="'+P.pdf+'" download>Save PDF</a><button type="button" class="dexx px" aria-label="Close the paper">✕</button></div><div class="pp">'+pg+'</div>';
     document.body.appendChild(rv);if(window.__xb)__xb(rv.querySelector(".px"));
     rv.querySelector(".px").addEventListener("click",()=>{rv.classList.remove("on");const r=rv;setTimeout(()=>r.remove(),320);rv=null;});
