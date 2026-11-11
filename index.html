@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Funnel Collector System 2026AW</title>
 <meta name="theme-color" content="#1B1C1E">
 <link rel="manifest" href="manifest.webmanifest">
@@ -3409,12 +3409,12 @@ let tween=null,curStation="overview";
 
   /* every ✕ becomes a small wobbling soap bubble that pops before it closes */
   const XB=[...document.querySelectorAll(".dexx")];
-  XB.forEach(x=>{x.classList.add("xb");x.innerHTML="<span>E<sup>4</sup></span>";x._e=.3;x._p=Math.random()*9;
+  const xbify=x=>{x.classList.add("xb");x.innerHTML="<span>E<sup>4</sup></span>";x._e=.3;x._p=Math.random()*9;
     x.addEventListener("pointerenter",()=>{x._e+=.05;});x.addEventListener("pointerdown",()=>{x._e+=.12;});
     x.addEventListener("click",e=>{if(x._go){x._go=false;return;}e.stopImmediatePropagation();e.preventDefault();if(x._busy)return;x._busy=true;
       sfx.unlock();sfx.pop();
       x.animate([{transform:"scale(1)",opacity:1},{transform:"scale(1.2)",opacity:1,offset:.45},{transform:"scale(1.5)",opacity:0}],{duration:220,easing:"ease-out"}).onfinish=()=>{
-        x._busy=false;x._go=true;x.click();};},true);});
+        x._busy=false;x._go=true;x.click();};},true);};XB.forEach(xbify);window.__xb=x=>{if(x.classList.contains("xb"))return;xbify(x);XB.push(x);};
   (function xl(t){if(!document.hidden)XB.forEach(x=>{if(x.offsetParent){x._e*=.96;blob(x,t,x._p,.05+Math.min(.08,x._e));}});requestAnimationFrame(xl);})(performance.now());
   addEventListener("keydown",e=>{if(cv.classList.contains("gone"))return;if(e.key==="Escape")close();else if((e.key==="Enter"||e.key===" ")&&!cv.classList.contains("burst")){e.preventDefault();burst();}});
   addEventListener("resize",()=>{for(const b of B){b.x=Math.min(b.x,W()-b.r);b.y=Math.min(b.y,H()-b.r);}});
@@ -4075,7 +4075,18 @@ requestAnimationFrame(frame);
 .refs li .rtag{display:block;margin-bottom:3px;font:500 9.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#E6CC7A}
 .refs li a{display:inline-block;margin-top:5px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#7FE3EC;text-decoration:none;border-bottom:1px solid rgba(127,227,236,.4);padding-bottom:2px}
 .refs li a.rpdf{margin-left:14px;color:#E6CC7A;border-color:rgba(230,204,122,.45)}
-.refs .rx{position:absolute;right:14px;top:12px;appearance:none;border:0;background:none;color:#E9E6DD;font:400 18px/1 var(--f-mono);cursor:pointer;padding:6px}
+.refs .rx{position:absolute!important;right:6px!important;top:2px!important;left:auto!important;bottom:auto!important}
+/* in-app paper reader: page images, so it scrolls on every device and works offline. Closing returns to where you were */
+.pdfv{position:fixed;inset:0;z-index:9100;display:flex;flex-direction:column;background:rgba(8,10,12,.96);opacity:0;transition:opacity .3s}
+.pdfv.on{opacity:1}
+.pdfv .ph{flex:none;display:flex;align-items:center;gap:14px;padding:max(12px,env(safe-area-inset-top,0px)) max(70px,env(safe-area-inset-right,0px)) 10px max(18px,env(safe-area-inset-left,0px));min-height:64px;position:relative}
+.pdfv .ph b{font:600 10.5px/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#7FE3EC;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pdfv .ph a{flex:none;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#E6CC7A;text-decoration:none;border-bottom:1px solid rgba(230,204,122,.45);padding-bottom:2px;margin-left:auto}
+.pdfv .px{position:absolute!important;right:max(10px,env(safe-area-inset-right,0px))!important;top:max(8px,env(safe-area-inset-top,0px))!important;left:auto!important;bottom:auto!important}
+.pdfv .pp{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px max(14px,env(safe-area-inset-right,0px)) max(30px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;align-items:center;gap:14px}
+.pdfv .pp img{display:block;width:min(860px,100%);height:auto;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+/* tablets: the floating panels stand still, and overlays skip the live blur, to keep the bubbles smooth */
+@media (pointer:coarse){#inputs,#outputs{animation:none!important}.refs{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(6,8,10,.82)!important}}
 </style>
 <script>
 (function(){
@@ -4084,13 +4095,25 @@ requestAnimationFrame(frame);
     {id:"iccm",tag:"Conference poster · 2025",cite:'Zhao, S., Taylor, L. W., Cheung, V. and Shi, Y. (2025). Novel electrospinning PVDF/Bi₂O₃/CeO₂ composite yarn: a versatile approach towards functional X-ray shielding textile. <b>24th International Conference on Composite Materials (ICCM-24)</b>, Baltimore.',doi:"10.5281/zenodo.18597437",pdf:"Zhao2025-ICCM24.pdf"}];
   let ov=null;
   let one=null;function build(){if(ov)ov.remove();ov=document.createElement("div");ov.className="refs";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-label","References");
-    ov.innerHTML='<div class="rbox"><button type="button" class="rx" aria-label="Close">✕</button><h2>'+(one?"The paper":"References")+'</h2><p class="rlead">'+(one?"Close it to go back to where you were.":"The yarns in this simulator come from these papers.")+'</p><ol>'+
-      PAPERS.filter(p=>!one||p.id===one).map(p=>'<li><span class="rtag">'+p.tag+'</span>'+p.cite+'<br><a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi.org/'+p.doi+' ↗</a>'+(p.pdf&&location.protocol!=="file:"&&!/claude\.ai|claudeusercontent/.test(location.host)?'<a class="rpdf" href="'+p.pdf+'" target="_blank" rel="noopener">PDF ↓</a>':'')+'</li>').join("")+'</ol></div>';
-    document.body.appendChild(ov);const box=ov.querySelector(".rbox");if(window.__bigBub)__bigBub(box,"cyan");
-    ov.addEventListener("click",e=>{if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
+    ov.innerHTML='<div class="rbox"><button type="button" class="dexx rx" aria-label="Close">✕</button><h2>'+(one?"The paper":"References")+'</h2><p class="rlead">'+(one?"Close it to go back to where you were.":"The yarns in this simulator come from these papers.")+'</p><ol>'+
+      PAPERS.filter(p=>!one||p.id===one).map(p=>'<li><span class="rtag">'+p.tag+'</span>'+p.cite+'<br><a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi.org/'+p.doi+' ↗</a>'+(p.pdf&&location.protocol!=="file:"&&!/claude\.ai|claudeusercontent/.test(location.host)?'<a class="rpdf" href="#" data-pid="'+p.id+'">Read the PDF</a>':'')+'</li>').join("")+'</ol></div>';
+    document.body.appendChild(ov);const box=ov.querySelector(".rbox");if(window.__bigBub)__bigBub(box,"cyan");if(window.__xb)__xb(ov.querySelector(".rx"));
+    ov.addEventListener("click",e=>{const pl=e.target.closest(".rpdf");if(pl){e.preventDefault();reader(pl.dataset.pid);return;}if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
   function open(id){const want=(typeof id==="string"&&id)||null;if(!ov||want!==one){one=want;build();}ov.hidden=false;requestAnimationFrame(()=>ov.classList.add("on"));}
   function close(){ov.classList.remove("on");setTimeout(()=>{ov.hidden=true;},320);try{window.__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}}
+  const PAGES={md:11,iccm:6};let rv=null;
+  function reader(id){const P=PAPERS.find(p=>p.id===id);if(!P)return;if(rv)rv.remove();
+    rv=document.createElement("div");rv.className="pdfv";rv.setAttribute("role","dialog");rv.setAttribute("aria-label","Paper");
+    let pg="";for(let i=1;i<=PAGES[id];i++)pg+='<img loading="'+(i<3?"eager":"lazy")+'" src="paper-'+id+'-'+String(i).padStart(2,"0")+'.jpg" alt="Page '+i+'">';
+    rv.innerHTML='<div class="ph"><b>'+(id==="md"?"Materials &amp; Design · 2026":"ICCM-24 · 2025")+'</b><a href="'+P.pdf+'" download>Save PDF</a><button type="button" class="dexx px" aria-label="Close the paper">✕</button></div><div class="pp">'+pg+'</div>';
+    document.body.appendChild(rv);if(window.__xb)__xb(rv.querySelector(".px"));
+    rv.querySelector(".px").addEventListener("click",()=>{rv.classList.remove("on");const r=rv;setTimeout(()=>r.remove(),320);rv=null;});
+    requestAnimationFrame(()=>rv&&rv.classList.add("on"));}
   window.__openRefs=open;
+  /* iPad: coming back to the app, or the window changing size, re-fits the 3D view to the screen */
+  const refit=()=>{dispatchEvent(new Event("resize"));setTimeout(()=>dispatchEvent(new Event("resize")),350);};
+  addEventListener("pageshow",refit);addEventListener("orientationchange",refit);document.addEventListener("visibilitychange",()=>{if(!document.hidden)refit();});
+  if(window.visualViewport)visualViewport.addEventListener("resize",()=>{clearTimeout(refit.t);refit.t=setTimeout(refit,120);});
   const rb=document.getElementById("tipr");if(rb){if(window.__bub)__bub(rb);rb.addEventListener("click",()=>{open(document.getElementById("tipc").dataset.r||null);});}
 })();
 </script>
