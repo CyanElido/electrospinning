@@ -4105,7 +4105,15 @@ requestAnimationFrame(frame);
 .refs li b{font-weight:400;font-style:italic}
 .refs li .rtag{display:block;margin-bottom:3px;font:500 9.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#E6CC7A}
 .refs li a{display:inline-block;margin-top:5px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#7FE3EC;text-decoration:none;border-bottom:1px solid rgba(127,227,236,.4);padding-bottom:2px}
-.refs li a.rpdf{margin-left:14px;color:#E6CC7A;border-color:rgba(230,204,122,.45)}
+.refs li .rline{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:4px}
+.refs li .rrow{display:flex;flex:none;margin:6px 6px 0 0}
+@media (max-width:520px){.refs li .rline{flex-wrap:wrap;row-gap:4px}.refs li .rrow{margin-left:auto}}
+.refs .rpdf .g{color:#E6CC7A}
+.refs .rpdf.go{animation:rpop .36s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes rpop{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(.2);opacity:0}}
+.pdfv .pp img{animation:prise .55s cubic-bezier(.2,.9,.3,1) both}
+.pdfv .pp img:nth-child(2){animation-delay:.08s}
+@keyframes prise{from{transform:translateY(60px) scale(.96);opacity:0}to{transform:none;opacity:1}}
 .refs .rx{position:absolute!important;right:6px!important;top:2px!important;left:auto!important;bottom:auto!important}
 /* in-app paper reader: page images, so it scrolls on every device and works offline. Closing returns to where you were */
 .pdfv{position:fixed;inset:0;z-index:9100;display:flex;flex-direction:column;background:rgba(8,10,12,.96);opacity:0;transition:opacity .3s}
@@ -4128,9 +4136,12 @@ requestAnimationFrame(frame);
   let ov=null;
   let one=null;function build(){if(ov)ov.remove();ov=document.createElement("div");ov.className="refs";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-label","References");
     ov.innerHTML='<div class="rbox"><button type="button" class="dexx rx" aria-label="Close">✕</button><h2>'+(one?"The paper":"References")+'</h2><p class="rlead">'+(one?"Close it to go back to where you were.":"The yarns in this simulator come from these papers.")+'</p><ol>'+
-      PAPERS.filter(p=>!one||p.id===one).map(p=>'<li><span class="rtag">'+p.tag+'</span>'+p.cite+'<br><a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi.org/'+p.doi+' ↗</a>'+(p.pdf&&location.protocol!=="file:"&&!/claude\.ai|claudeusercontent/.test(location.host)?'<a class="rpdf" href="#" data-pid="'+p.id+'">Read the PDF</a>':'')+'</li>').join("")+'</ol></div>';
-    document.body.appendChild(ov);const box=ov.querySelector(".rbox");if(window.__bigBub)__bigBub(box,"cyan");if(window.__xb)__xb(ov.querySelector(".rx"));
-    ov.addEventListener("click",e=>{const pl=e.target.closest(".rpdf");if(pl){e.preventDefault();reader(pl.dataset.pid);return;}if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
+      PAPERS.filter(p=>!one||p.id===one).map(p=>'<li><span class="rtag">'+p.tag+'</span>'+p.cite+'<div class="rline"><a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi.org/'+p.doi+' ↗</a>'+(p.pdf&&location.protocol!=="file:"&&!/claude\.ai|claudeusercontent/.test(location.host)?'<span class="rrow"><button type="button" class="rpdf" data-pid="'+p.id+'">Read the paper</button></span>':'')+'</div></li>').join("")+'</ol></div>';
+    document.body.appendChild(ov);const box=ov.querySelector(".rbox");if(window.__bigBub)__bigBub(box,"cyan");if(window.__bub)ov.querySelectorAll(".rpdf").forEach(b=>__bub(b));if(window.__xb)__xb(ov.querySelector(".rx"));
+    ov.addEventListener("click",e=>{const pl=e.target.closest(".rpdf");if(pl){e.preventDefault();if(pl.classList.contains("go"))return;
+      /* the bubble swells and pops, then the paper rises in, so you can see the tap landed */
+      pl.classList.add("go");if(window.__hapt)__hapt("tap");try{window.__sfx&&__sfx.bub&&__sfx.bub();}catch(_){}
+      setTimeout(()=>{reader(pl.dataset.pid);pl.classList.remove("go");},360);return;}if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
   function open(id){const want=(typeof id==="string"&&id)||null;if(!ov||want!==one){one=want;build();}ov.hidden=false;requestAnimationFrame(()=>ov.classList.add("on"));}
   function close(){ov.classList.remove("on");setTimeout(()=>{ov.hidden=true;},320);try{window.__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}}
   const PAGES={md:11,iccm:6};const PAGEFILE={md2:"IMG_3007.jpeg"};/* page 2 went up under the phone's photo name */let rv=null;
