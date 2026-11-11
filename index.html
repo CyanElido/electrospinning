@@ -4499,7 +4499,7 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
     return {w,d,ph:i*1.7,r:62+i*14};});
   /* it rises out of the cellar when the light comes on, then drifts about above the square */
   {let x=0,y=0,vx=0,vy=0,on=false,t0=0,ex=0,ey=0,biud=false,last=performance.now();
-    const box=()=>{const b=lid.getBoundingClientRect(),cr=cv.getBoundingClientRect(),s=hw.offsetWidth||112;
+    const box=()=>{const b=lidRect(),cr=cv.getBoundingClientRect(),s=hw.offsetWidth||112;
       const bg=document.getElementById("bigbub"),gb=bg&&!bg.hidden?bg.getBoundingClientRect():null,ph=cv.clientWidth<700;
       /* on a phone it keeps to the strip between the big bubble and the square, so it never covers the title */
       let y0=b.top-cr.top-Math.min(300,cv.clientHeight*.32);if(ph&&gb)y0=Math.max(y0,gb.bottom-cr.top-s*.35);
@@ -4508,7 +4508,7 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
     (function fl(t){const dt=Math.min(.05,(t-last)/1000);last=t;const L=cv.classList.contains("lit")&&!cv.classList.contains("burst");
       if(L&&!on){on=true;t0=t+1600;const B=box();
         /* launch point: somewhere on the glowing rim of the square (its far or side edges) */
-        const b=lid.getBoundingClientRect(),cr=cv.getBoundingClientRect(),s=hw.offsetWidth||112,q=Math.random();
+        const b=lidRect(),cr=cv.getBoundingClientRect(),s=hw.offsetWidth||112,q=Math.random();
         if(q<.5){ex=b.left-cr.left+b.width*(.25+Math.random()*.6);ey=b.top-cr.top;}else if(q<.75){ex=b.left-cr.left+b.width*.1;ey=b.top-cr.top+b.height*.5;}else{ex=b.right-cr.left-b.width*.08;ey=b.top-cr.top+b.height*.5;}
         ex-=s/2;ey-=s/2;x=ex;y=ey;biud=false;const a=Math.random()*6.28;vx=Math.cos(a)*16;vy=-14;}
       if(!L)on=false;
@@ -4530,6 +4530,12 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
           k.w.style.transform="translate("+fx.toFixed(1)+"px,"+fy.toFixed(1)+"px) scale("+(.3+.7*ke).toFixed(3)+")";k.w.style.setProperty("--op",(ku<=0?0:Math.min(1,ku*2.5)).toFixed(2));});}
       requestAnimationFrame(fl);})(last);}
   /* snap the hatch to whole grid cells (64px, the grid's own size) in the floor plane */
+  /* where the hatch lands on screen, worked out from the floor's own tilt (Safari misreports sizes of 3D-tilted layers) */
+  function lidRect(){const W=cv.clientWidth,H=cv.clientHeight,cr=cv.getBoundingClientRect(),d=420,A=72*Math.PI/180,
+      x0=parseFloat(h.style.left)||0,y0=parseFloat(h.style.top)||0,w=parseFloat(h.style.width)||0,hh=parseFloat(h.style.height)||0;
+    const P=(xl,v)=>{const sc=d/(d-v*Math.sin(A));return [cr.left+W/2+(xl-1.1*W)*sc,cr.top+.58*H+v*Math.cos(A)*sc];};
+    const pts=[P(x0,y0),P(x0+w,y0),P(x0,y0+hh),P(x0+w,y0+hh)],xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
+    const l=Math.min(...xs),r=Math.max(...xs),t=Math.min(...ys),b=Math.max(...ys);return {left:l,right:r,top:t,bottom:b,width:r-l,height:b-t};}
   function place(){const W=cv.clientWidth,H=cv.clientHeight,G=64,phone=W<700,d=420,A=72*Math.PI/180;
     /* aim at a spot on screen (mirroring the light cord: left and low instead of right and high),
        work back to that spot on the tilted floor, then snap to the grid */
@@ -4539,11 +4545,11 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
     /* try the grid cells around that spot and keep the one that lands nearest the target and stays on screen */
     const c0=Math.round((xl-G)/G),r0=Math.round((v-G/2)/G),cr=cv.getBoundingClientRect();let best=null;
     for(let r=Math.max(0,r0-3);r<=r0+2;r++)for(let c=c0-4;c<=c0+4;c++){h.style.left=c*G+"px";h.style.top=r*G+"px";
-      const b=lid.getBoundingClientRect();if(b.bottom-cr.top>H*.97||b.left-cr.left<(phone?-W*.2:8)||b.width>W*(phone?.8:.45))continue;
+      const b=lidRect();if(b.bottom-cr.top>H*.97||b.left-cr.left<(phone?-W*.2:8)||b.width>W*(phone?.8:.45))continue;
       const e=Math.hypot((b.left+b.right)/2-cr.left-X,(b.top+b.bottom)/2-cr.top-Y);if(!best||e<best.e)best={e,c,r};}
     if(best){h.style.left=best.c*G+"px";h.style.top=best.r*G+"px";}
     lid.querySelector("b").style.fontSize="9px";
-    requestAnimationFrame(()=>{const b=lid.getBoundingClientRect(),cr=cv.getBoundingClientRect();
+    requestAnimationFrame(()=>{const b=lidRect(),cr=cv.getBoundingClientRect();
       hs.style.left=(b.right-cr.left+8)+"px";hs.style.top=(b.bottom-cr.top-16)+"px";});}
   place();addEventListener("resize",place);setTimeout(place,600);
   /* sounds made on the spot: a wooden creak (floorboards, or the lid's hinge), and the latch rattling */
@@ -4558,7 +4564,7 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
   const floor=()=>{};
   const lidUp=()=>{click(1400,.09,0);click(2600,.05,.05);};
   function rattle(){[0,.09,.16,.27,.34].forEach((d,i)=>click(i%2?3000:2300,.07,d));if(window.__hapt)__hapt("warn");}
-  function bubbles(){const b=lid.getBoundingClientRect(),cr=cv.getBoundingClientRect();
+  function bubbles(){const b=lidRect(),cr=cv.getBoundingClientRect();
     for(let i=0;i<9;i++){const e=document.createElement("i");e.className="cvhb";const x=b.left-cr.left+b.width*(.05+Math.random()*.35),y=b.top-cr.top+b.height*(.2+Math.random()*.6),s=.6+Math.random()*1.3;
       e.style.left=x+"px";e.style.top=y+"px";cv.appendChild(e);
       e.animate([{transform:"translate(0,0) scale("+s*.4+")",opacity:0},{transform:"translate("+(Math.random()*16-8)+"px,-20px) scale("+s+")",opacity:1,offset:.25},{transform:"translate("+(Math.random()*40-20)+"px,"+(-70-Math.random()*90)+"px) scale("+s+")",opacity:0}],
@@ -4575,7 +4581,7 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
     const g=a.createGain();/* loudest first, then a long, slow tail that fades out */
     const cu=new Float32Array(64);for(let i=0;i<64;i++)cu[i]=.04*Math.pow(1-i/63,2.4);g.gain.setValueCurveAtTime(cu,t,D);   /* loudest at once, then fading until the steam runs out */
     n.connect(hp);hp.connect(bp);bp.connect(g);g.connect(a.destination);n.start(t);n.stop(t+D);}catch(e){}}
-  function fog(){const b=lid.getBoundingClientRect(),cr=cv.getBoundingClientRect(),C=["127,227,236","169,155,240","227,169,182","230,204,122","147,226,204"];
+  function fog(){const b=lidRect(),cr=cv.getBoundingClientRect(),C=["127,227,236","169,155,240","227,169,182","230,204,122","147,226,204"];
     for(let i=0;i<14;i++){const e=document.createElement("i");e.className="cvfog";const sz=b.width*(.35+Math.random()*.4);
       const x=b.left-cr.left+b.width*(.1+Math.random()*.8),y=b.top-cr.top+b.height*(.2+Math.random()*.6);
       e.style.cssText="left:"+(x-sz/2)+"px;top:"+(y-sz*.3)+"px;width:"+sz+"px;height:"+(sz*.6)+"px;background:radial-gradient(closest-side,rgba("+C[i%5]+",.55),rgba("+C[(i+2)%5]+",.18) 55%,transparent)";
@@ -4839,4 +4845,12 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
 <style>
 /* phone library: the big card hangs from the top, right under the title bar, so the deck below does not cover it */
 @media (max-width:759px){.dexdev .dexscr .dcard{top:6px!important;translate:-50% 0!important;transform-origin:50% 0!important}}
+</style>
+<style>
+/* iPhone: gradient-clipped text can vanish inside a filtered bubble. The words are solid grey while idle (always visible),
+   and switch to the soap-film gradient only while lit; the switch back waits until the colour has faded, so it is not seen */
+.cvsubw .cvhs .l1,.cvsubw .cvhs .l2{-webkit-text-fill-color:rgba(214,216,220,.85)!important;color:rgba(214,216,220,.85)!important;transition:-webkit-text-fill-color 0s linear 1.8s,opacity 1.6s ease-in-out!important}
+.cvsubw .cvhs.open .l1,.cvsubw .cvhs.open .l2{-webkit-text-fill-color:transparent!important;color:transparent!important;transition:-webkit-text-fill-color 0s,opacity 1.6s ease-in-out!important}
+.cvsubw .cvhs .l1,.cvsubw .cvhs .l2{display:inline-block!important;-webkit-box-decoration-break:clone}
+.cvsubw .cvhs .st{display:flex!important;flex-direction:column;align-items:center}
 </style>
