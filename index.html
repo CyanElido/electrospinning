@@ -1790,7 +1790,8 @@ function dexLoop(t){const top=document.querySelector("#dexscr .dcard.top:not(.in
     let bu=0;if(top._bt){const k=(performance.now()-top._bt)/1700;bu=k<0?0:k<.1?k/.1:k<1?Math.exp(-(k-.1)*3.4):0;if(k>=1)top._bt=0;}
     drawYarn(pg,S.art||OX[S.set.ox].css,S.set.mode==="cs1"||S.set.mode==="cs2",t/1100,bu,S.mix);}dexRaf=requestAnimationFrame(dexLoop);}
 function dexDots(){document.getElementById("dexdots").innerHTML=DEX.map((S,i)=>'<button type="button" aria-label="'+S.name+'" aria-current="'+(i===dexI)+'" style="--sw:'+OX[S.set.ox].css+'"></button>').join("");
-  document.querySelectorAll("#dexdots button").forEach((b,i)=>b.onclick=()=>dexGo(i));document.getElementById("dexcount").textContent=(dexI+1)+" / "+DEX.length;}
+  document.querySelectorAll("#dexdots button").forEach((b,i)=>b.onclick=()=>dexGo(i));document.getElementById("dexcount").textContent=(dexI+1)+" / "+DEX.length;if(window.__fanSync)__fanSync();}
+window.__dexAPI={get DEX(){return DEX;},get OX(){return OX;},get i(){return dexI;},go:i=>dexGo(i)};
 /* ===== tarot-style deck: drag the top card and fling it any way; the next card rises ===== */
 function renderDeck(anim){const scr=document.getElementById("dexscr");scr.innerHTML="";
   for(let k=2;k>=0;k--){const j=(dexI+k)%DEX.length,c=dexPage(j);c.classList.add(k===0?"top":"back","b"+k);scr.appendChild(c);const S=DEX[j];drawYarn(c.querySelector("canvas"),S.art||OX[S.set.ox].css,S.set.mode==="cs1"||S.set.mode==="cs2",0,0,S.mix);}
@@ -4061,6 +4062,23 @@ requestAnimationFrame(frame);
 })();
 </script>
 <style>
+/* sample library and safety training: blur the field and its side panels behind, so only the cards read */
+.dex,.train{background:rgba(10,12,15,.5)!important;-webkit-backdrop-filter:blur(16px) saturate(1.1)!important;backdrop-filter:blur(16px) saturate(1.1)!important}
+/* tablet and computer: the whole library as one tight fanned row under the card, like a spread deck. Tap any card to bring it up */
+.dexfan{display:none}
+@media (min-width:760px) and (min-height:560px){
+  .dexbar .dexdots{display:none!important}
+  .dexfan{display:block;position:relative;order:1;flex:none;width:100%;height:104px;margin:0 auto 22px;pointer-events:none}
+  .dexdev .dexscr .dcard{height:640px!important;scale:var(--ds,1)}
+  .dexbar .dexload{order:2}
+  .fcard{position:absolute;left:50%;bottom:0;width:62px;height:88px;margin-left:-31px;border-radius:8px;pointer-events:auto;cursor:pointer;appearance:none;padding:0;
+    border:1px solid rgba(255,255,255,.18);background:linear-gradient(165deg,#30333a,#1a1c20);box-shadow:-3px 4px 10px rgba(0,0,0,.45);
+    transform-origin:50% var(--R);transform:rotate(var(--a)) translateY(0);transition:transform .3s cubic-bezier(.3,1.4,.5,1),border-color .2s,box-shadow .2s}
+  .fcard i{position:absolute;left:8px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--c);box-shadow:0 0 6px var(--c)}
+  .fcard b{position:absolute;left:5px;top:20px;writing-mode:vertical-rl;font:600 9.5px/1 var(--f-mono);letter-spacing:.06em;color:#E9E6DD;white-space:nowrap}
+  .fcard:hover{transform:rotate(var(--a)) translateY(-12px);border-color:rgba(127,227,236,.6)}
+  .fcard[aria-current="true"]{transform:rotate(var(--a)) translateY(-18px);border-color:#7FE3EC;box-shadow:0 0 0 1px #7FE3EC,0 0 16px rgba(127,227,236,.5),-3px 4px 10px rgba(0,0,0,.45)}
+}
 /* references: my papers, in a big soap bubble */
 .refs{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:max(20px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
   background:rgba(6,8,10,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
@@ -4112,10 +4130,34 @@ requestAnimationFrame(frame);
     requestAnimationFrame(()=>rv&&rv.classList.add("on"));}
   window.__openRefs=open;
   /* iPad: coming back to the app, or the window changing size, re-fits the 3D view to the screen */
-  const refit=()=>{dispatchEvent(new Event("resize"));setTimeout(()=>dispatchEvent(new Event("resize")),350);};
+  /* iOS sometimes keeps the old page size after a rotation or a window resize; re-setting the viewport tag makes it measure the window again */
+  const vm=document.querySelector('meta[name="viewport"]');
+  const VM0=vm?vm.getAttribute("content"):"";
+  let lastRM=0;const remeasure=()=>{if(!vm||performance.now()-lastRM<2000)return;lastRM=performance.now();vm.setAttribute("content",VM0+", height=device-height");clearTimeout(remeasure.t);remeasure.t=setTimeout(()=>vm.setAttribute("content",VM0),80);};
+  const refit=()=>{remeasure();dispatchEvent(new Event("resize"));setTimeout(()=>dispatchEvent(new Event("resize")),350);setTimeout(()=>dispatchEvent(new Event("resize")),900);};
+  addEventListener("load",()=>setTimeout(refit,400));
   addEventListener("pageshow",refit);addEventListener("orientationchange",refit);document.addEventListener("visibilitychange",()=>{if(!document.hidden)refit();});
-  if(window.visualViewport)visualViewport.addEventListener("resize",()=>{clearTimeout(refit.t);refit.t=setTimeout(refit,120);});
+  const nudge=()=>{dispatchEvent(new Event("resize"));};
+  if(window.visualViewport)visualViewport.addEventListener("resize",()=>{clearTimeout(nudge.t);nudge.t=setTimeout(nudge,150);});
   const rb=document.getElementById("tipr");if(rb){if(window.__bub)__bub(rb);rb.addEventListener("click",()=>{open(document.getElementById("tipc").dataset.r||null);});}
+})();
+</script>
+<script>
+(function(){
+  const bar=document.querySelector("#dex .dexbar");if(!bar)return;const fan=document.createElement("div");fan.className="dexfan";fan.setAttribute("aria-label","All samples");bar.insertBefore(fan,bar.firstChild);
+  let built=0;
+  function build(){const A=window.__dexAPI;if(!A)return;const D=A.DEX,n=D.length;fan.innerHTML="";
+    const R=2200,step=29/R*180/Math.PI;           /* about 30 px between cards along a gentle arc */
+    D.forEach((S,i)=>{const b=document.createElement("button");b.type="button";b.className="fcard";b.setAttribute("aria-label",S.name);
+      const a=(i-(n-1)/2)*step;b.style.setProperty("--a",a.toFixed(3)+"deg");b.style.setProperty("--R",R+"px");
+      b.style.setProperty("--c",S.art||(A.OX[S.set.ox]&&A.OX[S.set.ox].css)||"#E6CC7A");b.style.zIndex=String(i);
+      b.innerHTML="<i></i><b>"+S.name+"</b>";b.addEventListener("click",()=>{try{window.__sfx&&__sfx.unlock();__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}if(window.__hapt)__hapt("tap");A.go(i);});fan.appendChild(b);});
+    built=1;sync();}
+  function sync(){const A=window.__dexAPI;if(!A)return;if(!built)return build();fan.querySelectorAll(".fcard").forEach((b,i)=>b.setAttribute("aria-current",String(i===A.i)));}
+  /* the card keeps its full height and scales down to fit above the row */
+  function fit(){const scr=document.getElementById("dexscr");if(!scr||!scr.clientHeight)return;const on=getComputedStyle(fan).display!=="none";
+    scr.style.setProperty("--ds",on?Math.min(1,(scr.clientHeight-14)/640).toFixed(3):"1");}
+  const s0=sync;window.__fanSync=()=>{s0();fit();};addEventListener("resize",fit);
 })();
 </script>
 <style>
