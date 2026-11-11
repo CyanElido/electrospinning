@@ -1,9 +1,9 @@
 // Offline cache for the E² Spinning simulator.
 // Pages (index.html) are fetched fresh from the network first, so a new upload shows up on the next open.
 // Everything else (three.js, icons) is served from the cache first.
-const VERSION="es-v104";
-const FILES=["./","index.html","manifest.webmanifest","three.min.js","OrbitControls.js","icon-192.png","icon-512.png","apple-touch-icon.png","paper-md-01.jpg","paper-md-02.jpg","paper-md-03.jpg","paper-md-04.jpg","paper-md-05.jpg","paper-md-06.jpg","paper-md-07.jpg","paper-md-08.jpg","paper-md-09.jpg","paper-md-10.jpg","paper-md-11.jpg","paper-iccm-01.jpg","paper-iccm-02.jpg","paper-iccm-03.jpg","paper-iccm-04.jpg","paper-iccm-05.jpg","paper-iccm-06.jpg"];
-self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
+const VERSION="es-v105";
+const FILES=["./","index.html","manifest.webmanifest","three.min.js","OrbitControls.js","icon-192.png","icon-512.png","apple-touch-icon.png","md-01.jpeg","md-02.jpeg","md-03.jpeg","md-04.jpeg","md-05.jpeg","md-06.jpeg","md-07.jpeg","md-08.jpeg","md-09.jpeg","md-10.jpeg","md-11.jpeg","iccm-01.jpeg","iccm-02.jpeg","iccm-03.jpeg","iccm-04.jpeg","iccm-05.jpeg","iccm-06.jpeg"];
+self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>Promise.all(FILES.map(f=>c.add(f).catch(()=>{})))).then(()=>self.skipWaiting()));   // a missing file never blocks the update});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;
   // lab videos stream straight from the network: Safari needs range requests, which the cache cannot answer
