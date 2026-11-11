@@ -2587,7 +2587,8 @@ var TIPS={
   yarnelec:{k:"Tip · round yarn",t:"A round yarn has no flat faces. The electrodes here are drawn as flat plates for clarity. Real electrodes are wrapped or coated, and the poling field around a round yarn is not uniform."},
   inflate:{k:"Tip · estimated value",t:"The 1.6× inflation without an anneal is an estimate. Trapped surface charge does make unannealed samples read high, but the size depends on the sample. Your before and after anneal measurements will set it."},
   conevid:{k:"Lab video · the cone",t:"",v:"jet"},
-  paper:{k:"Published · this yarn",t:"The Chapter 5 yarns are in print: a Materials & Design paper (2026) and an ICCM-24 poster (2025).",r:1},
+  paper55:{k:"Published · the first formula",t:"Y55 is where it started. This formula was first shown as a poster at ICCM-24 in Baltimore (2025).",r:"iccm"},
+  paperMD:{k:"Published · this yarn",t:"Y37 and Y19 are in print, in a Materials & Design paper (2026).",r:"md"},
   jet:{k:"Slowed down for the eye",t:"A real jet travels at metres per second and whips too fast to follow. The jet here is slowed so you can see its path.",v:"jet"}};
 /* paste a Vimeo link (https://vimeo.com/123456789 or an unlisted .../123456789/abcdef) or an .mp4 file name in the repo */
 var VIDEOS={jet:{title:"Single needle · non-conductive solution. The dual needle pair works the same way.",src:"single_fibre.mp4"},cxfibre:{title:"Core–sheath needle · the coaxial cone and fibre, filmed in the lab",src:"cx_fibre.mp4"},cx:{title:"A good CX run, filmed in the lab",src:"cx.mp4"}};
@@ -2598,8 +2599,8 @@ window.__coneVid=function(){if(!TIPS||!TIPS.conevid)return;const cx=typeof M!=="
   if(tipCur==="conevid")return;tipSeen.delete("conevid");showTip("conevid");};
 function showTip(k){if(!TIPS||!TIPS[k]||tipSeen.has(k))return;tipSeen.add(k);if(tipCur){tipQ.push(k);return;}tipShow(k);}
 function tipShow(k){const T=TIPS[k],el=document.getElementById("tipc");tipCur=k;el.dataset.tone=/^(Warning|Fault|Danger)/i.test(T.k)?"red":"cyan";document.getElementById("tipk").textContent=T.k;document.getElementById("tipt").textContent=T.t;
-  document.getElementById("tipb").hidden=!(T.v||T.r);document.getElementById("tipv").hidden=!T.v;{const rb=document.getElementById("tipr");if(rb)rb.hidden=!T.r;}el.dataset.v=T.v||"";el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));sfx.tick&&sfx.tick();clearTimeout(tipT);tipT=setTimeout(tipHide,T.v?16000:12000);}
-window.__paperTip=nm=>{if(/^Y(55|37|19)\b/.test(nm||"")){tipSeen.delete("paper");showTip("paper");}};
+  document.getElementById("tipb").hidden=!(T.v||T.r);document.getElementById("tipv").hidden=!T.v;{const rb=document.getElementById("tipr");if(rb){rb.hidden=!T.r;const g=rb.querySelector(".g")||rb;g.textContent=T.r?"Open the paper":"";}}el.dataset.r=T.r||"";el.dataset.v=T.v||"";el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));sfx.tick&&sfx.tick();clearTimeout(tipT);tipT=setTimeout(tipHide,T.v?16000:12000);}
+window.__paperTip=nm=>{const k=/^Y55\b/.test(nm||"")?"paper55":/^Y(37|19)\b/.test(nm||"")?"paperMD":null;if(k){tipSeen.delete(k);showTip(k);}};
 function tipHide(){const el=document.getElementById("tipc");clearTimeout(tipT);el.classList.remove("on");setTimeout(()=>{el.hidden=true;tipCur=null;if(tipQ.length)tipShow(tipQ.shift());},380);}
 function openVideo(k){const V=VIDEOS[k]||{title:"Lab video",src:""},o=document.getElementById("vid"),f=document.getElementById("vidf"),src=V.src||"";document.getElementById("vidt").textContent=V.title;
   let html='<span>Video coming soon.<br>Lab footage of this step will play here.</span>';const m=/vimeo\.com\/(?:video\/)?(\d+)(?:\/([0-9a-f]+))?/.exec(src);
@@ -4064,7 +4065,7 @@ requestAnimationFrame(frame);
 .refs{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:max(20px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
   background:rgba(6,8,10,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
 .refs.on{opacity:1}
-.refs .rbox{position:relative;width:min(560px,100%);padding:34px 34px 30px;color:#E9E6DD;transform:scale(.9);transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
+.refs .rbox{position:relative;width:min(600px,100%);padding:46px 52px 44px;color:#E9E6DD;transform:scale(.9);transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
 .refs.on .rbox{transform:scale(1)}
 .refs h2{margin:0 0 4px;font:600 11px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:#7FE3EC}
 .refs .rlead{margin:0 0 18px;font:400 13px/1.45 'Times New Roman',serif;color:#BFC6C9}
@@ -4073,23 +4074,24 @@ requestAnimationFrame(frame);
 .refs li b{font-weight:400;font-style:italic}
 .refs li .rtag{display:block;margin-bottom:3px;font:500 9.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#E6CC7A}
 .refs li a{display:inline-block;margin-top:5px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#7FE3EC;text-decoration:none;border-bottom:1px solid rgba(127,227,236,.4);padding-bottom:2px}
+.refs li a.rpdf{margin-left:14px;color:#E6CC7A;border-color:rgba(230,204,122,.45)}
 .refs .rx{position:absolute;right:14px;top:12px;appearance:none;border:0;background:none;color:#E9E6DD;font:400 18px/1 var(--f-mono);cursor:pointer;padding:6px}
 </style>
 <script>
 (function(){
   const PAPERS=[
-    {tag:"Journal · 2026",cite:'Zhao, S. et al. (2026). <b>Materials &amp; Design</b>, 116569.',doi:"10.1016/j.matdes.2026.116569"},
-    {tag:"Conference poster · 2025",cite:'Zhao, S., Taylor, L. W., Cheung, V. and Shi, Y. (2025). Novel electrospinning PVDF–Bi₂O₃/CeO₂ composite yarns: a versatile approach towards functional X-ray shielding textiles. <b>24th International Conference on Composite Materials (ICCM-24)</b>, Baltimore.',doi:"10.5281/zenodo.18597437"}];
+    {id:"md",tag:"Journal · 2026 · open access",cite:'Zhao, S., Taylor, L. W., Cheung, V. and Shi, Y. (2026). Coaxial electrospinning of continuous PVDF/Bi₂O₃/CeO₂ nanofibre yarns with lead-equivalent X-ray attenuation for radiation-protective healthcare textiles. <b>Materials &amp; Design</b>, 268, 116569.',doi:"10.1016/j.matdes.2026.116569",pdf:"Zhao2026-MaterialsDesign.pdf"},
+    {id:"iccm",tag:"Conference poster · 2025",cite:'Zhao, S., Taylor, L. W., Cheung, V. and Shi, Y. (2025). Novel electrospinning PVDF/Bi₂O₃/CeO₂ composite yarn: a versatile approach towards functional X-ray shielding textile. <b>24th International Conference on Composite Materials (ICCM-24)</b>, Baltimore.',doi:"10.5281/zenodo.18597437",pdf:"Zhao2025-ICCM24.pdf"}];
   let ov=null;
-  function build(){ov=document.createElement("div");ov.className="refs";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-label","References");
-    ov.innerHTML='<div class="rbox"><button type="button" class="rx" aria-label="Close">✕</button><h2>References</h2><p class="rlead">The yarns in this simulator come from these papers.</p><ol>'+
-      PAPERS.map(p=>'<li><span class="rtag">'+p.tag+'</span>'+p.cite+'<br><a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi.org/'+p.doi+' ↗</a></li>').join("")+'</ol></div>';
+  let one=null;function build(){if(ov)ov.remove();ov=document.createElement("div");ov.className="refs";ov.hidden=true;ov.setAttribute("role","dialog");ov.setAttribute("aria-label","References");
+    ov.innerHTML='<div class="rbox"><button type="button" class="rx" aria-label="Close">✕</button><h2>'+(one?"The paper":"References")+'</h2><p class="rlead">'+(one?"Close it to go back to where you were.":"The yarns in this simulator come from these papers.")+'</p><ol>'+
+      PAPERS.filter(p=>!one||p.id===one).map(p=>'<li><span class="rtag">'+p.tag+'</span>'+p.cite+'<br><a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi.org/'+p.doi+' ↗</a>'+(p.pdf&&location.protocol!=="file:"&&!/claude\.ai|claudeusercontent/.test(location.host)?'<a class="rpdf" href="'+p.pdf+'" target="_blank" rel="noopener">PDF ↓</a>':'')+'</li>').join("")+'</ol></div>';
     document.body.appendChild(ov);const box=ov.querySelector(".rbox");if(window.__bigBub)__bigBub(box,"cyan");
     ov.addEventListener("click",e=>{if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
-  function open(){if(!ov)build();ov.hidden=false;requestAnimationFrame(()=>ov.classList.add("on"));}
+  function open(id){const want=(typeof id==="string"&&id)||null;if(!ov||want!==one){one=want;build();}ov.hidden=false;requestAnimationFrame(()=>ov.classList.add("on"));}
   function close(){ov.classList.remove("on");setTimeout(()=>{ov.hidden=true;},320);try{window.__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}}
   window.__openRefs=open;
-  const rb=document.getElementById("tipr");if(rb){if(window.__bub)__bub(rb);rb.addEventListener("click",()=>{open();});}
+  const rb=document.getElementById("tipr");if(rb){if(window.__bub)__bub(rb);rb.addEventListener("click",()=>{open(document.getElementById("tipc").dataset.r||null);});}
 })();
 </script>
 <style>

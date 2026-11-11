@@ -1,8 +1,8 @@
 // Offline cache for the E² Spinning simulator.
 // Pages (index.html) are fetched fresh from the network first, so a new upload shows up on the next open.
 // Everything else (three.js, icons) is served from the cache first.
-const VERSION="es-v100";
-const FILES=["./","index.html","manifest.webmanifest","three.min.js","OrbitControls.js","icon-192.png","icon-512.png","apple-touch-icon.png"];
+const VERSION="es-v102";
+const FILES=["./","index.html","manifest.webmanifest","three.min.js","OrbitControls.js","icon-192.png","icon-512.png","apple-touch-icon.png","Zhao2026-MaterialsDesign.pdf","Zhao2025-ICCM24.pdf"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;
