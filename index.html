@@ -4055,6 +4055,28 @@ requestAnimationFrame(frame);
   new MutationObserver(lab).observe(app,{attributes:true,attributeFilter:["class"]});lab();
 })();
 </script>
+<style>
+/* iPad with a finger: the purple glove appears where you touch, since there is no mouse cursor to show it */
+.tglove{position:fixed;left:0;top:0;width:58px;height:58px;z-index:9999;pointer-events:none;background:no-repeat 0 0/100% 100%;opacity:0;
+  transform-origin:var(--ox) var(--oy);transition:opacity .25s,scale .18s cubic-bezier(.3,1.6,.5,1);scale:.6;filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.tglove.on{opacity:1;scale:1}
+</style>
+<script>
+(function(){
+  /* tablets only: a coarse pointer on a big screen. Phones keep the plain touch, as before */
+  const big=()=>Math.min(screen.width,screen.height)>=700;
+  if(!matchMedia("(pointer:coarse)").matches||!big())return;
+  const cs=getComputedStyle(document.documentElement),grab=v=>{const m=/url\((["']?)(.*?)\1\)\s*(\d+)\s+(\d+)/.exec(cs.getPropertyValue(v));return m?{u:m[2],x:+m[3],y:+m[4]}:null;};
+  const OPEN=grab("--hp"),PRESS=grab("--hpp");if(!OPEN||!PRESS)return;
+  const S=58/40,g=document.createElement("i");g.className="tglove";g.setAttribute("aria-hidden","true");document.body.appendChild(g);let id=null,hideT=0;
+  function look(h){g.style.backgroundImage='url("'+h.u+'")';g.style.setProperty("--ox",h.x*S+"px");g.style.setProperty("--oy",h.y*S+"px");g.__h=h;}
+  function at(x,y){const h=g.__h;g.style.translate=(x-h.x*S)+"px "+(y-h.y*S)+"px";}
+  addEventListener("pointerdown",e=>{if(e.pointerType!=="touch"||(id!==null&&e.pointerId!==id))return;id=e.pointerId;clearTimeout(hideT);look(PRESS);at(e.clientX,e.clientY);g.classList.add("on");},{capture:true,passive:true});
+  addEventListener("pointermove",e=>{if(e.pointerId!==id)return;at(e.clientX,e.clientY);},{capture:true,passive:true});
+  const up=e=>{if(e.pointerId!==id)return;id=null;look(OPEN);at(e.clientX,e.clientY);hideT=setTimeout(()=>g.classList.remove("on"),650);};
+  addEventListener("pointerup",up,{capture:true,passive:true});addEventListener("pointercancel",up,{capture:true,passive:true});
+})();
+</script>
 <script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
 </html>
