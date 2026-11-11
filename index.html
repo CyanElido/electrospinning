@@ -4083,7 +4083,8 @@ requestAnimationFrame(frame);
 .pdfv .ph b{font:600 10.5px/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:#7FE3EC;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pdfv .ph a{flex:none;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#E6CC7A;text-decoration:none;border-bottom:1px solid rgba(230,204,122,.45);padding-bottom:2px;margin-left:auto}
 .pdfv .px{position:absolute!important;right:max(10px,env(safe-area-inset-right,0px))!important;top:max(8px,env(safe-area-inset-top,0px))!important;left:auto!important;bottom:auto!important}
-.pdfv .pp{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px max(14px,env(safe-area-inset-right,0px)) max(30px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;align-items:center;gap:14px}
+.pdfv .ph{z-index:3}.pdfv .px{z-index:4}
+.pdfv .pp{position:relative;z-index:1;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px max(14px,env(safe-area-inset-right,0px)) max(30px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;align-items:center;gap:14px}
 .pdfv .pp img{display:block;width:min(860px,100%);height:auto;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 /* tablets: the floating panels stand still, and overlays skip the live blur, to keep the bubbles smooth */
 @media (pointer:coarse){#inputs,#outputs{animation:none!important}.refs{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(6,8,10,.82)!important}}
@@ -4101,7 +4102,7 @@ requestAnimationFrame(frame);
     ov.addEventListener("click",e=>{const pl=e.target.closest(".rpdf");if(pl){e.preventDefault();reader(pl.dataset.pid);return;}if(e.target===ov||e.target.closest(".rx"))close();});addEventListener("keydown",e=>{if(e.key==="Escape"&&ov&&!ov.hidden)close();});}
   function open(id){const want=(typeof id==="string"&&id)||null;if(!ov||want!==one){one=want;build();}ov.hidden=false;requestAnimationFrame(()=>ov.classList.add("on"));}
   function close(){ov.classList.remove("on");setTimeout(()=>{ov.hidden=true;},320);try{window.__sfx&&__sfx.bub&&__sfx.bub();}catch(e){}}
-  const PAGES={md:11,iccm:6};const PAGEFILE={md2:"IMG_3007.jpeg"};   // page 2 went up under the phone's photo namelet rv=null;
+  const PAGES={md:11,iccm:6};const PAGEFILE={md2:"IMG_3007.jpeg"};/* page 2 went up under the phone's photo name */let rv=null;
   function reader(id){const P=PAPERS.find(p=>p.id===id);if(!P)return;if(rv)rv.remove();
     rv=document.createElement("div");rv.className="pdfv";rv.setAttribute("role","dialog");rv.setAttribute("aria-label","Paper");
     let pg="";for(let i=1;i<=PAGES[id];i++)pg+='<img loading="'+(i<3?"eager":"lazy")+'" src="'+(PAGEFILE[id+i]||(id+'-'+String(i).padStart(2,"0")+'.jpeg'))+'" alt="Page '+i+'">';
