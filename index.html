@@ -4069,24 +4069,27 @@ requestAnimationFrame(frame);
 .dexfan{display:none}
 @media (min-width:760px) and (min-height:560px){
   .dexbar .dexdots{display:none!important}
-  .dexbar{padding-bottom:0!important;overflow:visible}
-  .dexbar .dexload{order:1;margin-bottom:6px!important}
-  .dexfan{display:block;position:relative;order:2;flex:none;width:calc(100% + 40px);margin:0 -20px -2px;height:132px;touch-action:none;pointer-events:auto;overflow:visible}
+  .dexbar{position:relative;padding-top:0!important;padding-bottom:0!important;overflow:visible}
+  .dexscr{z-index:30;background:transparent!important;pointer-events:none}
+  .dexscr>*{pointer-events:auto}
+  .dexbar .dexload.pb{position:absolute;z-index:50;right:max(18px,3%);bottom:var(--lb,150px);width:min(230px,24%);min-width:180px;margin:0!important}
+  .dexfan{display:block;position:relative;order:2;flex:none;width:calc(100% + 40px);margin:-70px -20px 0;height:var(--fh,140px);touch-action:none;pointer-events:auto;overflow:visible}
   .dexdev .dexscr .dcard{height:640px!important;scale:var(--ds,1)}
-  .fcard{position:absolute;left:50%;bottom:-34px;width:var(--fw);height:calc(var(--fw) * 1.45);margin-left:calc(var(--fw) / -2);border-radius:10px;pointer-events:auto;cursor:pointer;appearance:none;padding:0;
+  .fcard{position:absolute;left:50%;bottom:-22px;width:var(--fw);height:var(--ch,calc(var(--fw) * 1.45));margin-left:calc(var(--fw) / -2);border-radius:10px;pointer-events:auto;cursor:pointer;appearance:none;padding:0;
     border:1px solid rgba(255,255,255,.2);background:linear-gradient(165deg,#33363d,#1a1c20);box-shadow:-4px 6px 14px rgba(0,0,0,.5);
     transform-origin:50% var(--R);transform:rotate(var(--a)) translateY(var(--ty,0px));transition:transform .28s cubic-bezier(.3,1.5,.5,1),border-color .2s,box-shadow .2s}
   .fcard i{position:absolute;left:10px;top:10px;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
-  .fcard b{position:absolute;left:7px;top:26px;writing-mode:vertical-rl;font:600 11px/1 var(--f-mono);letter-spacing:.06em;color:#E9E6DD;white-space:nowrap}
-  .fcard.peek{--ty:-30px;transition-duration:.16s}
+  .fcard b{position:absolute;left:9px;top:30px;writing-mode:vertical-rl;font:600 12px/1 var(--f-mono);letter-spacing:.06em;color:#E9E6DD;white-space:nowrap}
+  .fcard.peek{--ty:-34px;transition-duration:.16s;z-index:40!important}
   .fcard:hover{--ty:-18px}
   .fcard[aria-current="true"]{--ty:-24px;border-color:#7FE3EC;box-shadow:0 0 0 1px #7FE3EC,0 0 18px rgba(127,227,236,.55),-4px 6px 14px rgba(0,0,0,.5)}
   .fcard.gone{opacity:0;transition:opacity .15s}
 }
-.fdraw{position:fixed;z-index:200;pointer-events:none;border-radius:12px;border:1px solid rgba(127,227,236,.7);background:linear-gradient(165deg,#33363d,#1a1c20);
+.fdraw{position:fixed;z-index:200;pointer-events:none;will-change:transform;border-radius:12px;border:1px solid rgba(127,227,236,.7);background:linear-gradient(165deg,#33363d,#1a1c20);
   box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 24px rgba(127,227,236,.35);transform-style:preserve-3d;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;
   font:700 22px/1 'Times New Roman',serif;color:#F2EEE4}
-.fdraw i{position:absolute;left:12px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.fdraw b{position:absolute;left:9px;top:30px;writing-mode:vertical-rl;font:600 12px/1 var(--f-mono);letter-spacing:.06em;color:#E9E6DD;white-space:nowrap}
+.fdraw i{position:absolute;left:10px;top:10px;width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
 /* references: my papers, in a big soap bubble */
 .refs{position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;padding:max(20px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
   background:rgba(6,8,10,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s}
@@ -4155,8 +4158,8 @@ requestAnimationFrame(frame);
   const bar=document.querySelector("#dex .dexbar");if(!bar)return;const fan=document.createElement("div");fan.className="dexfan";fan.setAttribute("aria-label","All samples");bar.appendChild(fan);
   let built=0,cards=[];
   function build(){const A=window.__dexAPI;if(!A)return;const D=A.DEX,n=D.length;fan.innerHTML="";cards=[];
-    const W=fan.clientWidth||innerWidth,fw=Math.round(Math.min(96,Math.max(70,W/13))),gap=Math.min(fw*.55,(W-fw-30)/(n-1)),R=Math.max(3600,W*W/90),step=gap/R*180/Math.PI;
-    fan.style.setProperty("--fw",fw+"px");
+    const W=fan.clientWidth||innerWidth,fw=Math.round(Math.min(124,Math.max(92,W/8.6))),gap=Math.min(fw*.6,(W-fw-10)/(n-1)),R=Math.round(W*1.15),step=gap/R*180/Math.PI;
+    fan.style.setProperty("--fw",fw+"px");fan.style.setProperty("--fh",Math.round(fw*1.45-22+6)+"px");
     D.forEach((S,i)=>{const b=document.createElement("button");b.type="button";b.className="fcard";b.setAttribute("aria-label",S.name);b.dataset.i=i;
       b.style.setProperty("--a",((i-(n-1)/2)*step).toFixed(3)+"deg");b.style.setProperty("--R",R+"px");
       b.style.setProperty("--c",S.art||(A.OX[S.set.ox]&&A.OX[S.set.ox].css)||"#E6CC7A");b.style.zIndex=String(i);
@@ -4168,29 +4171,59 @@ requestAnimationFrame(frame);
   function cardAt(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest?el.closest(".fcard"):null;}
   function peek(c){if(!c)return;const k=+c.dataset.i;if(k===lastK)return;lastK=k;c.classList.add("peek");clearTimeout(c._pt);c._pt=setTimeout(()=>c.classList.remove("peek"),240);
     try{const S=window.__sfx;S&&S.tick&&S.tick();}catch(e){}}
-  /* draw: tap a card, or pull it up out of the row, and it flips over and grows into the big card */
-  function draw(c){const A=window.__dexAPI;if(!A||!c)return;const i=+c.dataset.i;if(i===A.i){c.classList.add("peek");setTimeout(()=>c.classList.remove("peek"),240);return;}
-    const r=c.getBoundingClientRect(),top=document.querySelector("#dexscr .dcard.top"),t=top?top.getBoundingClientRect():{left:innerWidth/2-180,top:innerHeight/2-280,width:360,height:560};
-    const f=document.createElement("div");f.className="fdraw";f.style.setProperty("--c",getComputedStyle(c).getPropertyValue("--c"));
-    f.style.left=r.left+"px";f.style.top=r.top+"px";f.style.width=r.width+"px";f.style.height=r.height+"px";f.innerHTML="<i></i>";document.body.appendChild(f);c.classList.add("gone");
+  /* draw: pull a card up and it follows the finger, growing a little as it leaves the row.
+     Let go high enough (or just tap) and it lifts, turns over, grows into the big card, floats a moment and settles */
+  function clone(c){const r=c.getBoundingClientRect(),f=document.createElement("div");f.className="fdraw";f.style.setProperty("--c",getComputedStyle(c).getPropertyValue("--c"));
+    const w=c.offsetWidth,h=c.offsetHeight,a=parseFloat(c.style.getPropertyValue("--a"))||0;
+    f.style.left=(r.left+r.width/2-w/2)+"px";f.style.top=(r.top+r.height/2-h/2)+"px";f.style.width=w+"px";f.style.height=h+"px";f.innerHTML=c.innerHTML;
+    f._a=a;f._w=w;f._h=h;f._x=0;f._y=0;f._s=1;f._r=a;document.body.appendChild(f);c.classList.add("gone");return f;}
+  const T=f=>"translate("+f._x+"px,"+f._y+"px) rotate("+f._r+"deg) rotateY(0deg) scale("+f._s+")";
+  function follow(f,dx,dy){const k=Math.max(0,Math.min(1,-dy/220));f._x=dx;f._y=dy;f._s=1+k*.35;f._r=f._a*(1-k)+dx*.04;f.style.transform=T(f);}
+  function back(f,c){f.animate([{transform:T(f)},{transform:"translate(0,0) rotate("+f._a+"deg) rotateY(0deg) scale(1)"}],{duration:320,easing:"cubic-bezier(.3,1.4,.5,1)",fill:"forwards"})
+    .onfinish=()=>{f.remove();c.classList.remove("gone");};}
+  function draw(c,f){const A=window.__dexAPI;if(!A||!c)return;const i=+c.dataset.i;
+    if(i===A.i&&!f){c.classList.add("peek");setTimeout(()=>c.classList.remove("peek"),240);return;}
+    if(i===A.i&&f){back(f,c);return;}
+    f=f||clone(c);const fr=f.getBoundingClientRect(),tc=document.querySelector("#dexscr .dcard.top"),t=tc?tc.getBoundingClientRect():{left:innerWidth/2-180,top:innerHeight/2-280,width:360,height:560};
     try{const S=window.__sfx;S&&S.unlock();S&&S.fling&&S.fling();}catch(e){}if(window.__hapt)__hapt("tap");
-    const dx=t.left+t.width/2-(r.left+r.width/2),dy=t.top+t.height/2-(r.top+r.height/2),sx=t.width/r.width,sy=t.height/r.height;
-    const an=f.animate([{transform:"translate(0,0) rotateY(0deg) scale(1,1)"},{transform:"translate("+dx*.45+"px,"+(dy*.45-60)+"px) rotateY(90deg) scale("+(1+(sx-1)*.45)+","+(1+(sy-1)*.45)+")",offset:.45},
-      {transform:"translate("+dx+"px,"+dy+"px) rotateY(180deg) scale("+sx+","+sy+")"}],{duration:620,easing:"cubic-bezier(.3,.7,.3,1)",fill:"forwards"});
-    setTimeout(()=>{A.go(i,true);},300);
-    an.onfinish=()=>{f.animate([{opacity:1},{opacity:0}],{duration:200,fill:"forwards"}).onfinish=()=>f.remove();};}
+    const ox=parseFloat(f.style.left)+f._w/2,oy=parseFloat(f.style.top)+f._h/2,tx=t.left+t.width/2-ox,ty=t.top+t.height/2-oy,s=Math.min(t.width/f._w,t.height/f._h);
+    const lift=Math.min(fr.top-60,120),mx=f._x+(tx-f._x)*.35,my=Math.min(f._y,0)-lift;
+    const K=(x,y,r,ry,sc,o)=>({transform:"translate("+x+"px,"+y+"px) rotate("+r+"deg) rotateY("+ry+"deg) scale("+sc+")",offset:o});
+    const an=f.animate([K(f._x,f._y,f._r,0,f._s,0),
+      K(mx,my,f._r*.3-4,25,f._s*1.15,.22),
+      K(f._x+(tx-f._x)*.6,ty-30,-3,95,s*.55,.48),
+      K(tx,ty-14,1.5,170,s*.96,.72),
+      K(tx,ty+5,-.6,184,s*1.015,.86),
+      K(tx,ty,0,180,s,1)],{duration:1050,easing:"cubic-bezier(.25,.8,.3,1)",fill:"forwards"});
+    setTimeout(()=>{A.go(i,true);},560);
+    an.onfinish=()=>{f.animate([{opacity:1},{opacity:0}],{duration:260,fill:"forwards"}).onfinish=()=>f.remove();};setTimeout(()=>f.remove(),2400);}
   let dn=null;
-  fan.addEventListener("pointerdown",e=>{dn={x:e.clientX,y:e.clientY,c:cardAt(e.clientX,e.clientY),moved:false};lastK=-1;peek(dn.c);try{fan.setPointerCapture(e.pointerId);}catch(_){}});
+  fan.addEventListener("pointerdown",e=>{dn={x:e.clientX,y:e.clientY,c:cardAt(e.clientX,e.clientY),moved:false,f:null};lastK=-1;peek(dn.c);try{fan.setPointerCapture(e.pointerId);}catch(_){}});
   fan.addEventListener("pointermove",e=>{const c=cardAt(e.clientX,e.clientY);if(e.pointerType==="mouse"&&!dn){peek(c);return;}if(!dn)return;
-    if(Math.abs(e.clientX-dn.x)>10)dn.moved=true;peek(c);
-    if(dn.y-e.clientY>40&&c){const k=c;dn=null;draw(k);}});
-  const up=e=>{if(!dn)return;const d=dn;dn=null;if(!d.moved&&Math.abs(e.clientY-d.y)<12)draw(d.c);};
-  fan.addEventListener("pointerup",up);fan.addEventListener("pointercancel",()=>{dn=null;});
+    const dx=e.clientX-dn.x,dy=e.clientY-dn.y;
+    if(dn.f){follow(dn.f,dx,dy);return;}
+    /* moving up more than sideways picks the card up; moving sideways riffles through the row */
+    if(dn.c&&!dn.moved&&dy<-10&&Math.abs(dy)>Math.abs(dx)*1.2){dn.c.classList.remove("peek");dn.f=clone(dn.c);follow(dn.f,dx,dy);if(window.__hapt)__hapt("tap");return;}
+    if(Math.abs(dx)>10){dn.moved=true;dn.c=null;}peek(c);});
+  const up=e=>{if(!dn)return;const d=dn;dn=null;
+    if(d.f){const dy=e.clientY-d.y;if(dy<-70)draw(d.c,d.f);else back(d.f,d.c);return;}
+    if(!d.moved&&Math.abs(e.clientY-d.y)<12)draw(d.c);};
+  fan.addEventListener("pointerup",up);fan.addEventListener("pointercancel",()=>{if(dn&&dn.f)back(dn.f,dn.c);dn=null;});
   fan.addEventListener("pointerleave",()=>{if(!dn)lastK=-1;});
   /* the big card keeps its full height and scales down to fit above the row */
   function fit(){const scr=document.getElementById("dexscr");if(!scr||!scr.clientHeight)return;const on=getComputedStyle(fan).display!=="none";
-    scr.style.setProperty("--ds",on?Math.min(1,(scr.clientHeight-14)/640).toFixed(3):"1");}
-  window.__fanSync=()=>{sync();fit();};addEventListener("resize",()=>{if(built&&Math.abs(fan.clientWidth-built)>40)build();fit();});
+    if(!on){scr.style.setProperty("--ds","1");return;}
+    /* the big card grows to fill the screen (up to 1.3x), then the row of cards rises until its middle tucks just under the big card */
+    let ds=Math.min(1.3,(scr.clientHeight-40)/640);const tc=scr.querySelector(".dcard.top");
+    if(tc){const w0=tc.offsetWidth;const L0=document.getElementById("dexload"),lw=L0?L0.offsetWidth:200;if(w0>0)ds=Math.min(ds,Math.max(scr.clientWidth*.42,scr.clientWidth-2*(lw+40))/w0);}
+    scr.style.setProperty("--ds",ds.toFixed(3));
+    if(tc&&cards.length){const cb=tc.getBoundingClientRect().bottom,m=cards[cards.length>>1],mr=m.getBoundingClientRect(),fw=parseFloat(fan.style.getPropertyValue("--fw"))||100;
+      const h=Math.max(fw*1.2,Math.min(fw*3.2,m.offsetHeight+(mr.top-(cb-18))));fan.style.setProperty("--ch",Math.round(h)+"px");}
+    /* the load bubble floats on the right, just above the cards that dip down at the end of the arc */
+    const L=document.getElementById("dexload");if(!on||!L||!cards.length)return;const br=bar.getBoundingClientRect(),lr=L.getBoundingClientRect();let top=br.bottom;
+    cards.forEach(c=>{const r=c.getBoundingClientRect();if(r.right>lr.left-10&&r.left<lr.right+10)top=Math.min(top,r.top);});
+    bar.style.setProperty("--lb",Math.round(br.bottom-top+14)+"px");}
+  window.__fanSync=()=>{sync();fit();};addEventListener("resize",()=>{if(built&&Math.abs(fan.clientWidth-built)>40)build();fit();});setTimeout(fit,400);
 })();
 </script>
 <style>
