@@ -1163,7 +1163,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:0;height:22px}
       <div class="labbody">
         <div class="labstage"><canvas id="sencv" aria-label="3D test chamber with the poled sample, electrodes and charge amplifier"></canvas><span class="senhint" id="senhint">Drag the sample sideways to stretch · drag elsewhere to turn</span></div>
         <div class="labside">
-          <canvas id="senscope" aria-label="Charge amplifier output trace"></canvas><div class="labbtns"><button type="button" class="trbtn" id="sentap">Auto pulse</button><button type="button" class="trbtn ghost" id="senclear">Clear trace</button></div><div class="seg labseg" id="senform"><button type="button" data-f="yarn" aria-pressed="true">Yarn</button><button type="button" data-f="band" aria-pressed="false">Woven band</button></div><div class="seg labseg" id="senweave" hidden><button type="button" data-w="plain" aria-pressed="true">Plain</button><button type="button" data-w="twill" aria-pressed="false">Twill 2/2</button><button type="button" data-w="scale" aria-pressed="false">Fish-scale <i>soon</i></button></div><p id="sennote2"></p>
+          <canvas id="senscope" aria-label="Charge amplifier output trace"></canvas><div class="labbtns"><button type="button" class="trbtn" id="sentap">Auto pulse</button><button type="button" class="trbtn ghost" id="senclear">Clear trace</button><button type="button" class="trbtn ghost" id="senwhat" aria-label="What are d31 and d33?">d₃₁ · d₃₃ ?</button></div><div class="seg labseg" id="senform"><button type="button" data-f="yarn" aria-pressed="true">Yarn</button><button type="button" data-f="band" aria-pressed="false">Woven band</button></div><div class="seg labseg" id="senweave" hidden><button type="button" data-w="plain" aria-pressed="true">Plain</button><button type="button" data-w="twill" aria-pressed="false">Twill 2/2</button><button type="button" data-w="scale" aria-pressed="false">Fish-scale <i>soon</i></button></div><p id="sennote2"></p>
           <div class="seg labseg" id="senmat"><button type="button" data-k="film" aria-pressed="true">Commercial poled film</button><button type="button" data-k="yarn" aria-pressed="false">Your yarn (from poling lab)</button></div>
           <div class="labread" id="senread"></div>
           <div class="labctl" id="senctl"></div>
@@ -2599,6 +2599,7 @@ var TIPS={
   scission:{k:"Tip · long sonication",t:"Long probe sonication can also cut PVDF chains. Mw and viscosity drop, so the jet beads more easily. Use short cycles in a cold bath."},
   cnt:{k:"Warning · core CNT",t:"Above 0.005 g the core is too conductive. In screening, 0.007 and 0.009 g gave beads and crusting. CNT can also build up on the inner needle and bridge it to the HV supply."},
   cx:{k:"Sign of a good CX run",t:"Fine whiskers flare evenly just before the twist point and spin with it, and the finished yarn is slightly hairy, like wool.",v:"cx"},
+  dij:{k:"What are d₃₁ and d₃₃?",d:26000,t:"Piezoelectric coefficients: charge per newton of force, in pC/N.\nFirst number: where the charge is collected (3, the poling axis). Second: where the force acts.\nd₃₃ · press along 3 · Q = d₃₃ F\nd₃₁ · stretch along 1 · Q = d₃₁ F L / t. A long, thin yarn gains signal from its shape.\nPoled β-PVDF film: d₃₁ ≈ +20 to +28, d₃₃ ≈ −20 to −35 pC/N. Opposite signs, so the traces point opposite ways.\nPorous yarns give lower, effective values."},
   tribo:{k:"Tip · pressing tests",t:"Pressing can add triboelectric charge each time the platen touches and lifts. Warm hands or lamps add pyroelectric charge. Use fixed contact, a shielded box and a steady temperature, and check that the signal flips sign when the sample is turned over."},
   yarnelec:{k:"Tip · round yarn",t:"A round yarn has no flat faces. The electrodes here are drawn as flat plates for clarity. Real electrodes are wrapped or coated, and the poling field around a round yarn is not uniform."},
   inflate:{k:"Tip · estimated value",t:"The 1.6× inflation without an anneal is an estimate. Trapped surface charge does make unannealed samples read high, but the size depends on the sample. Your before and after anneal measurements will set it."},
@@ -2615,9 +2616,10 @@ window.__coneVid=function(){if(!TIPS||!TIPS.conevid)return;const cx=typeof M!=="
   if(tipCur==="conevid")return;tipSeen.delete("conevid");showTip("conevid");};
 function showTip(k){if(!TIPS||!TIPS[k]||tipSeen.has(k))return;tipSeen.add(k);if(tipCur){tipQ.push(k);return;}tipShow(k);}
 function tipShow(k){const T=TIPS[k],el=document.getElementById("tipc");tipCur=k;el.dataset.tone=/^(Warning|Fault|Danger)/i.test(T.k)?"red":"cyan";document.getElementById("tipk").textContent=T.k;document.getElementById("tipt").textContent=T.t;
-  document.getElementById("tipb").hidden=!(T.v||T.r);document.getElementById("tipv").hidden=!T.v;{const rb=document.getElementById("tipr");if(rb){rb.hidden=!T.r;const g=rb.querySelector(".g")||rb;g.textContent=T.r?"Open the paper":"";}}el.dataset.r=T.r||"";el.dataset.v=T.v||"";el.hidden=false;requestAnimationFrame(()=>el.classList.add("on"));sfx.tick&&sfx.tick();clearTimeout(tipT);tipT=setTimeout(tipHide,T.v?16000:12000);}
+  document.getElementById("tipb").hidden=!(T.v||T.r);document.getElementById("tipv").hidden=!T.v;{const rb=document.getElementById("tipr");if(rb){rb.hidden=!T.r;const g=rb.querySelector(".g")||rb;g.textContent=T.r?"Open the paper":"";}}el.dataset.r=T.r||"";el.dataset.v=T.v||"";el.hidden=false;{const L=document.querySelector(".lab.on"),r=L&&(L.querySelector(".senhint")||L.querySelector(".trtabs"));if(r&&innerWidth<=700)el.style.setProperty("--tiptop",Math.round(r.getBoundingClientRect().bottom+6)+"px");else el.style.removeProperty("--tiptop");}requestAnimationFrame(()=>el.classList.add("on"));sfx.tick&&sfx.tick();clearTimeout(tipT);tipT=setTimeout(tipHide,T.d||(T.v?16000:12000));}
 window.__paperTip=nm=>{const k=/^Y55\b/.test(nm||"")?"paper55":/^Y(37|19)\b/.test(nm||"")?"paperMD":null;if(k){tipSeen.delete(k);showTip(k);}};
 function tipHide(){const el=document.getElementById("tipc");clearTimeout(tipT);el.classList.remove("on");setTimeout(()=>{el.hidden=true;tipCur=null;if(tipQ.length)tipShow(tipQ.shift());},380);}
+window.__tipToggle=(()=>{let lt=0;return k=>{const n=performance.now();if(n-lt<700)return;lt=n;if(tipCur===k){tipHide();return;}tipSeen.delete(k);showTip(k);};})();
 function openVideo(k){const V=VIDEOS[k]||{title:"Lab video",src:""},o=document.getElementById("vid"),f=document.getElementById("vidf"),src=V.src||"";document.getElementById("vidt").textContent=V.title;
   let html='<span>Video coming soon.<br>Lab footage of this step will play here.</span>';const m=/vimeo\.com\/(?:video\/)?(\d+)(?:\/([0-9a-f]+))?/.exec(src);
   if(m)html='<iframe src="https://player.vimeo.com/video/'+m[1]+(m[2]?'?h='+m[2]+'&':'?')+'autoplay=1&dnt=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="'+V.title+'"></iframe>';
@@ -3411,7 +3413,7 @@ let tween=null,curStation="overview";
       B.h1.setAttribute("cx",cx0+L*.18+R*.15+Math.sin(s*.7)*3);B.h1.setAttribute("cy",cy-R*.66);B.h1.setAttribute("rx",R*.7+L*.14);B.h1.setAttribute("ry",R*.14);
       B.h2.setAttribute("cx",cx1-R*.15);B.h2.setAttribute("cy",cy+R*.52);B.h2.setAttribute("rx",R*.35);B.h2.setAttribute("ry",R*.12);}
     (function loop(t){if(!document.hidden&&t-lt>=30){lt=t;LIVE.forEach(B=>draw(B,t));}requestAnimationFrame(loop);})(performance.now());
-    document.querySelectorAll("#polzoom button,#polplay,#sentabs button,#sentap,#senclear,#senform button,#senweave button,#senmat button,#dipplay,#dipnext,#dipsteps button").forEach(b=>__bub(b));const z=document.getElementById("polzoom");if(z)z.classList.add("bubs");
+    document.querySelectorAll("#polzoom button,#polplay,#sentabs button,#sentap,#senclear,#senwhat,#senform button,#senweave button,#senmat button,#dipplay,#dipnext,#dipsteps button").forEach(b=>__bub(b));const z=document.getElementById("polzoom");if(z)z.classList.add("bubs");
     ["sentabs","senform","senweave","senmat"].forEach(k=>{const e=document.getElementById(k);if(e)e.classList.add("fbubs");});const sb=document.getElementById("sentap");if(sb&&sb.parentNode)sb.parentNode.classList.add("fbubs");})();
 
   /* big irregular bubble behind a card; tone "red" for warnings and faults, "cyan" otherwise */
@@ -3782,7 +3784,7 @@ function openPol(from){const d=document.getElementById("pollab");d.dataset.from=
     document.querySelectorAll("#polzoom button").forEach(b=>b.onclick=()=>{if(b.dataset.z==="dip"){const st=POL.a>.25?2:1,pl=document.getElementById("pollab");window.__polFrom=pl.dataset.from;pl.dataset.from="field";closeLab("pollab");setTimeout(()=>{window.__openDipoles(innerWidth/2,innerHeight/2,st,"pol");},200);return;}POL.z=b.dataset.z;document.querySelectorAll("#polzoom button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));sfx.tick&&sfx.tick();});}
   polUpd();if(!polRaf)polRaf=requestAnimationFrame(polDraw);}
 /* ===================== Sensing lab ===================== */
-const SEN={m:"31",mat:"film",F:0,Fv:0,drag:null,auto:0,Q:0,V:0,trace:[],Cf:10,L:45,w:2,t:100,elec:[]};
+const SEN={m:"31",mat:"film",F:0,gap:1,gapV:1,Fv:0,drag:null,auto:0,Q:0,V:0,trace:[],Cf:10,L:45,w:2,t:100,elec:[]};
 /* twisted yarn: fibres lie at the twist angle, so strain along them is the yarn strain × cos²θ */
 function senTw(){const a=clamp(M.ang||0,0,60)*Math.PI/180;return Math.cos(a)**2;}
 function senA(){return SEN.mat==="film"?1:clamp(POL.a/BETA,0,1)*.35*(SEN.m==="31"?senTw():1);}
@@ -3794,11 +3796,11 @@ function senBuild(){const C=document.getElementById("senctl");C.innerHTML=SCTL.m
   C.querySelectorAll("input").forEach(x=>x.oninput=()=>{SEN[x.dataset.k]=+x.value;senText();});}
 function senText(){SCTL.forEach(([k,,,,,f])=>{const e=document.getElementById("sv-"+k);if(e)e.textContent=f(SEN[k]);});
   const d=SEN.m==="31",A=senA(),coef=d?(22*A).toFixed(1)+" pC/N":(-30*A).toFixed(1)+" pC/N",tau=1e9*SEN.Cf*1e-9;
-  document.getElementById("senmode").textContent=d?"d₃₁ mode":"d₃₃ mode";document.getElementById("senhint").textContent=d?"Drag the sample sideways to stretch along 1 · drag elsewhere to turn":"Press the sample and drag down to squeeze along 3 · drag elsewhere to turn";
+  if(SEN._tm!==SEN.m){SEN._tm=SEN.m;document.getElementById("senmode").textContent=d?"d₃₁ mode":"d₃₃ mode";document.getElementById("senhint").textContent=d?"Drag the sample sideways to stretch along 1 · drag elsewhere to turn":"Press the sample and drag down to squeeze along 3 · drag elsewhere to turn";
   document.getElementById("sennote").innerHTML=d?"<b>d₃₁</b>: force along 1 (the stretch or fibre axis), charge collected on the faces normal to 3 (the poling axis). Q = d₃₁ · F · L / t, so a long, thin sample gives a large charge from a small force. This is the mode of your Instron method.":
-    "<b>d₃₃</b>: force along 3, the same axis as poling, onto the same electrode faces. Q = d₃₃ · F, with no geometry gain, so the signal is much smaller. For PVDF d₃₃ is negative: squeezing gives charge of the opposite sign to stretching.";
-  document.getElementById("senread").innerHTML=[["Coefficient",(d?"d₃₁ ≈ ":"d₃₃ ≈ ")+coef],["Force",SEN.Fv.toFixed(2)+" N"],["Charge Q",fmtQ(SEN.Q)],["Amplifier out · −Q/Cf",fmtV(SEN.V)],["Time constant Rf·Cf",tau.toFixed(1)+" s (Rf 1 GΩ)"],["Material",SEN.mat==="film"?"dense poled film (typical)":"your yarn: "+(POL.a*100).toFixed(0)+"% aligned × 0.35 fill (assumed)"]].concat(SEN.mat!=="film"&&SEN.m==="31"?[["Twist angle θ",(M.ang||0).toFixed(0)+"° · strain along fibres × cos²θ = "+senTw().toFixed(2)]]:[])
-    .map(([k,v])=>'<div><span>'+k+'</span><b>'+v+'</b></div>').join("");}
+    "<b>d₃₃</b>: force along 3, the same axis as poling, onto the same electrode faces. Q = d₃₃ · F, with no geometry gain, so the signal is much smaller. For PVDF d₃₃ is negative: squeezing gives charge of the opposite sign to stretching.";}
+  const _r=document.getElementById("senread"),_h=[["Coefficient",(d?"d₃₁ ≈ ":"d₃₃ ≈ ")+coef],["Force",SEN.Fv.toFixed(2)+" N"],["Charge Q",fmtQ(SEN.Q)],["Amplifier out · −Q/Cf",fmtV(SEN.V)],["Time constant Rf·Cf",tau.toFixed(1)+" s (Rf 1 GΩ)"],["Material",SEN.mat==="film"?"dense poled film (typical)":"your yarn: "+(POL.a*100).toFixed(0)+"% aligned × 0.35 fill (assumed)"]].concat(SEN.mat!=="film"&&SEN.m==="31"?[["Twist angle θ",(M.ang||0).toFixed(0)+"° · strain along fibres × cos²θ = "+senTw().toFixed(2)]]:[])
+    .map(([k,v])=>'<div><span>'+k+'</span><b>'+v+'</b></div>').join("");if(_r._h!==_h){_r._h=_h;_r.innerHTML=_h;}}
 let senRaf=0,senLast=0,senAcc=0;
 /* woven band textures: warp and weft drawn as shaded floats with a matching bump map */
 const WEAVES={};
@@ -3877,21 +3879,21 @@ function sen3dInit(){const cv=document.getElementById("sencv");const R=new THREE
   Object.assign(S3,{R,sc,cam,oc,sg,yarn,band,eT,eB,anvil,grips,platen,charges,texP,texN,elec,curve,dust,ray:new THREE.Raycaster(),v2:new THREE.Vector2()});
   cv.addEventListener("pointerdown",e=>{const b=cv.getBoundingClientRect();S3.v2.set((e.clientX-b.left)/b.width*2-1,-(e.clientY-b.top)/b.height*2+1);S3.ray.setFromCamera(S3.v2,cam);
     if(S3.ray.intersectObject(sg,true).length){SEN.drag={x:e.clientX,y:e.clientY};SEN.auto=0;oc.enabled=false;oc.autoRotate=false;try{cv.setPointerCapture(e.pointerId);}catch(_){}e.stopImmediatePropagation();}},{capture:true});
-  cv.addEventListener("pointermove",e=>{if(!SEN.drag)return;const W=cv.clientWidth,H=cv.clientHeight;SEN.F=SEN.m==="31"?clamp(Math.abs(e.clientX-SEN.drag.x)/(W*.3)*5,0,5):clamp((e.clientY-SEN.drag.y)/(H*.25)*12,0,12);});
-  const up=()=>{if(SEN.drag){SEN.drag=null;SEN.F=0;oc.enabled=true;}};cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);}
+  cv.addEventListener("pointermove",e=>{if(!SEN.drag)return;const W=cv.clientWidth,H=cv.clientHeight;if(SEN.m==="31")SEN.F=clamp(Math.abs(e.clientX-SEN.drag.x)/(W*.3)*5,0,5);else{const dy=e.clientY-SEN.drag.y,g=H*.06;SEN.gap=clamp(1-dy/g,0,1);SEN.F=clamp((dy-g)/(H*.25)*12,0,12);}});
+  const up=()=>{if(SEN.drag){const pr=SEN.m==="33"&&SEN.Fv>.3;SEN.drag=null;SEN.F=0;SEN.gap=1;oc.enabled=true;if(pr)setTimeout(()=>showTip("tribo"),900);}};cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);}
 function senDraw(t){if(!S3.R)sen3dInit();const cv=document.getElementById("sencv"),W=cv.clientWidth,H=cv.clientHeight,dt=Math.min(.05,(t-(senLast||t))/1000);senLast=t;const ts=t/1000;
   const sz=S3.R.getSize(new THREE.Vector2()),dock=(document.querySelector("#senlab .labside")||{}).offsetHeight||0;
   if(sz.x!==W||sz.y!==H||S3.dock!==dock){S3.dock=dock;S3.R.setSize(W,H,false);S3.cam.aspect=W/H;S3.cam.setViewOffset(W,H,0,dock*.5-30,W,H);
     if(!S3.fit){S3.fit=1;const k=clamp(1.05/(W/H),1,2.1);S3.cam.position.sub(S3.oc.target).multiplyScalar(k).add(S3.oc.target);}S3.cam.updateProjectionMatrix();}
-  let Ft=SEN.drag?SEN.F:0;if(SEN.auto){const ph=ts%1.6;Ft=ph<.5?Math.sin(ph/.5*Math.PI)*(SEN.m==="31"?2:6):0;}
-  const Fprev=SEN.Fv;SEN.Fv+=(Ft-SEN.Fv)*Math.min(1,dt*(SEN.drag?20:9));const Qn=senQ(SEN.Fv),dQ=Qn-SEN.Q;SEN.Q=Qn;
+  let Ft=SEN.drag?SEN.F:0,Gt=SEN.drag?SEN.gap:1;if(SEN.auto){const ph=ts%1.6;if(SEN.m==="31")Ft=ph<.5?Math.sin(ph/.5*Math.PI)*2:0;else{Gt=ph<.25?1-ph/.25:ph<.75?0:ph<1?(ph-.75)/.25:1;Ft=ph>=.25&&ph<.75?Math.sin((ph-.25)/.5*Math.PI)*6:0;}}if(SEN.m==="33"&&SEN.Fv>.15)Gt=0;SEN.gapV+=(Gt-SEN.gapV)*Math.min(1,dt*18);
+  const Fprev=SEN.Fv;SEN.Fv+=(Ft-SEN.Fv)*Math.min(1,dt*(SEN.drag||SEN.auto?20:9));const Qn=senQ(SEN.Fv),dQ=Qn-SEN.Q;SEN.Q=Qn;
   if(sfx.fabric&&dt>0){const rate=Math.abs(SEN.Fv-Fprev)/dt/(SEN.m==="31"?6:14);sfx.fabric(rate,SEN.m==="31"?"stretch":"press",SEN.form==="band");}
   SEN.V+=-dQ/(SEN.Cf*1e-9)-SEN.V*dt/SEN.Cf; /* inverting charge amplifier: Vout = -Q/Cf, decaying with Rf·Cf */senAcc+=dt;if(senAcc>.016){senAcc=0;SEN.trace.push(SEN.V);if(SEN.trace.length>400)SEN.trace.shift();senText();}
   const d31=SEN.m==="31",F=SEN.Fv,yarnOn=SEN.form!=="band";S3.yarn.visible=yarnOn;S3.band.visible=!yarnOn;S3.eT.material.opacity=yarnOn?1:.22;
   /* deformation: stretch along 1 thins 2 and 3 (Poisson ~0.35); press along 3 squashes and spreads */
   const ex=d31?F*.035:F*.008,ey=d31?-F*.012:-F*.03;const sx=1+ex,syy=1+ey,sz2=1+(d31?-F*.012:F*.012);
   [S3.yarn,S3.band].forEach(o=>o.scale.set(sx,syy,sz2));S3.eT.scale.set(sx,1,sz2);S3.eB.scale.set(sx,1,sz2);S3.eT.position.y=.12*syy;S3.eB.position.y=-.12*syy;S3.anvil.visible=!d31;S3.anvil.position.y=-.12*syy-.1;S3.eB.material.opacity=yarnOn?1:.22;
-  S3.grips.forEach((g,i)=>{g.visible=d31;g.position.x=(i?1:-1)*1.62*sx;});S3.platen.visible=!d31;S3.platen.position.y=.12*syy+.088+(d31?0:Math.max(0,.45-F*.6));
+  S3.grips.forEach((g,i)=>{g.visible=d31;g.position.x=(i?1:-1)*1.62*sx;});S3.platen.visible=!d31;S3.platen.position.y=.12*syy+.088+(d31?0:.45*SEN.gapV);
   S3.sg.position.y=1.5+Math.sin(ts*1.1)*.03;
   const qa=clamp(Math.abs(SEN.Q)/Math.max(1e-15,Math.abs(senQ(d31?3:8))),0,1),qs=Math.sign(SEN.Q)||1;
   S3.charges.forEach((c,i)=>{const top=c.userData.s>0;c.material.map=(top?qs>0:qs<0)?S3.texP:S3.texN;c.material.opacity=qa;c.position.x=(-1.1+2.2*(Math.floor(i/2))/9)*sx;c.position.y=c.userData.s*(.3*syy+.02*Math.sin(ts*3+i));});
@@ -3912,10 +3914,12 @@ function openSen(from){const d=document.getElementById("senlab");d.dataset.from=
     document.querySelectorAll("#senform button").forEach(b=>b.onclick=()=>{SEN.form=b.dataset.f;document.querySelectorAll("#senform button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));document.getElementById("senweave").hidden=SEN.form!=="band";if(SEN.form==="band")setWeave(SEN.weave||"plain");sfx.tick&&sfx.tick();});
     document.querySelectorAll("#senweave button").forEach(b=>b.onclick=()=>{SEN.weave=b.dataset.w;document.querySelectorAll("#senweave button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));setWeave(SEN.weave);sfx.tick&&sfx.tick();
       document.getElementById("sennote2").textContent=SEN.weave==="scale"?"Fish-scale weave: category reserved. Send the structure (repeat, float lengths, lift plan) and it will be drawn here. Showing plain for now.":SEN.weave==="twill"?"Twill 2/2: each warp floats over two wefts and steps one along each pick, giving the diagonal rib.":"Plain weave: warp and weft alternate over and under every crossing, the tightest interlacing.";});
-    document.querySelectorAll("#sentabs button").forEach(b=>b.onclick=()=>{SEN.m=b.dataset.m;window.__senHint&&__senHint();if(SEN.m==="33")showTip("tribo");document.querySelectorAll("#sentabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));SEN.trace=[];SEN.V=0;sfx.zap&&sfx.zap();senText();});
+    document.querySelectorAll("#sentabs button").forEach(b=>b.onclick=()=>{SEN.m=b.dataset.m;SEN.drag=null;SEN.F=0;SEN.Fv=0;SEN.Q=0;SEN.gap=1;SEN.gapV=1;window.__senHint&&__senHint();document.querySelectorAll("#sentabs button").forEach(x=>x.setAttribute("aria-selected",String(x===b)));SEN.trace=[];SEN.V=0;sfx.zap&&sfx.zap();senText();});
     document.querySelectorAll("#senmat button").forEach(b=>b.onclick=()=>{SEN.mat=b.dataset.k;if(SEN.mat!=="film")showTip("yarnelec");document.querySelectorAll("#senmat button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));senText();});
-    document.getElementById("sentap").onclick=()=>{SEN.auto=SEN.auto?0:1;const b=document.getElementById("sentap");(b.querySelector(".g")||b).textContent=SEN.auto?"Stop pulses":"Auto pulse";b.setAttribute("aria-pressed",String(!!SEN.auto));};
-    document.getElementById("senclear").onclick=()=>{SEN.trace=[];SEN.V=0;};}
+    document.getElementById("sentap").onclick=()=>{SEN.auto=SEN.auto?0:1;if(SEN.auto&&SEN.m==="33")setTimeout(()=>showTip("tribo"),2600);const b=document.getElementById("sentap");(b.querySelector(".g")||b).textContent=SEN.auto?"Stop pulses":"Auto pulse";b.setAttribute("aria-pressed",String(!!SEN.auto));};
+    document.getElementById("senclear").onclick=()=>{SEN.trace=[];SEN.V=0;};
+    document.getElementById("senwhat").onclick=()=>{window.__tipToggle&&__tipToggle("dij");};
+    setTimeout(()=>{if(!document.getElementById("senlab").hidden)showTip("dij");},2600);}
   senText();if(!senRaf)senRaf=requestAnimationFrame(senDraw);}
 function closeLab(id){const d=document.getElementById(id);if(id==="senlab"&&sfx.fabric)sfx.fabric(0,"stretch");d.classList.remove("on");setTimeout(()=>{d.hidden=true;if(id==="pollab"){cancelAnimationFrame(polRaf);polRaf=0;}else{cancelAnimationFrame(senRaf);senRaf=0;}},350);
   if(d.dataset.from==="cover"&&coverUI)coverUI.open();}
@@ -4853,4 +4857,23 @@ window.__fieldHidden=(()=>{const cv=document.getElementById("cover"),ids=["dex",
 .cvsubw .cvhs.open .l1,.cvsubw .cvhs.open .l2{-webkit-text-fill-color:transparent!important;color:transparent!important;transition:-webkit-text-fill-color 0s,opacity 1.6s ease-in-out!important}
 .cvsubw .cvhs .l1,.cvsubw .cvhs .l2{display:inline-block!important;-webkit-box-decoration-break:clone}
 .cvsubw .cvhs .st{display:flex!important;flex-direction:column;align-items:center}
+</style>
+
+<style>
+/* in the sensing and poling labs a tip sits at the bottom on phones, so the mode tabs and the hint stay free */
+@media (max-width:700px){body:has(#senlab.on) .tipc.bigbub,body:has(#pollab.on) .tipc.bigbub{top:auto;bottom:calc(18px + env(safe-area-inset-bottom,0px))}}
+</style>
+
+<style>
+/* line breaks inside a tip read as short paragraphs */
+.tipc .tipt{white-space:pre-line}
+</style>
+
+<style>
+/* lab tips on phones sit just under the mode tabs and hint, over the empty top of the chamber */
+@media (max-width:700px){body:has(#senlab.on) .tipc.bigbub,body:has(#pollab.on) .tipc.bigbub{bottom:auto;top:var(--tiptop,calc(26px + env(safe-area-inset-top,0px)))}}
+/* inside a lab the tip gets a dark frosted body, so buttons and traces underneath do not show through the text */
+body:has(.lab.on) .tipc.bigbub::before{content:"";position:absolute;inset:6px 8px;border-radius:44px;background:rgba(3,10,16,.8);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);z-index:-2;pointer-events:none}
+/* a long press on a bubble button must not select its label */
+.lab button,.fbub{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 </style>
