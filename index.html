@@ -3209,7 +3209,9 @@ const sndBtn=document.getElementById("sound");
 function paintSound(){sndBtn.setAttribute("aria-pressed",String(sfx.on));document.getElementById("sound-t").textContent=sfx.on?"♪ On":"Off";sndBtn.setAttribute("aria-label",sfx.on?"Sound is on. Press to turn it off":"Sound is off. Press to turn it on");}
 sndBtn.onclick=()=>{sfx.toggle();paintSound();if(sfx.on&&window.__hapt)__hapt("tap");};paintSound();
 const presBtn=document.getElementById("present");
-function setPresent(on){document.querySelector(".app").classList.toggle("present",on);presBtn.setAttribute("aria-pressed",String(on));document.getElementById("present-t").textContent=on?"Panels":"Present";resize();fly(curStation);}
+function setPresent(on){document.querySelector(".app").classList.toggle("present",on);presBtn.setAttribute("aria-pressed",String(on));document.getElementById("present-t").textContent=on?"Panels":"Present";
+  document.documentElement.classList.toggle("presenting",on);if(on){try{scrollTo(0,0);}catch(_){}}resize();setTimeout(resize,80);setTimeout(resize,420);fly(curStation);}
+if(window.visualViewport)visualViewport.addEventListener("resize",()=>{if(document.documentElement.classList.contains("presenting"))resize();});
 presBtn.onclick=()=>setPresent(!document.querySelector(".app").classList.contains("present"));
 (function(){const g=document.getElementById("grip");if(!g)return;let y0=null,moved=false;
 const isOn=()=>document.querySelector(".app").classList.contains("present");
@@ -5609,4 +5611,13 @@ body:has(.lab.on) .tipc.bigbub::before{content:"";position:absolute;inset:6px 8p
 #diplab .dzoom{padding:13px 16px!important;min-width:96px;top:calc(52px + env(safe-area-inset-top,0px))}
 #diplab .dzoom .z1{font-size:11.5px}#diplab .dzoom .z2{font-size:10px;margin-top:3px}
 #diplab .dzoom2{top:calc(118px + env(safe-area-inset-top,0px))}
+</style>
+
+<style>
+/* hiding the panels: the scene takes the whole screen. The empty panel container leaves the flow,
+   the page cannot scroll a sliver of it into view, and the height follows Safari's live toolbar */
+.app.present .panels{display:none!important}
+html.presenting,html.presenting body{overflow:hidden!important;overscroll-behavior:none;height:100%}
+.app.present .vp{height:100vh;height:100dvh}
+@media (max-width:1023px){.app.present .vp{position:fixed;inset:0;top:0;height:100dvh;min-height:0}}
 </style>
